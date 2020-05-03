@@ -3,5 +3,6 @@ class cMainFrame
 {
 	Added soimethig
 		sdfgdsfgdfg
+		jghjghjgh
 };
 
