@@ -2,5 +2,6 @@
 class cMainFrame
 {
 	Added soimethig
+		sdfgdsfgdfg
 };
 
