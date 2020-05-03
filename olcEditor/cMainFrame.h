@@ -1,9 +1,18 @@
 #pragma once
-class cMainFrame
+
+#include <wx/wx.h>
+
+#include "cPrimaryRenderer.h"
+
+
+class cMainFrame : public wxFrame
 {
-	Added soimethig
-		sdfgdsfgdfg
-		jghjghjgh
-		hgjghjghj
-};
+public:
+	cMainFrame();
+
+protected:
+	cPrimaryRenderer* m_render = nullptr;
+
+
+};	
 
