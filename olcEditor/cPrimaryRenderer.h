@@ -9,6 +9,56 @@ struct vf2d
 	float y;
 };
 
+class cEditorMouseMoveEvent;
+wxDECLARE_EVENT(olcEVT_Editor_MouseMove, cEditorMouseMoveEvent);
+
+class cEditorMouseMoveEvent : public wxCommandEvent
+{
+public:
+	cEditorMouseMoveEvent(wxEventType commandType = olcEVT_Editor_MouseMove, int id = 0)
+		: wxCommandEvent(commandType, id) { }
+
+	cEditorMouseMoveEvent(const cEditorMouseMoveEvent& event)
+		: wxCommandEvent(event)
+	{
+		this->SetTileX(event.GetTileX());
+		this->SetTileY(event.GetTileY());
+		this->SetPixelX(event.GetPixelX());
+		this->SetPixelY(event.GetPixelY());
+		this->SetWorldX(event.GetWorldX());
+		this->SetWorldY(event.GetWorldY());
+	}
+
+	// Required for sending with wxPostEvent()
+	wxEvent* Clone() const { return new cEditorMouseMoveEvent(*this); }
+
+	int GetTileX() const { return nTileX; }
+	int GetTileY() const { return nTileY; }
+	int GetPixelX() const { return nPixelX; }
+	int GetPixelY() const { return nPixelY; }
+	float GetWorldX() const { return fWorldX; }
+	float GetWorldY() const { return fWorldY; }
+
+	void SetTileX(const int& n) { nTileX = n;}
+	void SetTileY(const int& n) { nTileY = n;}
+	void SetPixelX(const int& n) { nPixelX = n;}
+	void SetPixelY(const int& n) { nPixelY = n;}
+	void SetWorldX(const float& n) { fWorldX = n;}
+	void SetWorldY(const float& n) { fWorldY = n;}
+	 
+
+private:
+	int nTileX = 0;
+	int nTileY = 0;
+	int nPixelX = 0;
+	int nPixelY = 0;
+	float fWorldX = 0;
+	float fWorldY = 0;
+};
+
+typedef void (wxEvtHandler::*EditorMouseMoveFunction)(cEditorMouseMoveEvent&);
+#define EditorMouseMoveHandler(func) wxEVENT_HANDLER_CAST(EditorMouseMoveFunction, func) 
+
 class cPrimaryRenderer : public wxGLCanvas
 {
 public:

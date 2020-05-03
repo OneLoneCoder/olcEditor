@@ -1,5 +1,7 @@
 #include "cPrimaryRenderer.h"
 
+wxDEFINE_EVENT(olcEVT_Editor_MouseMove, cEditorMouseMoveEvent);
+
 cPrimaryRenderer::cPrimaryRenderer(wxWindow* parent) : wxGLCanvas(parent)
 {
 	m_glContext = new wxGLContext(this);
@@ -61,9 +63,17 @@ void cPrimaryRenderer::OnMiddleMouseUp(wxMouseEvent& evt)
 
 void cPrimaryRenderer::OnMouseMove(wxMouseEvent& evt)
 {
+	cEditorMouseMoveEvent e(olcEVT_Editor_MouseMove);
+
 	m_cursor = ScreenToWorld({ float(evt.GetX()), float(evt.GetY()) });
+	e.SetWorldX(m_cursor.x);
+	e.SetWorldY(m_cursor.y);
+
 	m_cursor.x = std::floor(m_cursor.x);
 	m_cursor.y = std::floor(m_cursor.y);
+
+	e.SetPixelX((e.GetWorldX() - m_cursor.x) * float(32));
+	e.SetPixelY((e.GetWorldY() - m_cursor.y) * float(32));
 
 	if (m_bWorldDrag)
 	{
@@ -71,9 +81,14 @@ void cPrimaryRenderer::OnMouseMove(wxMouseEvent& evt)
 		m_offset.x -= (mouse.x - m_startpan.x) / m_scale.x;
 		m_offset.y -= (mouse.y - m_startpan.y) / m_scale.y;
 		m_startpan = mouse;
-	
 	}
 	
+
+	
+	e.SetTileX(int(m_cursor.x));
+	e.SetTileY(int(m_cursor.y));
+
+	wxPostEvent(this->GetParent(), e);
 
 	Refresh();
 	evt.Skip();
@@ -84,6 +99,10 @@ void cPrimaryRenderer::OnPaint(wxPaintEvent& evt)
 	SetCurrent(*m_glContext);
 	wxPaintDC(this);
 	glViewport(0, 0, (GLint)GetSize().x, (GLint)GetSize().y);	
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_TEXTURE_2D);
 
 	m_viewsize.x = float(GetSize().x) / 2.0f;
 	m_viewsize.y = float(GetSize().y) / 2.0f;
@@ -123,7 +142,7 @@ void cPrimaryRenderer::DrawLine(const vf2d& start, const vf2d& end, const float 
 
 	glLineWidth(width);
 	glBegin(GL_LINES);
-	glColor3f(1.0, 1.0, 1.0);
+	glColor4f(1.0, 1.0, 1.0, 0.5f);
 	glVertex2f(s.x, s.y);
 	glVertex2f(e.x, e.y);
 	glEnd();
@@ -152,7 +171,7 @@ void cPrimaryRenderer::DrawRect(const vf2d& start, const vf2d& size, const float
 
 void cPrimaryRenderer::OnRender()
 {
-	glClearColor(0.0f, 0.0f, 0.5f, 1.0f);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	DrawLine({ -0, -0 }, { -0, 3 });

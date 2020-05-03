@@ -146,11 +146,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseGUI.cpp" />
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cMainFrame.cpp" />
     <ClCompile Include="cPrimaryRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseGUI.h" />
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cMainFrame.h" />
     <ClInclude Include="cPrimaryRenderer.h" />
