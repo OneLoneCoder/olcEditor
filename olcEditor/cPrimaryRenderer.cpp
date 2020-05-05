@@ -4,7 +4,7 @@ wxDEFINE_EVENT(olcEVT_Editor_MouseMove, cEditorMouseEvent);
 wxDEFINE_EVENT(olcEVT_Editor_MouseLeftUp, cEditorMouseEvent);
 wxDEFINE_EVENT(olcEVT_Editor_MouseLeftDown, cEditorMouseEvent);
 
-cPrimaryRenderer::cPrimaryRenderer(wxWindow* parent) : wxGLCanvas(parent)
+cPrimaryRenderer::cPrimaryRenderer(wxWindow* parent) : wxGLCanvas(parent, -1, nullptr)
 {
 	m_glContext = new wxGLContext(this);
 
@@ -180,6 +180,7 @@ void cPrimaryRenderer::OnRender()
 
 	// Draw 0 Axis
 
-	gfx.DrawRect(m_cursor, { 1.0f, 1.0f }, { 1, 1, 0 }, 3);
+	gfx.DrawRect(m_cursor, { 1.0f, 1.0f }, { 1, 1, 1, 0.5 }, 6);
+	gfx.DrawRect(m_cursor, { 1.0f, 1.0f }, { 0,0,0 }, 3);
 }
 
