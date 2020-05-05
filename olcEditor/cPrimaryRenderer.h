@@ -1,63 +1,60 @@
 #pragma once
 
+
 #include <wx/wx.h>
 #include <wx/glcanvas.h>
 
-struct vf2d
-{
-	float x;
-	float y;
-};
+#include "common.h"
+#include "cArea.h"
+#include "cLayer_Boolean.h"
 
-class cEditorMouseMoveEvent;
-wxDECLARE_EVENT(olcEVT_Editor_MouseMove, cEditorMouseMoveEvent);
+#include "RenderToolkit.h"
 
-class cEditorMouseMoveEvent : public wxCommandEvent
+class cEditorMouseEvent;
+wxDECLARE_EVENT(olcEVT_Editor_MouseMove, cEditorMouseEvent);
+wxDECLARE_EVENT(olcEVT_Editor_MouseLeftUp, cEditorMouseEvent);
+wxDECLARE_EVENT(olcEVT_Editor_MouseLeftDown, cEditorMouseEvent);
+
+class cEditorMouseEvent : public wxCommandEvent
 {
 public:
-	cEditorMouseMoveEvent(wxEventType commandType = olcEVT_Editor_MouseMove, int id = 0)
+	cEditorMouseEvent(wxEventType commandType = olcEVT_Editor_MouseMove, int id = 0)
 		: wxCommandEvent(commandType, id) { }
 
-	cEditorMouseMoveEvent(const cEditorMouseMoveEvent& event)
+	cEditorMouseEvent(const cEditorMouseEvent& event)
 		: wxCommandEvent(event)
 	{
-		this->SetTileX(event.GetTileX());
-		this->SetTileY(event.GetTileY());
-		this->SetPixelX(event.GetPixelX());
-		this->SetPixelY(event.GetPixelY());
-		this->SetWorldX(event.GetWorldX());
-		this->SetWorldY(event.GetWorldY());
+		this->SetTile(event.GetTile());		
+		this->SetPixel(event.GetPixel());		
+		this->SetWorld(event.GetWorld());		
 	}
 
 	// Required for sending with wxPostEvent()
-	wxEvent* Clone() const { return new cEditorMouseMoveEvent(*this); }
+	wxEvent* Clone() const { return new cEditorMouseEvent(*this); }
 
-	int GetTileX() const { return nTileX; }
-	int GetTileY() const { return nTileY; }
-	int GetPixelX() const { return nPixelX; }
-	int GetPixelY() const { return nPixelY; }
-	float GetWorldX() const { return fWorldX; }
-	float GetWorldY() const { return fWorldY; }
+	olc::vi2d GetTile() const { return vTile; }
+	olc::vi2d GetPixel() const { return vPixel; }	
+	olc::vf2d GetWorld() const { return vWorld; }
 
-	void SetTileX(const int& n) { nTileX = n;}
-	void SetTileY(const int& n) { nTileY = n;}
-	void SetPixelX(const int& n) { nPixelX = n;}
-	void SetPixelY(const int& n) { nPixelY = n;}
-	void SetWorldX(const float& n) { fWorldX = n;}
-	void SetWorldY(const float& n) { fWorldY = n;}
-	 
-
+	void SetTile(const olc::vi2d& n) { vTile = n;}
+	void SetPixel(const olc::vi2d& n) { vPixel = n;}
+	void SetWorld(const olc::vf2d& n) { vWorld = n;}
+	
+	
 private:
-	int nTileX = 0;
-	int nTileY = 0;
-	int nPixelX = 0;
-	int nPixelY = 0;
-	float fWorldX = 0;
-	float fWorldY = 0;
+	olc::vi2d vTile = { 0,0 };
+	olc::vi2d vPixel = { 0,0 };
+	olc::vf2d vWorld = { 0,0 };
 };
 
-typedef void (wxEvtHandler::*EditorMouseMoveFunction)(cEditorMouseMoveEvent&);
+typedef void (wxEvtHandler::*EditorMouseMoveFunction)(cEditorMouseEvent&);
 #define EditorMouseMoveHandler(func) wxEVENT_HANDLER_CAST(EditorMouseMoveFunction, func) 
+
+typedef void (wxEvtHandler::* EditorMouseLeftDownFunction)(cEditorMouseEvent&);
+#define EditorMouseLeftDownHandler(func) wxEVENT_HANDLER_CAST(EditorMouseLeftDownFunction, func) 
+
+typedef void (wxEvtHandler::* EditorMouseLeftUpFunction)(cEditorMouseEvent&);
+#define EditorMouseLeftUpHandler(func) wxEVENT_HANDLER_CAST(EditorMouseLeftUpFunction, func) 
 
 class cPrimaryRenderer : public wxGLCanvas
 {
@@ -65,32 +62,42 @@ public:
 	cPrimaryRenderer(wxWindow* parent);
 	virtual ~cPrimaryRenderer();
 
+	void SetArea(std::shared_ptr<cArea> area);
+
 protected:
 	void OnRender();
+	//void RenderLayer_Boolean(cLayer_Boolean* layer, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR);
 
-	void DrawLine(const vf2d& start, const vf2d& end, const float width = 1.0f);
-	void DrawRect(const vf2d& start, const vf2d& size, const float width = 1.0f);
 
-	vf2d WorldToScreen(const vf2d& point);
-	vf2d ScreenToWorld(const vf2d& point);
-	vf2d ProjectToView(const vf2d& point);
+public:
+	/*void DrawLine(const olc::vf2d& start, const olc::vf2d& end, const olc::colour col, const float width = 1.0f);
+	void DrawRect(const olc::vf2d& start, const olc::vf2d& size, const olc::colour col, const float width = 1.0f);
+	void FillRect(const olc::vf2d& start, const olc::vf2d& size, const olc::colour col, const float width = 1.0f);
+
+	olc::vf2d WorldToScreen(const olc::vf2d& point);
+	olc::vf2d ScreenToWorld(const olc::vf2d& point);
+	olc::vf2d ProjectToView(const olc::vf2d& point);*/
 
 protected:
 	void OnPaint(wxPaintEvent& evt);
 	void OnMiddleMouseDown(wxMouseEvent& evt);
 	void OnMiddleMouseUp(wxMouseEvent& evt);
 	void OnMiddleMouseWheel(wxMouseEvent& evt);
+	void OnMouseLeftUp(wxMouseEvent& evt);
+	void OnMouseLeftDown(wxMouseEvent& evt);
 	void OnMouseMove(wxMouseEvent& evt);
+
+	cLayer_Boolean layer;
 
 private:
 	wxGLContext* m_glContext;
-	vf2d m_unitscale = { 1.0f, 1.0f };
-	vf2d m_scale = {32.0f, 32.0f};
-	vf2d m_offset = { 0.0f, 0.0f };	
-	vf2d m_startpan = { 0.0f, 0.0f };
-	vf2d m_viewsize = { 0,0 };
-	vf2d m_cursor = { 0,0 };
+	RenderToolkit gfx;
+	olc::vf2d m_unitscale = { 1.0f, 1.0f };
+	olc::vf2d m_startpan = { 0.0f, 0.0f };
+	olc::vf2d m_cursor = { 0,0 };
 	bool m_bWorldDrag = false;
 	float m_fZoom = 1.0f;
+
+	std::shared_ptr<cArea> m_area = nullptr;
 };
 

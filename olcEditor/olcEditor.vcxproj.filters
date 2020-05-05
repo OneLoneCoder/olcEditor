@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="BaseGUI.cpp" />
+    <ClCompile Include="cApp.cpp" />
+    <ClCompile Include="cMainFrame.cpp" />
+    <ClCompile Include="cPrimaryRenderer.cpp" />
+    <ClCompile Include="cLayer.cpp">
+      <Filter>LayerTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="cLayer_Boolean.cpp">
+      <Filter>LayerTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderToolkit.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BaseGUI.h" />
+    <ClInclude Include="cApp.h" />
+    <ClInclude Include="cMainFrame.h" />
+    <ClInclude Include="cPrimaryRenderer.h" />
+    <ClInclude Include="cLayer.h">
+      <Filter>LayerTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h" />
+    <ClInclude Include="cLayer_Boolean.h">
+      <Filter>LayerTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderToolkit.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="LayerTypes">
+      <UniqueIdentifier>{c13a8f5d-fb3e-478c-b175-08747433582d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
