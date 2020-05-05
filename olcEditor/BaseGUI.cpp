@@ -110,7 +110,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 
-	m_listCtrl1 = new wxListCtrl( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_ICON|wxLC_LIST );
+	m_listCtrl1 = new wxListCtrl( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT );
 	bSizer3->Add( m_listCtrl1, 1, wxALL|wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer10;
@@ -148,10 +148,6 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer3->Add( m_staticline2, 0, wxEXPAND | wxALL, 5 );
 
 	m_propertyGrid1 = new wxPropertyGrid(m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxPG_DEFAULT_STYLE);
-	m_propertyGridItem1 = m_propertyGrid1->Append( new wxStringProperty( wxT("Name"), wxT("Name") ) );
-	m_propertyGridItem2 = m_propertyGrid1->Append( new wxStringProperty( wxT("Name"), wxT("Name") ) );
-	m_propertyGridItem3 = m_propertyGrid1->Append( new wxStringProperty( wxT("Name"), wxT("Name") ) );
-	m_propertyGridItem4 = m_propertyGrid1->Append( new wxStringProperty( wxT("Name"), wxT("Name") ) );
 	bSizer3->Add( m_propertyGrid1, 0, wxALL|wxEXPAND, 5 );
 
 	m_staticline3 = new wxStaticLine( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );

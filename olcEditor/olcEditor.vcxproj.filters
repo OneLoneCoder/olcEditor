@@ -12,6 +12,8 @@
       <Filter>LayerTypes</Filter>
     </ClCompile>
     <ClCompile Include="RenderToolkit.cpp" />
+    <ClCompile Include="cArea.cpp" />
+    <ClCompile Include="cProject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseGUI.h" />
@@ -26,10 +28,15 @@
       <Filter>LayerTypes</Filter>
     </ClInclude>
     <ClInclude Include="RenderToolkit.h" />
+    <ClInclude Include="cArea.h" />
+    <ClInclude Include="cProject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="LayerTypes">
       <UniqueIdentifier>{c13a8f5d-fb3e-478c-b175-08747433582d}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt" />
   </ItemGroup>
 </Project>

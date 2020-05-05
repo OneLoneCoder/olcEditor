@@ -1,0 +1,4 @@
+// Compile on linux
+sudo apt install libwxgtk3.0-dev
+
+g++ -o editor *.cpp `wx-config --libs --gl-libs --cppflags` -lGL -lwx_gtk2u_propgrid-3.0

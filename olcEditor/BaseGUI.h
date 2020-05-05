@@ -72,10 +72,6 @@ class MainFrameBase : public wxFrame
 		wxBitmapButton* m_bpButton17;
 		wxStaticLine* m_staticline2;
 		wxPropertyGrid* m_propertyGrid1;
-		wxPGProperty* m_propertyGridItem1;
-		wxPGProperty* m_propertyGridItem2;
-		wxPGProperty* m_propertyGridItem3;
-		wxPGProperty* m_propertyGridItem4;
 		wxStaticLine* m_staticline3;
 		wxPanel* m_panel8;
 		wxPanel* m_renderpanel;

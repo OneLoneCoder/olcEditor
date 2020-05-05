@@ -168,6 +168,9 @@
     <ClInclude Include="cProject.h" />
     <ClInclude Include="RenderToolkit.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
