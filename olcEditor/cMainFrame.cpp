@@ -12,7 +12,15 @@ cMainFrame::cMainFrame() : MainFrameBase(nullptr)
 	m_rendersizer->Add(m_render, 1, wxEXPAND, 5);
 	m_rendersizer->Layout();
 
+	m_selectTile = std::make_shared<cTileSelection>();
+
+
 	m_render->SetArea(area);
+	m_render->SetTileSelector(m_selectTile);
+
+	m_selectTile->All(layer);
+
+	m_drawTool = DrawingTool::TileDrawSingle;
 
 	this->Layout();
 
@@ -36,16 +44,26 @@ void cMainFrame::OnEditorMouseMove(cEditorMouseEvent& evt)
 
 	if (m_bLeftMouseDrag)
 	{
-		switch (m_layerSelected->GetType())
+		if (m_layerSelected->GetContentType() == ContentType::Tiles)
 		{
-		case LayerType::Boolean:
-		{
-			auto layer = (cLayer_Boolean*)m_layerSelected.get();
-			layer->GetTile(evt.GetTile()) = 1;
-			m_render->Refresh();
+			auto layer = std::dynamic_pointer_cast<cLayer_Boolean>(m_layerSelected);
+
+			if (m_drawTool == DrawingTool::TileSelectRegion)
+			{
+				m_vTileRegionBR = evt.GetTile();
+				m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
+			}
+
+			if (m_drawTool == DrawingTool::TileDrawSingle)
+			{
+				if (m_selectTile->InSelection(layer, evt.GetTile()))
+				{
+					layer->GetTile(evt.GetTile()) = 1;
+				}
+			}
 		}
-		break;
-		}
+
+		m_render->Refresh();
 	}
 }
 
@@ -53,8 +71,21 @@ void cMainFrame::OnEditorMouseLeftUp(cEditorMouseEvent& evt)
 {
 	if (m_layerSelected == nullptr)
 		return;
-
 	m_bLeftMouseDrag = false;
+
+	if (m_layerSelected->GetContentType() == ContentType::Tiles)
+	{
+		if (m_drawTool == DrawingTool::TileSelectRegion)
+		{
+			m_vTileRegionBR = evt.GetTile();
+			m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
+			m_selectTile->Region(std::dynamic_pointer_cast<cTiledLayer>(m_layerSelected), m_vTileRegionTL, m_vTileRegionBR);			
+		}
+	}
+
+	m_render->EnableRegionMode(false);
+
+	m_render->Refresh();
 }
 
 void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
@@ -64,14 +95,102 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 
 	m_bLeftMouseDrag = true;
 
-	switch (m_layerSelected->GetType())
+	if (m_layerSelected->GetContentType() == ContentType::Tiles)
 	{
-		case LayerType::Boolean:
+		auto layer = std::dynamic_pointer_cast<cLayer_Boolean>(m_layerSelected);
+
+		if (m_drawTool == DrawingTool::TileSelectRegion)
 		{
-			auto layer = (cLayer_Boolean*)m_layerSelected.get();
-			layer->GetTile(evt.GetTile()) = 1;
-			m_render->Refresh();
+			m_vTileRegionTL = evt.GetTile();
+			m_vTileRegionBR = evt.GetTile();
+			m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
+			m_render->EnableRegionMode(true);
+			if(!evt.GetControlHeld())
+				m_selectTile->None(layer);			
 		}
-		break;
+
+		if (m_drawTool == DrawingTool::TileDrawSingle)
+		{
+			if (m_selectTile->InSelection(layer, evt.GetTile()))
+			{
+				layer->GetTile(evt.GetTile()) = 1;
+			}
+		}
 	}
+
+	m_render->Refresh();
+
+}
+
+void cMainFrame::OnButtonSelectClear(wxCommandEvent& evt)
+{
+	if (m_layerSelected != nullptr)
+	{
+		if (m_layerSelected->GetContentType() == ContentType::Tiles)
+		{
+			m_selectTile->All(std::dynamic_pointer_cast<cTiledLayer>(m_layerSelected));
+		}
+	}
+
+	m_render->Refresh();
+}
+
+void cMainFrame::OnButtonSelectRegion(wxCommandEvent& evt)
+{
+	m_drawTool = DrawingTool::TileSelectRegion;
+
+	if (m_layerSelected != nullptr)
+	{
+		if (m_layerSelected->GetContentType() == ContentType::Tiles)
+		{
+			m_selectTile->None(std::dynamic_pointer_cast<cTiledLayer>(m_layerSelected));
+		}
+	}
+
+	m_render->Refresh();
+}
+
+void cMainFrame::OnButtonSelectMove(wxCommandEvent& evt)
+{
+
+}
+
+void cMainFrame::OnButtonSelectFill(wxCommandEvent& evt)
+{
+
+}
+
+void cMainFrame::OnButtonTileDraw(wxCommandEvent& evt)
+{
+	m_drawTool = DrawingTool::TileDrawSingle;
+}
+
+void cMainFrame::OnButtonTileLine(wxCommandEvent& evt)
+{
+
+}
+
+void cMainFrame::OnButtonTileDrawRect(wxCommandEvent& evt)
+{
+
+}
+
+void cMainFrame::OnButtonTileFillRect(wxCommandEvent& evt)
+{
+
+}
+
+void cMainFrame::OnButtonTileDrawCircle(wxCommandEvent& evt)
+{
+
+}
+
+void cMainFrame::OnButtonTileFillCircle(wxCommandEvent& evt)
+{
+
+}
+
+void cMainFrame::OnButtonTileFloodFill(wxCommandEvent& evt)
+{
+
 }

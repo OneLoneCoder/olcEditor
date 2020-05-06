@@ -6,6 +6,7 @@
 #include <string>
 #include <memory>
 #include <algorithm>
+#include <unordered_set>
 
 namespace olc
 {
@@ -71,6 +72,13 @@ namespace olc
 	{
 		return v2d_generic<T>((T)(lhs / (int)rhs.x), (T)(lhs / (int)rhs.y));
 	}
+
+	template<class T> inline bool operator == (const v2d_generic<T>& lhs, const v2d_generic<T>& rhs)
+	{
+		return (lhs.x == rhs.x && lhs.y == rhs.y);
+	}
+
+
 
 	typedef v2d_generic<int32_t> vi2d;
 	typedef v2d_generic<uint32_t> vu2d;

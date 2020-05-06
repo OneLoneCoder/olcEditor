@@ -151,9 +151,12 @@
     <ClCompile Include="cArea.cpp" />
     <ClCompile Include="cLayer.cpp" />
     <ClCompile Include="cLayer_Boolean.cpp" />
+    <ClCompile Include="cLayer_Tile.cpp" />
     <ClCompile Include="cMainFrame.cpp" />
     <ClCompile Include="cPrimaryRenderer.cpp" />
     <ClCompile Include="cProject.cpp" />
+    <ClCompile Include="cTiledLayer.cpp" />
+    <ClCompile Include="cTileSelection.cpp" />
     <ClCompile Include="RenderToolkit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,10 +165,13 @@
     <ClInclude Include="cArea.h" />
     <ClInclude Include="cLayer.h" />
     <ClInclude Include="cLayer_Boolean.h" />
+    <ClInclude Include="cLayer_Tile.h" />
     <ClInclude Include="cMainFrame.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="cPrimaryRenderer.h" />
     <ClInclude Include="cProject.h" />
+    <ClInclude Include="cTiledLayer.h" />
+    <ClInclude Include="cTileSelection.h" />
     <ClInclude Include="RenderToolkit.h" />
   </ItemGroup>
   <ItemGroup>

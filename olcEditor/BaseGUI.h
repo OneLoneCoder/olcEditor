@@ -47,35 +47,49 @@ class MainFrameBase : public wxFrame
 		wxMenu* m_menuFile;
 		wxNotebook* m_toolbar;
 		wxPanel* m_toolsBoolean;
-		wxBitmapButton* m_bpButton1;
-		wxBitmapButton* m_bpButton2;
-		wxBitmapButton* m_bpButton3;
-		wxBitmapButton* m_bpButton5;
+		wxBitmapButton* m_btnBooleanClearSelection;
+		wxBitmapButton* m_btnBooleanSelection;
+		wxBitmapButton* m_btnBooleanMoveSelection;
+		wxBitmapButton* m_btnBooleanFillSelection;
 		wxStaticLine* m_staticline1;
-		wxBitmapButton* m_bpButton6;
-		wxBitmapButton* m_bpButton7;
-		wxBitmapButton* m_bpButton8;
-		wxBitmapButton* m_bpButton9;
-		wxBitmapButton* m_bpButton10;
-		wxBitmapButton* m_bpButton11;
-		wxBitmapButton* m_bpButton12;
+		wxBitmapButton* m_btnTileDraw;
+		wxBitmapButton* m_btnTileDrawLine;
+		wxBitmapButton* m_btnTileDrawRect;
+		wxBitmapButton* m_btnTileFillRect;
+		wxBitmapButton* m_btnTileDrawCircle;
+		wxBitmapButton* m_btnTileFillCircle;
+		wxBitmapButton* m_btnTileFloodFill;
 		wxPanel* m_panel5;
 		wxBoxSizer* m_mainsizer;
 		wxSplitterWindow* m_splitter;
 		wxPanel* m_propspanel;
 		wxPanel* m_panel1;
-		wxListCtrl* m_listCtrl1;
-		wxBitmapButton* m_bpButton13;
-		wxBitmapButton* m_bpButton14;
-		wxBitmapButton* m_bpButton15;
-		wxBitmapButton* m_bpButton16;
-		wxBitmapButton* m_bpButton17;
+		wxListCtrl* m_listLayers;
+		wxBitmapButton* m_btnAddLayer;
+		wxBitmapButton* m_btnEraseLayer;
+		wxBitmapButton* m_btnDuplicateLayer;
+		wxBitmapButton* m_btnLayerMoveUp;
+		wxBitmapButton* m_btnLayerMoveDown;
 		wxStaticLine* m_staticline2;
-		wxPropertyGrid* m_propertyGrid1;
+		wxPropertyGrid* m_propLayer;
 		wxStaticLine* m_staticline3;
-		wxPanel* m_panel8;
+		wxNotebook* m_nbPalette;
 		wxPanel* m_renderpanel;
 		wxBoxSizer* m_rendersizer;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnButtonSelectClear( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonSelectRegion( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonSelectMove( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonSelectFill( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonTileDraw( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonTileLine( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonTileDrawRect( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonTileFillRect( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonTileDrawCircle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonTileFillCircle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonTileFloodFill( wxCommandEvent& event ) { event.Skip(); }
+
 
 	public:
 

@@ -39,6 +39,11 @@ void cPrimaryRenderer::SetArea(std::shared_ptr<cArea> area)
 	Refresh();
 }
 
+void cPrimaryRenderer::SetTileSelector(std::shared_ptr<cTileSelection> selector)
+{
+	m_selectTiles = selector;
+}
+
 void cPrimaryRenderer::OnMiddleMouseWheel(wxMouseEvent& evt)
 {
 	olc::vf2d mouse1 = gfx.ScreenToWorld({ float(evt.GetX()), float(evt.GetY()) });
@@ -81,6 +86,8 @@ void cPrimaryRenderer::OnMouseLeftUp(wxMouseEvent& evt)
 	e.SetWorld(mouse);
 	e.SetPixel({ int((e.GetWorld().x - int(mouse.x)) * float(32)), int((e.GetWorld().y - int(mouse.y)) * float(32)) });
 	e.SetTile(olc::vi2d(mouse));
+	e.SetControlHeld(evt.ControlDown());
+	e.SetShiftHeld(evt.ShiftDown());
 	wxPostEvent(this->GetParent(), e);
 	evt.Skip();
 }
@@ -92,9 +99,11 @@ void cPrimaryRenderer::OnMouseLeftDown(wxMouseEvent& evt)
 	e.SetWorld(mouse);
 	e.SetPixel({ int((e.GetWorld().x - int(mouse.x)) * float(32)), int((e.GetWorld().y - int(mouse.y)) * float(32)) });
 	e.SetTile(olc::vi2d(mouse));
+	e.SetControlHeld(evt.ControlDown());
+	e.SetShiftHeld(evt.ShiftDown());
 	wxPostEvent(this->GetParent(), e);
 	evt.Skip();
-	evt.Skip();
+
 }
 
 void cPrimaryRenderer::OnMouseMove(wxMouseEvent& evt)
@@ -114,6 +123,9 @@ void cPrimaryRenderer::OnMouseMove(wxMouseEvent& evt)
 		gfx.vWorldOffset -= (mouse - m_startpan) / gfx.vWorldScale;
 		m_startpan = mouse;
 	}
+
+	e.SetControlHeld(evt.ControlDown());
+	e.SetShiftHeld(evt.ShiftDown());
 
 	wxPostEvent(this->GetParent(), e);
 	Refresh();
@@ -154,13 +166,19 @@ void cPrimaryRenderer::OnRender()
 	vWorldBR.x = std::ceil(vWorldBR.x);
 	vWorldBR.y = std::ceil(vWorldBR.y);
 
-	// Draw Layer
+	// Draw Layers
 	if (m_area != nullptr)
 	{
 		for (auto& layer : m_area->m_listLayers)
 		{			
 			layer->RenderSelf(gfx, vWorldTL, vWorldBR);
 		}
+	}
+
+	// Draw Selection Grid
+	if (m_selectTiles != nullptr)
+	{
+		m_selectTiles->RenderSelf(gfx, vWorldTL, vWorldBR);
 	}
 
 	// Draw 0 Axis
@@ -178,9 +196,29 @@ void cPrimaryRenderer::OnRender()
 		gfx.DrawLine({ vWorldTL.x, y }, { vWorldBR.x, y }, { 1, 1, 1, 0.2f });
 	}
 
-	// Draw 0 Axis
+	if (m_bDrawingRegion)
+	{
+		gfx.FillRect(m_vRegionTL, m_vRegionBR - m_vRegionTL + olc::vi2d(1, 1), { 1, 1, 0, 0.2f });
+		gfx.DrawRect(m_vRegionTL, m_vRegionBR - m_vRegionTL + olc::vi2d(1, 1), { 1, 1, 1, 0.5f }, 6);
+		gfx.DrawRect(m_vRegionTL, m_vRegionBR - m_vRegionTL + olc::vi2d(1, 1), { 1, 1, 0, 1.0f }, 3);
+	}
 
+	// Draw Mouse Cursor
 	gfx.DrawRect(m_cursor, { 1.0f, 1.0f }, { 1, 1, 1, 0.5 }, 6);
 	gfx.DrawRect(m_cursor, { 1.0f, 1.0f }, { 0,0,0 }, 3);
+}
+
+void cPrimaryRenderer::EnableRegionMode(bool b)
+{
+	m_bDrawingRegion = b;
+}
+
+void cPrimaryRenderer::SetTileRegion(const olc::vi2d& vRegionTL, const olc::vi2d& vRegionBR)
+{
+	//m_vRegionTL = vRegionTL;
+	//m_vRegionBR = vRegionBR;
+
+	m_vRegionTL = { float(std::min(vRegionTL.x, vRegionBR.x)), float(std::min(vRegionTL.y, vRegionBR.y)) };
+	m_vRegionBR = { float(std::max(vRegionTL.x, vRegionBR.x)), float(std::max(vRegionTL.y, vRegionBR.y)) };
 }
 

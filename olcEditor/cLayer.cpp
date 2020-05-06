@@ -4,7 +4,7 @@ cLayer::cLayer()
 {
 }
 
-cLayer::cLayer(const std::string& name, LayerType t) : m_sName(name), m_type(t)
+cLayer::cLayer(const std::string& name, LayerType t, ContentType c) : m_sName(name), m_type(t), m_content(c)
 {	
 }
 
@@ -67,6 +67,11 @@ const LayerType cLayer::GetType() const
 	return m_type;
 }
 
+const ContentType cLayer::GetContentType() const
+{
+	return m_content;
+}
+
 const olc::vf2d& cLayer::GetWorldOffset() const
 {
 	return m_vWorldOffset;
@@ -81,3 +86,7 @@ void cLayer::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc
 {
 
 }
+
+
+
+

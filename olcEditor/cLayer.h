@@ -17,12 +17,19 @@ enum class LayerType
 };
 
 
+enum class ContentType
+{
+	Tiles,
+	FreeForm
+};
+
+
 
 class cLayer
 {
 public:
 	cLayer();
-	cLayer(const std::string& name, LayerType t);
+	cLayer(const std::string& name, LayerType t, ContentType c);
 	virtual ~cLayer();
 
 	bool IsVisble() const;
@@ -41,6 +48,7 @@ public:
 	const std::string& GetName() const;
 
 	const LayerType GetType() const;
+	const ContentType GetContentType() const;
 
 	const olc::vf2d& GetWorldOffset() const;
 	void SetWorldOffset(const olc::vf2d& offset);
@@ -56,5 +64,9 @@ protected:
 	bool m_bLocked = false;
 	olc::vf2d m_vWorldOffset;
 	LayerType m_type = LayerType::Undefined;
+	ContentType m_content = ContentType::Tiles;
 };
+
+
+
 
