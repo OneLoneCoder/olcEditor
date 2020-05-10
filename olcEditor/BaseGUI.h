@@ -22,6 +22,7 @@
 #include <wx/icon.h>
 #include <wx/button.h>
 #include <wx/statline.h>
+#include <wx/checkbox.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/notebook.h>
@@ -30,6 +31,12 @@
 #include <wx/propgrid/advprops.h>
 #include <wx/splitter.h>
 #include <wx/frame.h>
+#include <wx/textctrl.h>
+#include <wx/statbox.h>
+#include <wx/filepicker.h>
+#include <wx/stattext.h>
+#include <wx/spinctrl.h>
+#include <wx/dialog.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -59,6 +66,7 @@ class MainFrameBase : public wxFrame
 		wxBitmapButton* m_btnTileDrawCircle;
 		wxBitmapButton* m_btnTileFillCircle;
 		wxBitmapButton* m_btnTileFloodFill;
+		wxCheckBox* m_checkBox1;
 		wxPanel* m_panel5;
 		wxBoxSizer* m_mainsizer;
 		wxSplitterWindow* m_splitter;
@@ -74,6 +82,10 @@ class MainFrameBase : public wxFrame
 		wxPropertyGrid* m_propLayer;
 		wxStaticLine* m_staticline3;
 		wxNotebook* m_nbPalette;
+		wxPanel* m_panel6;
+		wxBitmapButton* m_bpButton17;
+		wxBitmapButton* m_bpButton18;
+		wxBitmapButton* m_bpButton19;
 		wxPanel* m_renderpanel;
 		wxBoxSizer* m_rendersizer;
 
@@ -102,6 +114,47 @@ class MainFrameBase : public wxFrame
 			m_splitter->SetSashPosition( 200 );
 			m_splitter->Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrameBase::m_splitterOnIdle ), NULL, this );
 		}
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class ImageResourceEditorBase
+///////////////////////////////////////////////////////////////////////////////
+class ImageResourceEditorBase : public wxDialog
+{
+	private:
+
+	protected:
+		wxTextCtrl* m_textCtrl1;
+		wxFilePickerCtrl* m_filePicker1;
+		wxStaticText* m_staticText7;
+		wxStaticText* m_staticText1;
+		wxSpinCtrl* m_tileWidth;
+		wxStaticText* m_staticText2;
+		wxSpinCtrl* m_tileHeight;
+		wxStaticText* m_staticText8;
+		wxStaticText* m_staticText11;
+		wxSpinCtrl* m_offsetLeft;
+		wxStaticText* m_staticText21;
+		wxSpinCtrl* m_offsetTop;
+		wxStaticText* m_staticText9;
+		wxStaticText* m_staticText10;
+		wxSpinCtrl* m_spaceHorizontal;
+		wxStaticText* m_staticText111;
+		wxSpinCtrl* m_spaceVertical;
+		wxButton* m_button1;
+		wxButton* m_button2;
+		wxStaticBoxSizer* m_imageSizer;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnFileSourceChanged( wxFileDirPickerEvent& event ) { event.Skip(); }
+		virtual void OnGridUpdate( wxSpinEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		ImageResourceEditorBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Image Resource Properties"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1010,572 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~ImageResourceEditorBase();
 
 };
 

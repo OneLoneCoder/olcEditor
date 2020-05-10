@@ -87,6 +87,16 @@ void cLayer::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc
 
 }
 
+const std::string cLayer::GetLayerTypeName() const
+{
+	return "Nameless Layer Type";
+}
+
+const std::vector<sToolBarButton> cLayer::GetToolBarButtons() const
+{
+	return std::vector<sToolBarButton>();
+}
+
 
 
 

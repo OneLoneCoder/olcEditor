@@ -11,13 +11,8 @@
 namespace olc
 {
 
-	struct colour
-	{
-		float r = 0;
-		float g = 0; 
-		float b = 0;
-		float a = 1;
-	};
+	
+
 
 	template <class T>
 	struct v2d_generic
@@ -84,4 +79,47 @@ namespace olc
 	typedef v2d_generic<uint32_t> vu2d;
 	typedef v2d_generic<float> vf2d;
 	typedef v2d_generic<double> vd2d;
+
+	struct Pixel
+	{
+		union
+		{
+			uint32_t n = 0xFF000000;
+			struct { uint8_t r; uint8_t g; uint8_t b; uint8_t a; };
+		};
+
+		enum Mode { NORMAL, MASK, ALPHA, CUSTOM };
+
+		Pixel();
+		Pixel(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha = 0xFF);
+		Pixel(uint32_t p);
+		bool operator==(const Pixel& p) const;
+		bool operator!=(const Pixel& p) const;
+	};
+
+	Pixel PixelF(float red, float green, float blue, float alpha = 1.0f);
+
+
+	class Sprite
+	{
+	public:
+		Sprite();
+		Sprite(const std::string& sImageFile);
+		Sprite(int32_t w, int32_t h);
+		~Sprite();
+
+	public:
+		bool LoadFromFile(const std::string& sImageFile);
+
+	public:
+		olc::vi2d vSize;
+
+	public:
+		Pixel GetPixel(int32_t x, int32_t y) const;
+		bool  SetPixel(int32_t x, int32_t y, Pixel p);
+		Pixel GetPixel(const olc::vi2d& a) const;
+		bool  SetPixel(const olc::vi2d& a, Pixel p);
+		Pixel* GetData();
+		Pixel* pColData = nullptr;
+	};
 }

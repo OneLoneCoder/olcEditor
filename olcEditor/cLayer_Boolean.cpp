@@ -10,22 +10,45 @@ cLayer_Boolean::~cLayer_Boolean()
 {
 }
 
-void cLayer_Boolean::SetColourTrue(const olc::colour& col)
+const std::string cLayer_Boolean::GetLayerTypeName() const
+{
+	return "Boolean";
+}
+
+const std::vector<sToolBarButton> cLayer_Boolean::GetToolBarButtons() const
+{
+	return std::vector<sToolBarButton>
+	({
+		{"Clear Selection", "./gfx/ico_select_clear.png", "Disables current selection areas"},
+		{"Region Select", "./gfx/ico_select.png", "Select area, hold CTRL to add areas"},
+		{"Move Selection", "./gfx/ico_select_move.png", "Move selected area"},
+		{"Fill Selection", "./gfx/ico_select_fill.png", "Flood fill select area"},
+		{"Draw", "./gfx/ico_draw_one.png", "Draw single tile"},
+		{"Draw Line", "./gfx/ico_draw_line.png", "Draw a line"},
+		{"Draw Rectangle", "./gfx/ico_draw_rect.png", "Draw a rectangle outline"},
+		{"Fill Rectangle", "./gfx/ico_fill_rect.png", "Draw a filled rectangle"},
+		{"Draw Circle", "./gfx/ico_draw_circle.png", "Draw a circular outline"},
+		{"Fill Circle", "./gfx/ico_fill_circle.png", "Draw a filled circle"},
+		{"Flood Fill", "./gfx/ico_draw_fill.png", "Flood fill draw"},
+	});
+}
+
+void cLayer_Boolean::SetColourTrue(const olc::Pixel& col)
 {
 	m_colTrue = col;
 }
 
-olc::colour cLayer_Boolean::GetColourTrue() const
+olc::Pixel cLayer_Boolean::GetColourTrue() const
 {
 	return m_colTrue;
 }
 
-void cLayer_Boolean::SetColourFalse(const olc::colour& col)
+void cLayer_Boolean::SetColourFalse(const olc::Pixel& col)
 {
 	m_colFalse = col;
 }
 
-olc::colour cLayer_Boolean::GetColourFalse() const
+olc::Pixel cLayer_Boolean::GetColourFalse() const
 {
 	return m_colFalse;
 }

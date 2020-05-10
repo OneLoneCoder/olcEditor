@@ -70,7 +70,7 @@ void cTileSelection::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, c
 		olc::vf2d fTile = { float(tile.x), float(tile.y) };
 		if (fTile.x >= vWorldTL.x && fTile.x < vWorldBR.x && fTile.y >= vWorldTL.y && fTile.y < vWorldBR.y)
 		{
-			gfx.FillRect(fTile, { 1.0f, 1.0f }, { 0,0,0,0.5f });
+			gfx.FillRect(fTile, { 1.0f, 1.0f }, olc::PixelF(0,0,0,0.5f));
 		}
 	}
 }

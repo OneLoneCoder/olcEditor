@@ -86,6 +86,10 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_btnTileFloodFill->SetBitmap( wxBitmap( wxT("gfx/ico_draw_fill.png"), wxBITMAP_TYPE_ANY ) );
 	bSizer7->Add( m_btnTileFloodFill, 0, wxALL, 5 );
 
+	m_checkBox1 = new wxCheckBox( m_toolsBoolean, wxID_ANY, wxT("Contiguous"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBox1->SetValue(true);
+	bSizer7->Add( m_checkBox1, 0, wxALL, 5 );
+
 
 	m_toolsBoolean->SetSizer( bSizer7 );
 	m_toolsBoolean->Layout();
@@ -153,7 +157,31 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_staticline3 = new wxStaticLine( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer3->Add( m_staticline3, 0, wxEXPAND | wxALL, 5 );
 
-	m_nbPalette = new wxNotebook( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_nbPalette = new wxNotebook( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP );
+	m_panel6 = new wxPanel( m_nbPalette, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer8;
+	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_bpButton17 = new wxBitmapButton( m_panel6, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton17->SetBitmap( wxBitmap( wxT("gfx/ico_boolean_true.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer8->Add( m_bpButton17, 0, wxALL, 5 );
+
+	m_bpButton18 = new wxBitmapButton( m_panel6, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton18->SetBitmap( wxBitmap( wxT("gfx/ico_boolean_false.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer8->Add( m_bpButton18, 0, wxALL, 5 );
+
+	m_bpButton19 = new wxBitmapButton( m_panel6, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton19->SetBitmap( wxBitmap( wxT("gfx/ico_boolean_xor.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer8->Add( m_bpButton19, 0, wxALL, 5 );
+
+
+	m_panel6->SetSizer( bSizer8 );
+	m_panel6->Layout();
+	bSizer8->Fit( m_panel6 );
+	m_nbPalette->AddPage( m_panel6, wxT("Boolean Palette"), false );
 
 	bSizer3->Add( m_nbPalette, 1, wxEXPAND | wxALL, 5 );
 
@@ -214,5 +242,155 @@ MainFrameBase::~MainFrameBase()
 	m_btnTileDrawCircle->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileDrawCircle ), NULL, this );
 	m_btnTileFillCircle->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFillCircle ), NULL, this );
 	m_btnTileFloodFill->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFloodFill ), NULL, this );
+
+}
+
+ImageResourceEditorBase::ImageResourceEditorBase( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* bSizer9;
+	bSizer9 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxBoxSizer* bSizer10;
+	bSizer10 = new wxBoxSizer( wxVERTICAL );
+
+	wxStaticBoxSizer* sbSizer4;
+	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Friendly Name:") ), wxVERTICAL );
+
+	m_textCtrl1 = new wxTextCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer4->Add( m_textCtrl1, 0, wxALL|wxEXPAND, 5 );
+
+
+	bSizer10->Add( sbSizer4, 0, wxALL|wxEXPAND, 5 );
+
+	wxStaticBoxSizer* sbSizer2;
+	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Image File:") ), wxVERTICAL );
+
+	m_filePicker1 = new wxFilePickerCtrl( sbSizer2->GetStaticBox(), wxID_ANY, wxEmptyString, wxT("Select an image source"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST|wxFLP_OPEN );
+	sbSizer2->Add( m_filePicker1, 0, wxALL|wxEXPAND, 5 );
+
+
+	bSizer10->Add( sbSizer2, 0, wxEXPAND|wxALL, 5 );
+
+	wxStaticBoxSizer* sbSizer3;
+	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Grid Properties:") ), wxHORIZONTAL );
+
+	wxFlexGridSizer* fgSizer1;
+	fgSizer1 = new wxFlexGridSizer( 0, 5, 0, 0 );
+	fgSizer1->AddGrowableCol( 1 );
+	fgSizer1->AddGrowableCol( 3 );
+	fgSizer1->SetFlexibleDirection( wxHORIZONTAL );
+	fgSizer1->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	m_staticText7 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Tile Size:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7->Wrap( -1 );
+	fgSizer1->Add( m_staticText7, 0, wxALL, 5 );
+
+	m_staticText1 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Width:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1->Wrap( -1 );
+	fgSizer1->Add( m_staticText1, 0, wxALL, 5 );
+
+	m_tileWidth = new wxSpinCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 4096, 16 );
+	fgSizer1->Add( m_tileWidth, 0, wxALL, 5 );
+
+	m_staticText2 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Height:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText2->Wrap( -1 );
+	fgSizer1->Add( m_staticText2, 0, wxALL, 5 );
+
+	m_tileHeight = new wxSpinCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 4096, 16 );
+	fgSizer1->Add( m_tileHeight, 0, wxALL, 5 );
+
+	m_staticText8 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Offset:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText8->Wrap( -1 );
+	fgSizer1->Add( m_staticText8, 0, wxALL, 5 );
+
+	m_staticText11 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Left:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+	m_staticText11->Wrap( -1 );
+	fgSizer1->Add( m_staticText11, 1, wxALL, 5 );
+
+	m_offsetLeft = new wxSpinCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 4096, 0 );
+	fgSizer1->Add( m_offsetLeft, 1, wxALL, 5 );
+
+	m_staticText21 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Top:"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+	m_staticText21->Wrap( -1 );
+	fgSizer1->Add( m_staticText21, 1, wxALL, 5 );
+
+	m_offsetTop = new wxSpinCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 4096, 0 );
+	fgSizer1->Add( m_offsetTop, 1, wxALL, 5 );
+
+	m_staticText9 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Spacing:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText9->Wrap( -1 );
+	fgSizer1->Add( m_staticText9, 0, wxALL, 5 );
+
+	m_staticText10 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Horizontal:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText10->Wrap( -1 );
+	fgSizer1->Add( m_staticText10, 0, wxALL, 5 );
+
+	m_spaceHorizontal = new wxSpinCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 4096, 0 );
+	fgSizer1->Add( m_spaceHorizontal, 0, wxALL, 5 );
+
+	m_staticText111 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Vertical:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText111->Wrap( -1 );
+	fgSizer1->Add( m_staticText111, 0, wxALL, 5 );
+
+	m_spaceVertical = new wxSpinCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 4096, 0 );
+	fgSizer1->Add( m_spaceVertical, 0, wxALL, 5 );
+
+
+	sbSizer3->Add( fgSizer1, 1, wxEXPAND, 5 );
+
+
+	bSizer10->Add( sbSizer3, 0, wxEXPAND|wxALL, 5 );
+
+
+	bSizer10->Add( 0, 0, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bSizer11;
+	bSizer11 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_button1 = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer11->Add( m_button1, 0, wxALL, 5 );
+
+	m_button2 = new wxButton( this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer11->Add( m_button2, 0, wxALL, 5 );
+
+
+	bSizer10->Add( bSizer11, 0, wxEXPAND, 5 );
+
+
+	bSizer9->Add( bSizer10, 1, wxEXPAND, 5 );
+
+	m_imageSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Preview:") ), wxVERTICAL );
+
+
+	bSizer9->Add( m_imageSizer, 1, wxEXPAND|wxALL, 5 );
+
+
+	this->SetSizer( bSizer9 );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+
+	// Connect Events
+	m_filePicker1->Connect( wxEVT_COMMAND_FILEPICKER_CHANGED, wxFileDirPickerEventHandler( ImageResourceEditorBase::OnFileSourceChanged ), NULL, this );
+	m_tileWidth->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_tileHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_offsetLeft->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_offsetTop->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_spaceHorizontal->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_spaceVertical->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+}
+
+ImageResourceEditorBase::~ImageResourceEditorBase()
+{
+	// Disconnect Events
+	m_filePicker1->Disconnect( wxEVT_COMMAND_FILEPICKER_CHANGED, wxFileDirPickerEventHandler( ImageResourceEditorBase::OnFileSourceChanged ), NULL, this );
+	m_tileWidth->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_tileHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_offsetLeft->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_offsetTop->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_spaceHorizontal->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_spaceVertical->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 
 }

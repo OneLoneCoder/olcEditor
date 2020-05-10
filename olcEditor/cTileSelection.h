@@ -9,7 +9,7 @@ namespace std
 	{
 		size_t operator()(const olc::vi2d& obj) const
 		{
-			return hash<uint64_t>()(size_t(obj.y) << 32 | size_t(obj.x));
+			return hash<uint64_t>()(uint64_t(obj.y) << 32 | uint64_t(obj.x));
 		}
 	};
 }

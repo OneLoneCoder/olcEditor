@@ -149,13 +149,20 @@
     <ClCompile Include="BaseGUI.cpp" />
     <ClCompile Include="cApp.cpp" />
     <ClCompile Include="cArea.cpp" />
+    <ClCompile Include="cImageResource.cpp" />
+    <ClCompile Include="cImageResourceEditor.cpp" />
     <ClCompile Include="cLayer.cpp" />
+    <ClCompile Include="cLayerHandler.cpp" />
     <ClCompile Include="cLayer_Boolean.cpp" />
     <ClCompile Include="cLayer_Tile.cpp" />
     <ClCompile Include="cMainFrame.cpp" />
+    <ClCompile Include="cMasterContext.cpp" />
+    <ClCompile Include="common.cpp" />
+    <ClCompile Include="cPanAndZoomRenderer.cpp" />
     <ClCompile Include="cPrimaryRenderer.cpp" />
     <ClCompile Include="cProject.cpp" />
     <ClCompile Include="cTiledLayer.cpp" />
+    <ClCompile Include="cTiledResourceViewer.cpp" />
     <ClCompile Include="cTileSelection.cpp" />
     <ClCompile Include="RenderToolkit.cpp" />
   </ItemGroup>
@@ -163,14 +170,20 @@
     <ClInclude Include="BaseGUI.h" />
     <ClInclude Include="cApp.h" />
     <ClInclude Include="cArea.h" />
+    <ClInclude Include="cImageResource.h" />
+    <ClInclude Include="cImageResourceEditor.h" />
     <ClInclude Include="cLayer.h" />
+    <ClInclude Include="cLayerHandler.h" />
     <ClInclude Include="cLayer_Boolean.h" />
     <ClInclude Include="cLayer_Tile.h" />
     <ClInclude Include="cMainFrame.h" />
+    <ClInclude Include="cMasterContext.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="cPanAndZoomRenderer.h" />
     <ClInclude Include="cPrimaryRenderer.h" />
     <ClInclude Include="cProject.h" />
     <ClInclude Include="cTiledLayer.h" />
+    <ClInclude Include="cTiledResourceViewer.h" />
     <ClInclude Include="cTileSelection.h" />
     <ClInclude Include="RenderToolkit.h" />
   </ItemGroup>

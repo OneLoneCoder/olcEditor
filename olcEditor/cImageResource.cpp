@@ -1,0 +1,63 @@
+#include "cImageResource.h"
+
+cImageResource::cImageResource(cMasterContext* glContext)
+{
+	m_gl = glContext;
+}
+
+cImageResource::~cImageResource()
+{
+	m_gl->DeleteTexture(m_nHardwareID);
+}
+
+bool cImageResource::SetImage(const std::string& sFilename)
+{
+	// Erase old image
+	m_gl->DeleteTexture(m_nHardwareID);
+	m_pSprite.reset();
+
+	// Load New Image
+	m_pSprite = std::make_unique<olc::Sprite>(sFilename);
+	m_sFilePath = sFilename;
+
+	// Create GPU Texture
+	m_nHardwareID = m_gl->CreateTexture();
+	m_gl->UpdateTexture(m_nHardwareID, m_pSprite.get());	
+	return false;
+}
+
+void cImageResource::UseImage()
+{
+	m_gl->UseTexture(m_nHardwareID);
+}
+
+void cImageResource::Update()
+{
+	m_gl->UpdateTexture(m_nHardwareID, m_pSprite.get());
+}
+
+const std::string& cImageResource::GetFilePath() const
+{
+	return m_sFilePath;
+}
+
+const std::string& cImageResource::GetFriendlyName() const
+{
+	return m_sFriendlyName;
+}
+
+uint32_t cImageResource::GetHardwareID() const
+{
+	return m_nHardwareID;
+}
+
+uint32_t cImageResource::GetProjectID() const
+{
+	return m_nProjectID;
+}
+
+olc::Sprite* cImageResource::GetSprite() const
+{
+	return m_pSprite.get();
+}
+

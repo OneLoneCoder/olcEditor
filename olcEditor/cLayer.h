@@ -24,6 +24,13 @@ enum class ContentType
 };
 
 
+struct sToolBarButton
+{	
+	std::string sIconPath;
+	std::string sButtonText;
+	std::string sToolTipText;
+};
+
 
 class cLayer
 {
@@ -55,6 +62,9 @@ public:
 
 
 	virtual void RenderSelf(RenderToolkit &gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR);
+
+	virtual const std::string GetLayerTypeName() const;
+	virtual const std::vector<sToolBarButton> GetToolBarButtons() const;
 
 protected:
 	std::string m_sName;

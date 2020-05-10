@@ -4,9 +4,12 @@
 
 #include "BaseGUI.h"
 
+#include "cMasterContext.h"
 #include "cPrimaryRenderer.h"
 #include "cArea.h"
 #include "cTileSelection.h"
+#include "cImageResourceEditor.h"
+#include "cTiledResourceViewer.h"
 
 class cMainFrame : public MainFrameBase
 {
@@ -25,6 +28,12 @@ protected:
 	DrawingTool m_drawTool = DrawingTool::TileSelectRegion;
 	olc::vi2d m_vTileRegionTL = { 0,0 };
 	olc::vi2d m_vTileRegionBR = { 0,0 };
+
+	std::vector<std::shared_ptr<cImageResource>> m_vecImageResources;
+
+	cMasterContext* m_glMasterContext = nullptr;
+	wxGLContext* m_glContext = nullptr;
+	
 
 protected:
 	void OnEditorMouseMove(cEditorMouseEvent& evt);

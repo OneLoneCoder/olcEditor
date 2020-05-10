@@ -2,13 +2,20 @@
 
 cMainFrame::cMainFrame() : MainFrameBase(nullptr)
 {
+	// Create Master Context, then hide it - this is a wxWidgets peculiarity
+	// as it requires a window in order to construct the context
+	m_glMasterContext = new cMasterContext(this);
+	m_glMasterContext->Hide();
+	m_glContext = m_glMasterContext->GetContext();
+
+
 	area = std::make_shared<cArea>();
 	auto layer = std::make_shared<cLayer_Boolean>();
 	layer->SetLayerSize({ 64, 64 });
 	area->m_listLayers.push_back(layer);
 	m_layerSelected = area->m_listLayers.front();
 
-	m_render = new cPrimaryRenderer(m_renderpanel);
+	m_render = new cPrimaryRenderer(m_renderpanel, m_glContext);
 	m_rendersizer->Add(m_render, 1, wxEXPAND, 5);
 	m_rendersizer->Layout();
 
@@ -22,11 +29,22 @@ cMainFrame::cMainFrame() : MainFrameBase(nullptr)
 
 	m_drawTool = DrawingTool::TileDrawSingle;
 
+	// Load layer "Plug-Ins"
+	cLayer_Boolean a;
+	std::vector<sToolBarButton> buttons = a.GetToolBarButtons();
+
+	auto m_image = std::make_shared<cImageResource>(m_glMasterContext);
+	m_image->SetImage("C:/Users/drwba/Desktop/BreakOutTutorialPics/tut_tiles.png");
+	m_vecImageResources.push_back(m_image);
+
 	this->Layout();
 
 	Connect(olcEVT_Editor_MouseMove, EditorMouseMoveHandler(cMainFrame::OnEditorMouseMove));
 	Connect(olcEVT_Editor_MouseLeftUp, EditorMouseLeftUpHandler(cMainFrame::OnEditorMouseLeftUp));
 	Connect(olcEVT_Editor_MouseLeftDown, EditorMouseLeftDownHandler(cMainFrame::OnEditorMouseLeftDown));
+
+	
+
 }
 
 cMainFrame::~cMainFrame()
@@ -152,7 +170,9 @@ void cMainFrame::OnButtonSelectRegion(wxCommandEvent& evt)
 
 void cMainFrame::OnButtonSelectMove(wxCommandEvent& evt)
 {
-
+	
+	cImageResourceEditor dlg(this, m_glMasterContext, m_vecImageResources[0]);
+	dlg.ShowModal();
 }
 
 void cMainFrame::OnButtonSelectFill(wxCommandEvent& evt)

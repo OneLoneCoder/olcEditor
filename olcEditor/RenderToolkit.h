@@ -21,9 +21,10 @@ public:
 	olc::vf2d ProjectToView(const olc::vf2d& point);
 
 public:
-	void Clear(const olc::colour& colour);
-	void DrawLine(const olc::vf2d& start, const olc::vf2d& end, const olc::colour col, const float width = 1.0f);
-	void DrawRect(const olc::vf2d& start, const olc::vf2d& size, const olc::colour col, const float width = 1.0f);
-	void FillRect(const olc::vf2d& start, const olc::vf2d& size, const olc::colour col, const float width = 1.0f);
+	void Clear(const olc::Pixel& colour);
+	void DrawLine(const olc::vf2d& start, const olc::vf2d& end, const olc::Pixel col, const float width = 1.0f);
+	void DrawRect(const olc::vf2d& start, const olc::vf2d& size, const olc::Pixel col, const float width = 1.0f);
+	void FillRect(const olc::vf2d& start, const olc::vf2d& size, const olc::Pixel col, const float width = 1.0f);
+	void DrawImage(int nResourceID, const olc::vf2d& start, const olc::vf2d& size, const olc::Pixel col = { 255,255,255 });
 };
 

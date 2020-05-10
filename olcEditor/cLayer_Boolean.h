@@ -10,16 +10,19 @@ public:
 	~cLayer_Boolean();
 
 public:
-	void SetColourTrue(const olc::colour& col);
-	olc::colour GetColourTrue() const;
+	void SetColourTrue(const olc::Pixel& col);
+	olc::Pixel GetColourTrue() const;
 
-	void SetColourFalse(const olc::colour& col);
-	olc::colour GetColourFalse() const;
+	void SetColourFalse(const olc::Pixel& col);
+	olc::Pixel GetColourFalse() const;
 
 	void RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR) override;
 
+	const std::string GetLayerTypeName() const override;
+	const std::vector<sToolBarButton> GetToolBarButtons() const override;
+
 protected:
-	olc::colour m_colTrue = { 0, 1, 0 };
-	olc::colour m_colFalse = { 1, 0, 0 };
+	olc::Pixel m_colTrue = { 0, 255, 0 };
+	olc::Pixel m_colFalse = { 255, 0, 0 };
 };
 
