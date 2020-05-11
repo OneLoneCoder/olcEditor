@@ -7,12 +7,10 @@
 #include <memory>
 #include <algorithm>
 #include <unordered_set>
+#include <cstring>
 
 namespace olc
 {
-
-	
-
 
 	template <class T>
 	struct v2d_generic
