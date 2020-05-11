@@ -123,7 +123,7 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 			m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
 			m_render->EnableRegionMode(true);
 			if(!evt.GetControlHeld())
-				m_selectTile->None(layer);			
+				m_selectTile->Nothing(layer);
 		}
 
 		if (m_drawTool == DrawingTool::TileDrawSingle)
@@ -159,7 +159,7 @@ void cMainFrame::OnButtonSelectRegion(wxCommandEvent& evt)
 	{
 		if (m_layerSelected->GetContentType() == ContentType::Tiles)
 		{
-			m_selectTile->None(std::dynamic_pointer_cast<cTiledLayer>(m_layerSelected));
+			m_selectTile->Nothing(std::dynamic_pointer_cast<cTiledLayer>(m_layerSelected));
 		}
 	}
 

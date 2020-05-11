@@ -14,6 +14,8 @@ namespace std
 	};
 }
 
+#undef None
+
 class cTileSelection
 {
 public:
@@ -21,7 +23,7 @@ public:
 
 public:
 	void All(std::shared_ptr<cTiledLayer> layer);
-	void None(std::shared_ptr<cTiledLayer> layer);
+	void Nothing(std::shared_ptr<cTiledLayer> layer);
 	void Invert(std::shared_ptr<cTiledLayer> layer);
 	void Select(std::shared_ptr<cTiledLayer> layer, const olc::vi2d& pos);
 	void Deselect(std::shared_ptr<cTiledLayer> layer, const olc::vi2d& pos);

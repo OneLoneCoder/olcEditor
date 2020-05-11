@@ -18,7 +18,7 @@ void cTileSelection::All(std::shared_ptr<cTiledLayer> layer)
 	}
 }
 
-void cTileSelection::None(std::shared_ptr<cTiledLayer> layer)
+void cTileSelection::Nothing(std::shared_ptr<cTiledLayer> layer)
 {
 	setSelected.clear();
 	setNotSelected.clear();
