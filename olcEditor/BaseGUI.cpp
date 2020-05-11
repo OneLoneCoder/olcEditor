@@ -105,12 +105,17 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_splitter = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_LIVE_UPDATE );
 	m_splitter->SetSashGravity( 0 );
 	m_splitter->Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrameBase::m_splitterOnIdle ), NULL, this );
+	m_splitter->SetMinimumPaneSize( 300 );
 
 	m_propspanel = new wxPanel( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxVERTICAL );
 
-	m_panel1 = new wxPanel( m_propspanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_splitter2 = new wxSplitterWindow( m_propspanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3DSASH|wxSP_BORDER|wxSP_LIVE_UPDATE );
+	m_splitter2->Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrameBase::m_splitter2OnIdle ), NULL, this );
+	m_splitter2->SetMinimumPaneSize( 200 );
+
+	m_panel1 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 
@@ -151,13 +156,18 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_staticline2 = new wxStaticLine( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizer3->Add( m_staticline2, 0, wxEXPAND | wxALL, 5 );
 
-	m_propLayer = new wxPropertyGrid(m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxPG_DEFAULT_STYLE);
-	bSizer3->Add( m_propLayer, 0, wxALL|wxEXPAND, 5 );
 
-	m_staticline3 = new wxStaticLine( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	bSizer3->Add( m_staticline3, 0, wxEXPAND | wxALL, 5 );
+	m_panel1->SetSizer( bSizer3 );
+	m_panel1->Layout();
+	bSizer3->Fit( m_panel1 );
+	m_panel8 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxVERTICAL );
 
-	m_nbPalette = new wxNotebook( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP );
+	m_staticline4 = new wxStaticLine( m_panel8, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer12->Add( m_staticline4, 0, wxEXPAND | wxALL, 5 );
+
+	m_nbPalette = new wxNotebook( m_panel8, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP );
 	m_panel6 = new wxPanel( m_nbPalette, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer8;
 	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
@@ -181,15 +191,52 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_panel6->SetSizer( bSizer8 );
 	m_panel6->Layout();
 	bSizer8->Fit( m_panel6 );
-	m_nbPalette->AddPage( m_panel6, wxT("Boolean Palette"), false );
+	m_nbPalette->AddPage( m_panel6, wxT("Boolean"), false );
+	m_panelImages = new wxPanel( m_nbPalette, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_sizerImagePreview = new wxBoxSizer( wxVERTICAL );
 
-	bSizer3->Add( m_nbPalette, 1, wxEXPAND | wxALL, 5 );
+	wxBoxSizer* bSizer15;
+	bSizer15 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_lbImages = new wxListBox( m_panelImages, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	bSizer15->Add( m_lbImages, 1, wxEXPAND|wxALL, 5 );
+
+	wxBoxSizer* bSizer16;
+	bSizer16 = new wxBoxSizer( wxVERTICAL );
+
+	m_btnAddImage = new wxBitmapButton( m_panelImages, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnAddImage->SetBitmap( wxBitmap( wxT("gfx/ico_layer_add.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer16->Add( m_btnAddImage, 0, wxALL, 5 );
+
+	m_btnEraseImage = new wxBitmapButton( m_panelImages, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnEraseImage->SetBitmap( wxBitmap( wxT("gfx/ico_layer_erase.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer16->Add( m_btnEraseImage, 0, wxALL, 5 );
 
 
-	m_panel1->SetSizer( bSizer3 );
-	m_panel1->Layout();
-	bSizer3->Fit( m_panel1 );
-	bSizer2->Add( m_panel1, 1, wxEXPAND | wxALL, 5 );
+	bSizer15->Add( bSizer16, 0, 0, 5 );
+
+	m_btnEditImageResource = new wxButton( m_panelImages, wxID_ANY, wxT("Edit"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
+	bSizer15->Add( m_btnEditImageResource, 0, wxALL|wxEXPAND, 5 );
+
+
+	m_sizerImagePreview->Add( bSizer15, 0, wxEXPAND, 5 );
+
+
+	m_panelImages->SetSizer( m_sizerImagePreview );
+	m_panelImages->Layout();
+	m_sizerImagePreview->Fit( m_panelImages );
+	m_nbPalette->AddPage( m_panelImages, wxT("Images"), true );
+
+	bSizer12->Add( m_nbPalette, 1, wxALL|wxEXPAND, 5 );
+
+
+	m_panel8->SetSizer( bSizer12 );
+	m_panel8->Layout();
+	bSizer12->Fit( m_panel8 );
+	m_splitter2->SplitHorizontally( m_panel1, m_panel8, 200 );
+	bSizer2->Add( m_splitter2, 1, wxEXPAND, 5 );
 
 
 	m_propspanel->SetSizer( bSizer2 );
@@ -226,6 +273,10 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_btnTileDrawCircle->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileDrawCircle ), NULL, this );
 	m_btnTileFillCircle->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFillCircle ), NULL, this );
 	m_btnTileFloodFill->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFloodFill ), NULL, this );
+	m_lbImages->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnImageSelectChange ), NULL, this );
+	m_btnAddImage->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnAddImage ), NULL, this );
+	m_btnEraseImage->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEraseImage ), NULL, this );
+	m_btnEditImageResource->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEditImage ), NULL, this );
 }
 
 MainFrameBase::~MainFrameBase()
@@ -242,6 +293,10 @@ MainFrameBase::~MainFrameBase()
 	m_btnTileDrawCircle->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileDrawCircle ), NULL, this );
 	m_btnTileFillCircle->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFillCircle ), NULL, this );
 	m_btnTileFloodFill->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFloodFill ), NULL, this );
+	m_lbImages->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnImageSelectChange ), NULL, this );
+	m_btnAddImage->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnAddImage ), NULL, this );
+	m_btnEraseImage->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEraseImage ), NULL, this );
+	m_btnEditImageResource->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEditImage ), NULL, this );
 
 }
 
@@ -258,8 +313,8 @@ ImageResourceEditorBase::ImageResourceEditorBase( wxWindow* parent, wxWindowID i
 	wxStaticBoxSizer* sbSizer4;
 	sbSizer4 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Friendly Name:") ), wxVERTICAL );
 
-	m_textCtrl1 = new wxTextCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	sbSizer4->Add( m_textCtrl1, 0, wxALL|wxEXPAND, 5 );
+	m_txtFriendlyName = new wxTextCtrl( sbSizer4->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	sbSizer4->Add( m_txtFriendlyName, 0, wxALL|wxEXPAND, 5 );
 
 
 	bSizer10->Add( sbSizer4, 0, wxALL|wxEXPAND, 5 );
@@ -267,8 +322,8 @@ ImageResourceEditorBase::ImageResourceEditorBase( wxWindow* parent, wxWindowID i
 	wxStaticBoxSizer* sbSizer2;
 	sbSizer2 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Image File:") ), wxVERTICAL );
 
-	m_filePicker1 = new wxFilePickerCtrl( sbSizer2->GetStaticBox(), wxID_ANY, wxEmptyString, wxT("Select an image source"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST|wxFLP_OPEN );
-	sbSizer2->Add( m_filePicker1, 0, wxALL|wxEXPAND, 5 );
+	m_txtFileName = new wxFilePickerCtrl( sbSizer2->GetStaticBox(), wxID_ANY, wxEmptyString, wxT("Select an image source"), wxT("*.*"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE|wxFLP_FILE_MUST_EXIST|wxFLP_OPEN );
+	sbSizer2->Add( m_txtFileName, 0, wxALL|wxEXPAND, 5 );
 
 
 	bSizer10->Add( sbSizer2, 0, wxEXPAND|wxALL, 5 );
@@ -373,24 +428,28 @@ ImageResourceEditorBase::ImageResourceEditorBase( wxWindow* parent, wxWindowID i
 	this->Centre( wxBOTH );
 
 	// Connect Events
-	m_filePicker1->Connect( wxEVT_COMMAND_FILEPICKER_CHANGED, wxFileDirPickerEventHandler( ImageResourceEditorBase::OnFileSourceChanged ), NULL, this );
+	m_txtFileName->Connect( wxEVT_COMMAND_FILEPICKER_CHANGED, wxFileDirPickerEventHandler( ImageResourceEditorBase::OnFileSourceChanged ), NULL, this );
 	m_tileWidth->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 	m_tileHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 	m_offsetLeft->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 	m_offsetTop->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 	m_spaceHorizontal->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 	m_spaceVertical->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_button1->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ImageResourceEditorBase::OnButtonOK ), NULL, this );
+	m_button2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ImageResourceEditorBase::OnButtonCancel ), NULL, this );
 }
 
 ImageResourceEditorBase::~ImageResourceEditorBase()
 {
 	// Disconnect Events
-	m_filePicker1->Disconnect( wxEVT_COMMAND_FILEPICKER_CHANGED, wxFileDirPickerEventHandler( ImageResourceEditorBase::OnFileSourceChanged ), NULL, this );
+	m_txtFileName->Disconnect( wxEVT_COMMAND_FILEPICKER_CHANGED, wxFileDirPickerEventHandler( ImageResourceEditorBase::OnFileSourceChanged ), NULL, this );
 	m_tileWidth->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 	m_tileHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 	m_offsetLeft->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 	m_offsetTop->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 	m_spaceHorizontal->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
 	m_spaceVertical->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( ImageResourceEditorBase::OnGridUpdate ), NULL, this );
+	m_button1->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ImageResourceEditorBase::OnButtonOK ), NULL, this );
+	m_button2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ImageResourceEditorBase::OnButtonCancel ), NULL, this );
 
 }

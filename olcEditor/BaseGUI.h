@@ -27,8 +27,7 @@
 #include <wx/panel.h>
 #include <wx/notebook.h>
 #include <wx/listctrl.h>
-#include <wx/propgrid/propgrid.h>
-#include <wx/propgrid/advprops.h>
+#include <wx/listbox.h>
 #include <wx/splitter.h>
 #include <wx/frame.h>
 #include <wx/textctrl.h>
@@ -71,6 +70,7 @@ class MainFrameBase : public wxFrame
 		wxBoxSizer* m_mainsizer;
 		wxSplitterWindow* m_splitter;
 		wxPanel* m_propspanel;
+		wxSplitterWindow* m_splitter2;
 		wxPanel* m_panel1;
 		wxListCtrl* m_listLayers;
 		wxBitmapButton* m_btnAddLayer;
@@ -79,13 +79,19 @@ class MainFrameBase : public wxFrame
 		wxBitmapButton* m_btnLayerMoveUp;
 		wxBitmapButton* m_btnLayerMoveDown;
 		wxStaticLine* m_staticline2;
-		wxPropertyGrid* m_propLayer;
-		wxStaticLine* m_staticline3;
+		wxPanel* m_panel8;
+		wxStaticLine* m_staticline4;
 		wxNotebook* m_nbPalette;
 		wxPanel* m_panel6;
 		wxBitmapButton* m_bpButton17;
 		wxBitmapButton* m_bpButton18;
 		wxBitmapButton* m_bpButton19;
+		wxPanel* m_panelImages;
+		wxBoxSizer* m_sizerImagePreview;
+		wxListBox* m_lbImages;
+		wxBitmapButton* m_btnAddImage;
+		wxBitmapButton* m_btnEraseImage;
+		wxButton* m_btnEditImageResource;
 		wxPanel* m_renderpanel;
 		wxBoxSizer* m_rendersizer;
 
@@ -101,6 +107,10 @@ class MainFrameBase : public wxFrame
 		virtual void OnButtonTileDrawCircle( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonTileFillCircle( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonTileFloodFill( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnImageSelectChange( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddImage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEraseImage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditImage( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
@@ -115,6 +125,12 @@ class MainFrameBase : public wxFrame
 			m_splitter->Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrameBase::m_splitterOnIdle ), NULL, this );
 		}
 
+		void m_splitter2OnIdle( wxIdleEvent& )
+		{
+			m_splitter2->SetSashPosition( 200 );
+			m_splitter2->Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrameBase::m_splitter2OnIdle ), NULL, this );
+		}
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -125,8 +141,8 @@ class ImageResourceEditorBase : public wxDialog
 	private:
 
 	protected:
-		wxTextCtrl* m_textCtrl1;
-		wxFilePickerCtrl* m_filePicker1;
+		wxTextCtrl* m_txtFriendlyName;
+		wxFilePickerCtrl* m_txtFileName;
 		wxStaticText* m_staticText7;
 		wxStaticText* m_staticText1;
 		wxSpinCtrl* m_tileWidth;
@@ -149,6 +165,8 @@ class ImageResourceEditorBase : public wxDialog
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnFileSourceChanged( wxFileDirPickerEvent& event ) { event.Skip(); }
 		virtual void OnGridUpdate( wxSpinEvent& event ) { event.Skip(); }
+		virtual void OnButtonOK( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonCancel( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

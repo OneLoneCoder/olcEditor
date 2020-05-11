@@ -29,13 +29,11 @@ cMainFrame::cMainFrame() : MainFrameBase(nullptr)
 
 	m_drawTool = DrawingTool::TileDrawSingle;
 
-	// Load layer "Plug-Ins"
-	cLayer_Boolean a;
-	std::vector<sToolBarButton> buttons = a.GetToolBarButtons();
 
-	auto m_image = std::make_shared<cImageResource>(m_glMasterContext);
-	m_image->SetImage("C:/Users/drwba/Desktop/BreakOutTutorialPics/tut_tiles.png");
-	m_vecImageResources.push_back(m_image);
+	// Image Palette Preview
+	m_tiledImageViewer = new cTiledResourceViewer(m_panelImages, m_glContext);
+	m_sizerImagePreview->Add(m_tiledImageViewer, 1, wxEXPAND, 5);
+	m_panelImages->Layout();
 
 	this->Layout();
 
@@ -53,6 +51,7 @@ cMainFrame::~cMainFrame()
 	Disconnect(olcEVT_Editor_MouseLeftUp, EditorMouseLeftUpHandler(cMainFrame::OnEditorMouseLeftUp));
 	Disconnect(olcEVT_Editor_MouseLeftDown, EditorMouseLeftDownHandler(cMainFrame::OnEditorMouseLeftDown));
 }
+
 
 void cMainFrame::OnEditorMouseMove(cEditorMouseEvent& evt)
 {
@@ -137,7 +136,6 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 	}
 
 	m_render->Refresh();
-
 }
 
 void cMainFrame::OnButtonSelectClear(wxCommandEvent& evt)
@@ -171,8 +169,7 @@ void cMainFrame::OnButtonSelectRegion(wxCommandEvent& evt)
 void cMainFrame::OnButtonSelectMove(wxCommandEvent& evt)
 {
 	
-	cImageResourceEditor dlg(this, m_glMasterContext, m_vecImageResources[0]);
-	dlg.ShowModal();
+	
 }
 
 void cMainFrame::OnButtonSelectFill(wxCommandEvent& evt)
@@ -213,4 +210,59 @@ void cMainFrame::OnButtonTileFillCircle(wxCommandEvent& evt)
 void cMainFrame::OnButtonTileFloodFill(wxCommandEvent& evt)
 {
 
+}
+
+void cMainFrame::UpdateImageList()
+{
+	// Clear the list box
+	m_lbImages->Clear();
+
+	// Add friendly names
+	for (auto& i : m_vecImageResources)
+		m_lbImages->AppendString(i->GetFriendlyName());
+
+}
+
+
+void cMainFrame::OnAddImage(wxCommandEvent& evt)
+{
+	// Create new Image Resource
+	std::shared_ptr<cImageResource> newImage = std::make_shared<cImageResource>(m_glMasterContext);
+
+	// Pop-up Resource Editor
+	cImageResourceEditor dlg(this, m_glMasterContext, newImage);
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		// Resource accepted, add to list
+		m_vecImageResources.push_back(newImage);
+
+		// Refresh the image list
+		UpdateImageList();
+	}
+}
+
+void cMainFrame::OnEraseImage(wxCommandEvent& evt)
+{
+	
+}
+
+void cMainFrame::OnEditImage(wxCommandEvent& evt)
+{	
+	int idx = m_lbImages->GetSelection();
+	if (idx >= 0)
+	{
+		cImageResourceEditor dlg(this, m_glMasterContext, m_vecImageResources[idx]);
+		if (dlg.ShowModal() == wxID_OK)
+		{
+			// Refresh the image list
+			UpdateImageList();
+			m_lbImages->Select(idx);
+			m_lbImages->EnsureVisible(idx);
+		}
+	}
+}
+
+void cMainFrame::OnImageSelectChange(wxCommandEvent& evt)
+{
+	m_tiledImageViewer->SetImageResource(m_vecImageResources[evt.GetSelection()]);
 }

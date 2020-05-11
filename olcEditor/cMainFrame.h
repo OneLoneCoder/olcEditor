@@ -33,6 +33,11 @@ protected:
 
 	cMasterContext* m_glMasterContext = nullptr;
 	wxGLContext* m_glContext = nullptr;
+
+	cTiledResourceViewer* m_tiledImageViewer;
+
+protected:
+	void UpdateImageList();
 	
 
 protected:
@@ -52,5 +57,11 @@ protected:
 	void OnButtonTileDrawCircle(wxCommandEvent& evt) override;
 	void OnButtonTileFillCircle(wxCommandEvent& evt) override;
 	void OnButtonTileFloodFill(wxCommandEvent& evt) override;
+
+	void OnAddImage(wxCommandEvent& evt) override;
+	void OnEraseImage(wxCommandEvent& evt) override;
+	void OnEditImage(wxCommandEvent& evt) override;
+	void OnImageSelectChange(wxCommandEvent& evt) override;
+
 };	
 

@@ -13,6 +13,8 @@ public:
 protected:
 	void OnFileSourceChanged(wxFileDirPickerEvent& evt) override;
 	void OnGridUpdate(wxSpinEvent& evt) override;
+	void OnButtonOK(wxCommandEvent& event) override;
+	void OnButtonCancel(wxCommandEvent& event) override;
 
 private:
 	cTiledResourceViewer* m_image;
