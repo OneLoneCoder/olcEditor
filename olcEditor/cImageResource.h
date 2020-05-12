@@ -4,6 +4,13 @@
 #include "common.h"
 #include "cMasterContext.h"
 
+struct sTileDescription
+{
+    uint32_t nResourceID = 0;
+    olc::vf2d vPosition = { 0,0 };
+    olc::vf2d vSize = { 0,0 };
+};
+
 class cImageResource
 {
 public:
@@ -27,6 +34,8 @@ public:
     uint32_t GetHardwareID() const;
     uint32_t GetProjectID() const;
     olc::Sprite* GetSprite() const;
+
+    sTileDescription GetTileDesc(const olc::vi2d& tile);
    
 private:
     cMasterContext* m_gl = nullptr;
@@ -38,5 +47,7 @@ private:
     olc::vi2d m_vGridOffset;
     olc::vi2d m_vGridSpacing;
     olc::vi2d m_vGridSize = { 16, 16 };
+
+    static uint32_t g_nImageResourceGUID;
 };
 

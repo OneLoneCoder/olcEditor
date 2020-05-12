@@ -87,3 +87,18 @@ void RenderToolkit::DrawImage(int nResourceID, const olc::vf2d& start, const olc
 	glTexCoord2f(1,0); glVertex2f(e.x, s.y);
 	glEnd();
 }
+
+
+void RenderToolkit::DrawSubImage(int nResourceID, const olc::vf2d& pos, const olc::vf2d& size, const olc::vf2d& sourcepos, const olc::vf2d& sourcesize, const olc::Pixel col)
+{
+	olc::vf2d s = ProjectToView(WorldToScreen({ pos.x, pos.y }));
+	olc::vf2d e = ProjectToView(WorldToScreen({ pos.x + size.x, pos.y + size.y }));
+	glBindTexture(GL_TEXTURE_2D, nResourceID);
+	glBegin(GL_QUADS);
+	glColor4ub(col.r, col.g, col.b, col.a);
+	glTexCoord2f(sourcepos.x, sourcepos.y); glVertex2f(s.x, s.y);
+	glTexCoord2f(sourcepos.x, sourcepos.y + sourcesize.y); glVertex2f(s.x, e.y);
+	glTexCoord2f(sourcepos.x + sourcesize.x, sourcepos.y + sourcesize.y); glVertex2f(e.x, e.y);
+	glTexCoord2f(sourcepos.x + sourcesize.x, sourcepos.y); glVertex2f(e.x, s.y);
+	glEnd();
+}

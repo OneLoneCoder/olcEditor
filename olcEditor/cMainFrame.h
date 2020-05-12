@@ -8,8 +8,11 @@
 #include "cPrimaryRenderer.h"
 #include "cArea.h"
 #include "cTileSelection.h"
+#include "cTransientSelection.h"
 #include "cImageResourceEditor.h"
 #include "cTiledResourceViewer.h"
+#include "cLayer_Boolean.h"
+#include "cLayer_Tile.h"
 
 class cMainFrame : public MainFrameBase
 {

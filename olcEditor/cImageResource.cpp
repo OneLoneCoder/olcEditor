@@ -5,6 +5,8 @@ cImageResource::cImageResource(cMasterContext* glContext)
 	m_gl = glContext;
 	m_pSprite = std::make_unique<olc::Sprite>(1, 1);
 	m_sFriendlyName = "Nameless Image";
+	m_nProjectID = g_nImageResourceGUID;
+	g_nImageResourceGUID++;
 }
 
 cImageResource::~cImageResource()
@@ -68,6 +70,24 @@ olc::Sprite* cImageResource::GetSprite() const
 	return m_pSprite.get();
 }
 
+sTileDescription cImageResource::GetTileDesc(const olc::vi2d& tile)
+{
+	olc::vi2d vPixelPos = (tile * (m_vGridSize + m_vGridSpacing)) + m_vGridOffset;
+
+	olc::vf2d vTexturePos;
+	vTexturePos.x = float(vPixelPos.x) / float(m_pSprite->vSize.x);
+	vTexturePos.y = float(vPixelPos.y) / float(m_pSprite->vSize.y);
+	olc::vf2d vTextureSize;
+	vTextureSize.x = float(m_vGridSize.x) / float(m_pSprite->vSize.x);
+	vTextureSize.y = float(m_vGridSize.y) / float(m_pSprite->vSize.y);
+	
+	sTileDescription d;
+	d.nResourceID = m_nProjectID;
+	d.vPosition = vTexturePos;
+	d.vSize = vTextureSize;
+	return d;
+}
+
 void cImageResource::SetGridSize(const olc::vi2d& size)
 {
 	m_vGridSize = size;
@@ -97,3 +117,5 @@ const olc::vi2d& cImageResource::GetGridSpacing() const
 {
 	return m_vGridSpacing;
 }
+
+uint32_t cImageResource::g_nImageResourceGUID = 0;

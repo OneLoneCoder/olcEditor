@@ -26,5 +26,6 @@ public:
 	void DrawRect(const olc::vf2d& start, const olc::vf2d& size, const olc::Pixel col, const float width = 1.0f);
 	void FillRect(const olc::vf2d& start, const olc::vf2d& size, const olc::Pixel col, const float width = 1.0f);
 	void DrawImage(int nResourceID, const olc::vf2d& start, const olc::vf2d& size, const olc::Pixel col = { 255,255,255 });
+	void DrawSubImage(int nResourceID, const olc::vf2d& pos, const olc::vf2d& size, const olc::vf2d& sourcepos, const olc::vf2d& sourcesize, const olc::Pixel col = { 255,255,255 });
 };
 

@@ -121,3 +121,15 @@ namespace olc
 		Pixel* pColData = nullptr;
 	};
 }
+
+namespace std
+{
+	template<>
+	struct hash<olc::vi2d>
+	{
+		size_t operator()(const olc::vi2d& obj) const
+		{
+			return hash<uint64_t>()(uint64_t(obj.y) << 32 | uint64_t(obj.x));
+		}
+	};
+}

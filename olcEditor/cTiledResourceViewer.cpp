@@ -2,6 +2,7 @@
 
 cTiledResourceViewer::cTiledResourceViewer(wxWindow* parent, wxGLContext* gl) : cPanAndZoomRenderer(parent, gl)
 {
+	m_selection.Clear();
 }
 
 cTiledResourceViewer::~cTiledResourceViewer()
@@ -12,6 +13,11 @@ void cTiledResourceViewer::SetImageResource(std::shared_ptr<cImageResource> imag
 {
 	m_image = image;
 	Refresh();
+}
+
+const cTransientSelection& cTiledResourceViewer::GetSelection() const
+{
+	return m_selection;
 }
 
 void cTiledResourceViewer::OnRender()
@@ -34,9 +40,66 @@ void cTiledResourceViewer::OnRender()
 			{
 				for (cell.x = 0; cell.x < vMaxCells.x; cell.x++)
 				{
-					gfx.DrawRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * cell, m_image->GetGridSize(), { 255,255,255 });
+					//gfx.DrawRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * cell, m_image->GetGridSize(), { 255,255,255 });
+
+					if (!m_selection.setSelected.empty())
+					{
+						if(!m_selection.InSelection(cell))
+							gfx.FillRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * cell, m_image->GetGridSize(), { 0,0,0, 64 });
+						else
+							gfx.DrawRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * cell, m_image->GetGridSize(), { 255,255,255 });
+
+					}
+					else
+						gfx.DrawRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * cell, m_image->GetGridSize(), { 255,255,255 });
+
 				}
 			}
+
+			// Draw Selection root
+			if (!m_selection.setSelected.empty())
+				gfx.DrawRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * m_selection.vRoot, m_image->GetGridSize(), { 255,255,0 });
+
+
+			//// Draw Transient Selection
+			//for (auto& s : m_selection.setSelected)
+			//{
+			//	gfx.DrawRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * s, m_image->GetGridSize(), { 255,255,0 });
+			//}
+		}
+	}
+}
+
+void cTiledResourceViewer::OnMouseLeftUp(const olc::vf2d& vWorldPos, const bool bShift, const bool bControl)
+{
+	m_bDragging = false;
+}
+
+void cTiledResourceViewer::OnMouseLeftDown(const olc::vf2d& vWorldPos, const bool bShift, const bool bControl)
+{
+	if (m_image)
+	{		
+		olc::vi2d cell = (vWorldPos - m_image->GetGridOffset()) / (m_image->GetGridSize() + m_image->GetGridSpacing());
+
+		if (!bControl)
+			m_selection.Clear();
+
+		m_selection.Select(cell);
+		m_bDragging = true;
+		m_vStartDrag = cell;
+		Refresh();
+	}
+}
+
+void cTiledResourceViewer::OnMouseMove(const olc::vf2d& vWorldPos, const bool bShift, const bool bControl)
+{
+	if (m_image)
+	{
+		if (m_bDragging)
+		{
+			olc::vi2d cell = (vWorldPos - m_image->GetGridOffset()) / (m_image->GetGridSize() + m_image->GetGridSpacing());
+			m_selection.Region(m_vStartDrag, cell);
+			Refresh();
 		}
 	}
 }

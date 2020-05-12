@@ -28,6 +28,7 @@
     <ClCompile Include="common.cpp" />
     <ClCompile Include="cImageResourceEditor.cpp" />
     <ClCompile Include="cMasterContext.cpp" />
+    <ClCompile Include="cTransientSelection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseGUI.h" />
@@ -57,6 +58,7 @@
     <ClInclude Include="cTiledResourceViewer.h" />
     <ClInclude Include="cImageResourceEditor.h" />
     <ClInclude Include="cMasterContext.h" />
+    <ClInclude Include="cTransientSelection.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="LayerTypes">
