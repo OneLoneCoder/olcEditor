@@ -2,7 +2,7 @@
 
 cImageResourceEditor::cImageResourceEditor(wxWindow* parent, cMasterContext* glContext, std::shared_ptr<cImageResource> image) : ImageResourceEditorBase(parent)
 {
-	m_image = new cTiledResourceViewer(this, glContext->GetContext());
+	m_image = new cTiledResourceViewer(this, glContext->GetContext(), nullptr);
 	m_imageSizer->Add(m_image, 1, wxALL | wxEXPAND, 5);
 
 	m_resource = image;

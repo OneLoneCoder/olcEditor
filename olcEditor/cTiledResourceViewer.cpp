@@ -1,8 +1,9 @@
 #include "cTiledResourceViewer.h"
 
-cTiledResourceViewer::cTiledResourceViewer(wxWindow* parent, wxGLContext* gl) : cPanAndZoomRenderer(parent, gl)
+cTiledResourceViewer::cTiledResourceViewer(wxWindow* parent, wxGLContext* gl, std::shared_ptr<cGridSelection> gridselect) : cPanAndZoomRenderer(parent, gl)
 {
-	m_selection.Clear();
+	m_selection = gridselect;
+	if(m_selection) m_selection->Clear();
 }
 
 cTiledResourceViewer::~cTiledResourceViewer()
@@ -15,10 +16,6 @@ void cTiledResourceViewer::SetImageResource(std::shared_ptr<cImageResource> imag
 	Refresh();
 }
 
-const cTransientSelection& cTiledResourceViewer::GetSelection() const
-{
-	return m_selection;
-}
 
 void cTiledResourceViewer::OnRender()
 {
@@ -42,9 +39,9 @@ void cTiledResourceViewer::OnRender()
 				{
 					//gfx.DrawRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * cell, m_image->GetGridSize(), { 255,255,255 });
 
-					if (!m_selection.setSelected.empty())
+					if (m_selection && !m_selection->setSelected.empty())
 					{
-						if(!m_selection.InSelection(cell))
+						if(!m_selection->InSelection(cell))
 							gfx.FillRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * cell, m_image->GetGridSize(), { 0,0,0, 64 });
 						else
 							gfx.DrawRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * cell, m_image->GetGridSize(), { 255,255,255 });
@@ -57,8 +54,8 @@ void cTiledResourceViewer::OnRender()
 			}
 
 			// Draw Selection root
-			if (!m_selection.setSelected.empty())
-				gfx.DrawRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * m_selection.vRoot, m_image->GetGridSize(), { 255,255,0 });
+			if (m_selection && !m_selection->setSelected.empty())
+				gfx.DrawRect(m_image->GetGridOffset() + (m_image->GetGridSize() + m_image->GetGridSpacing()) * m_selection->vRoot, m_image->GetGridSize(), { 255,255,0 });
 
 
 			//// Draw Transient Selection
@@ -81,10 +78,13 @@ void cTiledResourceViewer::OnMouseLeftDown(const olc::vf2d& vWorldPos, const boo
 	{		
 		olc::vi2d cell = (vWorldPos - m_image->GetGridOffset()) / (m_image->GetGridSize() + m_image->GetGridSpacing());
 
-		if (!bControl)
-			m_selection.Clear();
+		if (m_selection)
+		{
+			if (!bControl)
+				m_selection->Clear();
 
-		m_selection.Select(cell);
+			m_selection->Select(cell);
+		}
 		m_bDragging = true;
 		m_vStartDrag = cell;
 		Refresh();
@@ -98,7 +98,7 @@ void cTiledResourceViewer::OnMouseMove(const olc::vf2d& vWorldPos, const bool bS
 		if (m_bDragging)
 		{
 			olc::vi2d cell = (vWorldPos - m_image->GetGridOffset()) / (m_image->GetGridSize() + m_image->GetGridSpacing());
-			m_selection.Region(m_vStartDrag, cell);
+			if(m_selection) m_selection->Region(m_vStartDrag, cell);
 			Refresh();
 		}
 	}

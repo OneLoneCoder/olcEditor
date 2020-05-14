@@ -86,6 +86,7 @@ void RenderToolkit::DrawImage(int nResourceID, const olc::vf2d& start, const olc
 	glTexCoord2f(1,1); glVertex2f(e.x, e.y);
 	glTexCoord2f(1,0); glVertex2f(e.x, s.y);
 	glEnd();
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
@@ -101,4 +102,5 @@ void RenderToolkit::DrawSubImage(int nResourceID, const olc::vf2d& pos, const ol
 	glTexCoord2f(sourcepos.x + sourcesize.x, sourcepos.y + sourcesize.y); glVertex2f(e.x, e.y);
 	glTexCoord2f(sourcepos.x + sourcesize.x, sourcepos.y); glVertex2f(e.x, s.y);
 	glEnd();
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

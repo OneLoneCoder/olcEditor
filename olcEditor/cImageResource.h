@@ -9,6 +9,7 @@ struct sTileDescription
     uint32_t nResourceID = 0;
     olc::vf2d vPosition = { 0,0 };
     olc::vf2d vSize = { 0,0 };
+    bool exist = false;
 };
 
 class cImageResource

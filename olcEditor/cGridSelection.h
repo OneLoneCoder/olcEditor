@@ -5,10 +5,10 @@
 
 
 
-class cTransientSelection
+class cGridSelection
 {
 public:
-	cTransientSelection();
+	cGridSelection();
 
 public:
 	void Clear();

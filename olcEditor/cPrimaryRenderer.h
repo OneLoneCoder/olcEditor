@@ -6,6 +6,8 @@
 #include "cLayer_Boolean.h"
 #include "RenderToolkit.h"
 #include "cTileSelection.h"
+#include "cGridSelection.h"
+#include "cLayer_Tile.h"
 
 class cEditorMouseEvent;
 wxDECLARE_EVENT(olcEVT_Editor_MouseMove, cEditorMouseEvent);
@@ -21,8 +23,8 @@ public:
 
 	cEditorMouseEvent(const cEditorMouseEvent& event) : wxCommandEvent(event)
 	{
-		this->SetTile(event.GetTile());		
-		this->SetPixel(event.GetPixel());		
+	//	this->SetTile(event.GetTile());		
+	//	this->SetPixel(event.GetPixel());		
 		this->SetWorld(event.GetWorld());
 		this->SetControlHeld(event.GetControlHeld());
 		this->SetShiftHeld(event.GetShiftHeld());
@@ -30,22 +32,22 @@ public:
 
 	wxEvent* Clone() const { return new cEditorMouseEvent(*this); }
 
-	olc::vi2d GetTile() const { return vTile; }
-	olc::vi2d GetPixel() const { return vPixel; }	
+	//olc::vi2d GetTile() const { return vTile; }
+	//olc::vi2d GetPixel() const { return vPixel; }	
 	olc::vf2d GetWorld() const { return vWorld; }
 	bool GetControlHeld() const { return bControl; }
 	bool GetShiftHeld() const { return bShift; }
 
-	void SetTile(const olc::vi2d& n) { vTile = n;}
-	void SetPixel(const olc::vi2d& n) { vPixel = n;}
+	//void SetTile(const olc::vi2d& n) { vTile = n;}
+	//void SetPixel(const olc::vi2d& n) { vPixel = n;}
 	void SetWorld(const olc::vf2d& n) { vWorld = n;}
 	void SetControlHeld(const bool b) { bControl = b; }
 	void SetShiftHeld(const bool b) { bShift = b; }
 	
 	
 private:
-	olc::vi2d vTile = { 0,0 };
-	olc::vi2d vPixel = { 0,0 };
+	//olc::vi2d vTile = { 0,0 };
+	//olc::vi2d vPixel = { 0,0 };
 	olc::vf2d vWorld = { 0,0 };
 	bool bControl = false;
 	bool bShift = false;
@@ -85,11 +87,14 @@ enum class DrawingTool
 class cPrimaryRenderer : public cPanAndZoomRenderer
 {
 public:
-	cPrimaryRenderer(wxWindow* parent, wxGLContext *gl);
+	cPrimaryRenderer(wxWindow* parent, wxGLContext *gl, std::shared_ptr<cGridSelection> gridselect);
 	virtual ~cPrimaryRenderer();
 
 	void SetArea(std::shared_ptr<cArea> area);
 	void SetTileSelector(std::shared_ptr<cTileSelection> selector);
+	
+	void SetSelectedLayer(std::shared_ptr<cLayer> layer);
+	void SetSelectedImageResource(std::shared_ptr<cImageResource> image);
 
 	void EnableRegionMode(bool b);
 	void SetTileRegion(const olc::vi2d& vRegionTL, const olc::vi2d& vRegionBR);
@@ -108,18 +113,22 @@ protected:
 
 private:
 	// Always cursor
-	olc::vf2d m_cursor = { 0,0 };
+	olc::vf2d m_curWorld = { 0,0 };
+	olc::vi2d m_curTile = { 0,0 };
+
 
 	// Rectangular region cursor
 	olc::vf2d m_vRegionBR = { 0,0 };
 	olc::vf2d m_vRegionTL = { 1.0f,1.0f };
 	bool m_bDrawingRegion = false;
 
-	olc::vi2d m_vTileSize = { 32, 32 };
 
 	std::shared_ptr<cArea> m_area = nullptr;
 	std::shared_ptr<cTileSelection> m_selectTiles = nullptr;
+	std::shared_ptr<cLayer> m_selectedLayer;
+	std::shared_ptr<cGridSelection> m_selectionGrid;
+	std::shared_ptr<cImageResource> m_selectedImageResource = nullptr;
 
-	cEditorMouseEvent ConstructMouseEvent(const wxEventTypeTag<cEditorMouseEvent>& e, const olc::vf2d& vWorldPos, const bool bShift, const bool bControl, const olc::vi2d& vTileSize);
+	cEditorMouseEvent ConstructMouseEvent(const wxEventTypeTag<cEditorMouseEvent>& e, const olc::vf2d& vWorldPos, const bool bShift, const bool bControl);
 };
 

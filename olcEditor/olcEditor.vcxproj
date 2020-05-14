@@ -164,7 +164,7 @@
     <ClCompile Include="cTiledLayer.cpp" />
     <ClCompile Include="cTiledResourceViewer.cpp" />
     <ClCompile Include="cTileSelection.cpp" />
-    <ClCompile Include="cTransientSelection.cpp" />
+    <ClCompile Include="cGridSelection.cpp" />
     <ClCompile Include="RenderToolkit.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -186,7 +186,7 @@
     <ClInclude Include="cTiledLayer.h" />
     <ClInclude Include="cTiledResourceViewer.h" />
     <ClInclude Include="cTileSelection.h" />
-    <ClInclude Include="cTransientSelection.h" />
+    <ClInclude Include="cGridSelection.h" />
     <ClInclude Include="RenderToolkit.h" />
   </ItemGroup>
   <ItemGroup>

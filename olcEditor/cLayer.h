@@ -61,7 +61,7 @@ public:
 	void SetWorldOffset(const olc::vf2d& offset);
 
 
-	virtual void RenderSelf(RenderToolkit &gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR);
+	virtual void RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR);
 
 	virtual const std::string GetLayerTypeName() const;
 	virtual const std::vector<sToolBarButton> GetToolBarButtons() const;

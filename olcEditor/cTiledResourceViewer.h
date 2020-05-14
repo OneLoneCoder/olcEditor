@@ -1,16 +1,15 @@
 #pragma once
 #include "cPanAndZoomRenderer.h"
 #include "cImageResource.h"
-#include "cTransientSelection.h"
+#include "cGridSelection.h"
 
 class cTiledResourceViewer : public cPanAndZoomRenderer
 {
 public:
-	cTiledResourceViewer(wxWindow* parent, wxGLContext* gl);
+	cTiledResourceViewer(wxWindow* parent, wxGLContext* gl, std::shared_ptr<cGridSelection> gridselect);
 	virtual ~cTiledResourceViewer();
 
 	void SetImageResource(std::shared_ptr<cImageResource> image);
-	const cTransientSelection& GetSelection() const;
 
 protected:
 	void OnRender() override;
@@ -20,7 +19,7 @@ protected:
 
 private:
 	std::shared_ptr<cImageResource> m_image;
-	cTransientSelection m_selection;
+	std::shared_ptr<cGridSelection> m_selection;
 	bool m_bDragging = false;
 	olc::vi2d m_vStartDrag = { 0,0 };
 };

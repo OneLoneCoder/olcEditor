@@ -26,7 +26,6 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/notebook.h>
-#include <wx/listctrl.h>
 #include <wx/listbox.h>
 #include <wx/splitter.h>
 #include <wx/frame.h>
@@ -72,12 +71,13 @@ class MainFrameBase : public wxFrame
 		wxPanel* m_propspanel;
 		wxSplitterWindow* m_splitter2;
 		wxPanel* m_panel1;
-		wxListCtrl* m_listLayers;
+		wxListBox* m_listLayers;
 		wxBitmapButton* m_btnAddLayer;
 		wxBitmapButton* m_btnEraseLayer;
 		wxBitmapButton* m_btnDuplicateLayer;
 		wxBitmapButton* m_btnLayerMoveUp;
 		wxBitmapButton* m_btnLayerMoveDown;
+		wxButton* m_btnLayerEdit;
 		wxStaticLine* m_staticline2;
 		wxPanel* m_panel8;
 		wxStaticLine* m_staticline4;
@@ -107,6 +107,12 @@ class MainFrameBase : public wxFrame
 		virtual void OnButtonTileDrawCircle( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonTileFillCircle( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonTileFloodFill( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLayerSelectionChanged( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonAddLayer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonEraseLayer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonDuplicateLayer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonLayerMoveUp( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonLayerMoveDown( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnImageSelectChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddImage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEraseImage( wxCommandEvent& event ) { event.Skip(); }
@@ -173,6 +179,25 @@ class ImageResourceEditorBase : public wxDialog
 
 		ImageResourceEditorBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Image Resource Properties"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1010,572 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~ImageResourceEditorBase();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class MyPanel1
+///////////////////////////////////////////////////////////////////////////////
+class MyPanel1 : public wxPanel
+{
+	private:
+
+	protected:
+		wxStaticText* m_staticText10;
+		wxButton* m_button5;
+		wxButton* m_button6;
+
+	public:
+
+		MyPanel1( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+		~MyPanel1();
 
 };
 

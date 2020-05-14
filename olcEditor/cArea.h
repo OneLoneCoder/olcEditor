@@ -9,6 +9,6 @@ public:
 	cArea();
 	virtual ~cArea();
 
-	std::list<std::shared_ptr<cLayer>> m_listLayers;
+	std::vector<std::shared_ptr<cLayer>> vecLayers;
 };
 

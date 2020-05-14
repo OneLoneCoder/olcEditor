@@ -119,7 +119,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 
-	m_listLayers = new wxListCtrl( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT );
+	m_listLayers = new wxListBox( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_SINGLE );
 	bSizer3->Add( m_listLayers, 1, wxALL|wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer10;
@@ -149,6 +149,9 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 
 	m_btnLayerMoveDown->SetBitmap( wxBitmap( wxT("gfx/ico_layer_movedown.png"), wxBITMAP_TYPE_ANY ) );
 	bSizer10->Add( m_btnLayerMoveDown, 0, wxALL, 5 );
+
+	m_btnLayerEdit = new wxButton( m_panel1, wxID_ANY, wxT("Edit"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
+	bSizer10->Add( m_btnLayerEdit, 0, wxALL, 5 );
 
 
 	bSizer3->Add( bSizer10, 0, wxEXPAND, 5 );
@@ -273,6 +276,12 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_btnTileDrawCircle->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileDrawCircle ), NULL, this );
 	m_btnTileFillCircle->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFillCircle ), NULL, this );
 	m_btnTileFloodFill->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFloodFill ), NULL, this );
+	m_listLayers->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnLayerSelectionChanged ), NULL, this );
+	m_btnAddLayer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonAddLayer ), NULL, this );
+	m_btnEraseLayer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonEraseLayer ), NULL, this );
+	m_btnDuplicateLayer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonDuplicateLayer ), NULL, this );
+	m_btnLayerMoveUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveUp ), NULL, this );
+	m_btnLayerMoveDown->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveDown ), NULL, this );
 	m_lbImages->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnImageSelectChange ), NULL, this );
 	m_btnAddImage->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnAddImage ), NULL, this );
 	m_btnEraseImage->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEraseImage ), NULL, this );
@@ -293,6 +302,12 @@ MainFrameBase::~MainFrameBase()
 	m_btnTileDrawCircle->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileDrawCircle ), NULL, this );
 	m_btnTileFillCircle->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFillCircle ), NULL, this );
 	m_btnTileFloodFill->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFloodFill ), NULL, this );
+	m_listLayers->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnLayerSelectionChanged ), NULL, this );
+	m_btnAddLayer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonAddLayer ), NULL, this );
+	m_btnEraseLayer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonEraseLayer ), NULL, this );
+	m_btnDuplicateLayer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonDuplicateLayer ), NULL, this );
+	m_btnLayerMoveUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveUp ), NULL, this );
+	m_btnLayerMoveDown->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveDown ), NULL, this );
 	m_lbImages->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnImageSelectChange ), NULL, this );
 	m_btnAddImage->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnAddImage ), NULL, this );
 	m_btnEraseImage->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEraseImage ), NULL, this );
@@ -452,4 +467,28 @@ ImageResourceEditorBase::~ImageResourceEditorBase()
 	m_button1->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ImageResourceEditorBase::OnButtonOK ), NULL, this );
 	m_button2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( ImageResourceEditorBase::OnButtonCancel ), NULL, this );
 
+}
+
+MyPanel1::MyPanel1( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer16;
+	bSizer16 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_staticText10 = new wxStaticText( this, wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText10->Wrap( -1 );
+	bSizer16->Add( m_staticText10, 1, wxALL|wxEXPAND, 5 );
+
+	m_button5 = new wxButton( this, wxID_ANY, wxT("MyButton"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer16->Add( m_button5, 0, wxALL, 5 );
+
+	m_button6 = new wxButton( this, wxID_ANY, wxT("MyButton"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer16->Add( m_button6, 0, wxALL, 5 );
+
+
+	this->SetSizer( bSizer16 );
+	this->Layout();
+}
+
+MyPanel1::~MyPanel1()
+{
 }

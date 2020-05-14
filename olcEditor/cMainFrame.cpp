@@ -8,30 +8,33 @@ cMainFrame::cMainFrame() : MainFrameBase(nullptr)
 	m_glMasterContext->Hide();
 	m_glContext = m_glMasterContext->GetContext();
 
+	// Create selection conveyors
+	m_selectionGrid = std::make_shared<cGridSelection>();
+	m_selectTile = std::make_shared<cTileSelection>();
 
+	// Create Project structure
 	area = std::make_shared<cArea>();
-	auto layer = std::make_shared<cLayer_Tile>("Tiled Layer", m_vecImageResources);
-	layer->SetLayerSize({ 64, 64 });
-	area->m_listLayers.push_back(layer);
-	m_layerSelected = area->m_listLayers.front();
-
-	m_render = new cPrimaryRenderer(m_renderpanel, m_glContext);
+	
+	// Construvt GUI
+	m_render = new cPrimaryRenderer(m_renderpanel, m_glContext, m_selectionGrid);
 	m_rendersizer->Add(m_render, 1, wxEXPAND, 5);
 	m_rendersizer->Layout();
 
-	m_selectTile = std::make_shared<cTileSelection>();
+	
+
+	
 
 
 	m_render->SetArea(area);
 	m_render->SetTileSelector(m_selectTile);
 
-	m_selectTile->All(layer);
+	//m_selectTile->All(layer);
 
 	m_drawTool = DrawingTool::TileDrawSingle;
 
 
 	// Image Palette Preview
-	m_tiledImageViewer = new cTiledResourceViewer(m_panelImages, m_glContext);
+	m_tiledImageViewer = new cTiledResourceViewer(m_panelImages, m_glContext, m_selectionGrid);
 	m_sizerImagePreview->Add(m_tiledImageViewer, 1, wxEXPAND, 5);
 	m_panelImages->Layout();
 
@@ -40,6 +43,8 @@ cMainFrame::cMainFrame() : MainFrameBase(nullptr)
 	Connect(olcEVT_Editor_MouseMove, EditorMouseMoveHandler(cMainFrame::OnEditorMouseMove));
 	Connect(olcEVT_Editor_MouseLeftUp, EditorMouseLeftUpHandler(cMainFrame::OnEditorMouseLeftUp));
 	Connect(olcEVT_Editor_MouseLeftDown, EditorMouseLeftDownHandler(cMainFrame::OnEditorMouseLeftDown));
+
+	
 
 	
 
@@ -55,9 +60,9 @@ cMainFrame::~cMainFrame()
 
 void cMainFrame::OnEditorMouseMove(cEditorMouseEvent& evt)
 {
-	m_status->SetStatusText(wxString::Format("Tile: %d, %d", evt.GetTile().x, evt.GetTile().y), 0);
-	m_status->SetStatusText(wxString::Format("Pixel: %d, %d", evt.GetPixel().x, evt.GetPixel().y), 1);
-	m_status->SetStatusText(wxString::Format("World: %f, %f", evt.GetWorld().x, evt.GetWorld().y), 2);	
+	//m_status->SetStatusText(wxString::Format("Tile: %d, %d", evt.GetTile().x, evt.GetTile().y), 0);
+	//m_status->SetStatusText(wxString::Format("Pixel: %d, %d", evt.GetPixel().x, evt.GetPixel().y), 1);
+	//m_status->SetStatusText(wxString::Format("World: %f, %f", evt.GetWorld().x, evt.GetWorld().y), 2);	
 
 	if (m_bLeftMouseDrag)
 	{
@@ -69,15 +74,15 @@ void cMainFrame::OnEditorMouseMove(cEditorMouseEvent& evt)
 
 				if (m_drawTool == DrawingTool::TileSelectRegion)
 				{
-					m_vTileRegionBR = evt.GetTile();
+					m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
 					m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
 				}
 
 				if (m_drawTool == DrawingTool::TileDrawSingle)
 				{
-					if (m_selectTile->InSelection(layer, evt.GetTile()))
+					if (m_selectTile->InSelection(layer, layer->TileCoord(evt.GetWorld())))
 					{
-						layer->GetTile(evt.GetTile()) = 1;
+						layer->GetTile(layer->TileCoord(evt.GetWorld())) = 1;
 					}
 				}
 			}
@@ -88,21 +93,21 @@ void cMainFrame::OnEditorMouseMove(cEditorMouseEvent& evt)
 
 				if (m_drawTool == DrawingTool::TileSelectRegion)
 				{
-					m_vTileRegionBR = evt.GetTile();
+					m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
 					m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
 				}
 
 				if (m_drawTool == DrawingTool::TileDrawSingle)
 				{
-					const auto& brush = m_tiledImageViewer->GetSelection();
-					for (const auto& cell : brush.setSelected)
+					for (const auto& cell : m_selectionGrid->setSelected)
 					{
-						olc::vi2d vTilePos = evt.GetTile();
-						olc::vi2d vOffsetFromRoot = cell - brush.vRoot;
+						olc::vi2d vTilePos = layer->TileCoord(evt.GetWorld());
+						olc::vi2d vOffsetFromRoot = cell - m_selectionGrid->vRoot;
 						olc::vi2d vWorldCell = vTilePos + vOffsetFromRoot;
 						if (m_selectTile->InSelection(layer, vWorldCell)) // mask
 						{
 							layer->GetTile(vWorldCell) = m_vecImageResources[m_lbImages->GetSelection()]->GetTileDesc(cell);
+							layer->GetTile(vWorldCell).exist = true;
 						}
 					}
 				}
@@ -127,7 +132,7 @@ void cMainFrame::OnEditorMouseLeftUp(cEditorMouseEvent& evt)
 
 			if (m_drawTool == DrawingTool::TileSelectRegion)
 			{
-				m_vTileRegionBR = evt.GetTile();
+				m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
 				m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
 				m_selectTile->Region(layer, m_vTileRegionTL, m_vTileRegionBR);
 			}
@@ -139,7 +144,7 @@ void cMainFrame::OnEditorMouseLeftUp(cEditorMouseEvent& evt)
 
 			if (m_drawTool == DrawingTool::TileSelectRegion)
 			{
-				m_vTileRegionBR = evt.GetTile();
+				m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
 				m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
 				m_selectTile->Region(layer, m_vTileRegionTL, m_vTileRegionBR);
 			}
@@ -166,8 +171,8 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 
 			if (m_drawTool == DrawingTool::TileSelectRegion)
 			{
-				m_vTileRegionTL = evt.GetTile();
-				m_vTileRegionBR = evt.GetTile();
+				m_vTileRegionTL = layer->TileCoord(evt.GetWorld());
+				m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
 				m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
 				m_render->EnableRegionMode(true);
 				if (!evt.GetControlHeld())
@@ -176,9 +181,9 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 
 			if (m_drawTool == DrawingTool::TileDrawSingle)
 			{
-				if (m_selectTile->InSelection(layer, evt.GetTile()))
+				if (m_selectTile->InSelection(layer, layer->TileCoord(evt.GetWorld())))
 				{
-					layer->GetTile(evt.GetTile()) = 1;
+					layer->GetTile(layer->TileCoord(evt.GetWorld())) = 1;
 				}
 			}
 		}
@@ -189,8 +194,8 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 
 			if (m_drawTool == DrawingTool::TileSelectRegion)
 			{
-				m_vTileRegionTL = evt.GetTile();
-				m_vTileRegionBR = evt.GetTile();
+				m_vTileRegionTL = layer->TileCoord(evt.GetWorld());
+				m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
 				m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
 				m_render->EnableRegionMode(true);
 				if (!evt.GetControlHeld())
@@ -198,16 +203,16 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 			}
 
 			if (m_drawTool == DrawingTool::TileDrawSingle)
-			{
-				const auto& brush = m_tiledImageViewer->GetSelection();
-				for (const auto& cell : brush.setSelected)
+			{				
+				for (const auto& cell : m_selectionGrid->setSelected)
 				{
-					olc::vi2d vTilePos = evt.GetTile();
-					olc::vi2d vOffsetFromRoot = cell - brush.vRoot;
+					olc::vi2d vTilePos = layer->TileCoord(evt.GetWorld());
+					olc::vi2d vOffsetFromRoot = cell - m_selectionGrid->vRoot;
 					olc::vi2d vWorldCell = vTilePos + vOffsetFromRoot;
 					if (m_selectTile->InSelection(layer, vWorldCell)) // mask
 					{
-						layer->GetTile(vWorldCell) = m_vecImageResources[m_lbImages->GetSelection()]->GetTileDesc(cell);						
+						layer->GetTile(vWorldCell) = m_vecImageResources[m_lbImages->GetSelection()]->GetTileDesc(cell);	
+						layer->GetTile(vWorldCell).exist = true;
 					}
 				}
 			}
@@ -320,6 +325,7 @@ void cMainFrame::OnAddImage(wxCommandEvent& evt)
 		m_lbImages->Select(m_lbImages->GetCount()-1);
 		m_lbImages->EnsureVisible(m_lbImages->GetCount() - 1);
 		m_tiledImageViewer->SetImageResource(m_vecImageResources[m_lbImages->GetCount() - 1]);
+		m_render->SetSelectedImageResource(m_vecImageResources[m_lbImages->GetCount() - 1]);
 	}
 }
 
@@ -347,4 +353,51 @@ void cMainFrame::OnEditImage(wxCommandEvent& evt)
 void cMainFrame::OnImageSelectChange(wxCommandEvent& evt)
 {
 	m_tiledImageViewer->SetImageResource(m_vecImageResources[evt.GetSelection()]);
+	m_render->SetSelectedImageResource(m_vecImageResources[evt.GetSelection()]);
+}
+
+
+
+void cMainFrame::UpdateLayerList()
+{
+	m_listLayers->Clear();
+	for (auto& layer : area->vecLayers)
+		m_listLayers->AppendString(layer->GetName());
+
+	int idx = std::distance(area->vecLayers.begin(), std::find(area->vecLayers.begin(), area->vecLayers.end(), m_layerSelected));
+	m_listLayers->Select(idx);
+	m_listLayers->EnsureVisible(idx);
+}
+
+void cMainFrame::OnButtonAddLayer(wxCommandEvent& evt)
+{
+	auto layer = std::make_shared<cLayer_Tile>("Tiled Layer", m_vecImageResources);
+	layer->SetLayerSize({ 64, 64 });
+	area->vecLayers.push_back(layer);
+	m_layerSelected = area->vecLayers.back();
+	m_render->SetSelectedLayer(m_layerSelected);
+	m_selectTile->All(layer);
+	UpdateLayerList();
+}
+
+void cMainFrame::OnButtonEraseLayer(wxCommandEvent& evt)
+{
+}
+
+void cMainFrame::OnButtonDuplicateLayer(wxCommandEvent& evt)
+{
+}
+
+void cMainFrame::OnButtonLayerMoveUp(wxCommandEvent& evt)
+{
+}
+
+void cMainFrame::OnButtonLayerMoveDown(wxCommandEvent& evt)
+{
+}
+
+void cMainFrame::OnLayerSelectionChanged(wxCommandEvent& evt)
+{
+	m_layerSelected = area->vecLayers[evt.GetSelection()];
+	m_render->SetSelectedLayer(m_layerSelected);
 }

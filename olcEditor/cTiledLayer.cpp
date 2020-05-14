@@ -23,3 +23,9 @@ olc::vi2d cTiledLayer::GetTileSize() const
 {
 	return m_vTileSize;
 }
+
+
+olc::vi2d cTiledLayer::TileCoord(const olc::vf2d& vWorld) const
+{
+	return { int(vWorld.x), int(vWorld.y) };
+}

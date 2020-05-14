@@ -1,26 +1,26 @@
-#include "cTransientSelection.h"
+#include "cGridSelection.h"
 
-cTransientSelection::cTransientSelection()
+cGridSelection::cGridSelection()
 {
 }
 
-void cTransientSelection::Clear()
+void cGridSelection::Clear()
 {
 	setSelected.clear();
 }
 
-void cTransientSelection::Select(const olc::vi2d& pos)
+void cGridSelection::Select(const olc::vi2d& pos)
 {
 	setSelected.insert(pos);
 	vRoot = pos;
 }
 
-void cTransientSelection::Deselect(const olc::vi2d& pos)
+void cGridSelection::Deselect(const olc::vi2d& pos)
 {
 	setSelected.erase(pos);
 }
 
-void cTransientSelection::Region(const olc::vi2d& tl, const olc::vi2d& br)
+void cGridSelection::Region(const olc::vi2d& tl, const olc::vi2d& br)
 {
 	olc::vi2d s = { std::min(tl.x, br.x), std::min(tl.y, br.y) };
 	olc::vi2d e = { std::max(tl.x, br.x), std::max(tl.y, br.y) };
@@ -34,7 +34,7 @@ void cTransientSelection::Region(const olc::vi2d& tl, const olc::vi2d& br)
 	}
 }
 
-bool cTransientSelection::InSelection(const olc::vi2d& pos)
+bool cGridSelection::InSelection(const olc::vi2d& pos)
 {
 	return setSelected.count(pos) > 0;
 }

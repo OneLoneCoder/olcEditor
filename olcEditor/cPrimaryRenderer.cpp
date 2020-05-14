@@ -6,8 +6,9 @@ wxDEFINE_EVENT(olcEVT_Editor_MouseLeftDown, cEditorMouseEvent);
 wxDEFINE_EVENT(olcEVT_Editor_MouseRightUp, cEditorMouseEvent);
 wxDEFINE_EVENT(olcEVT_Editor_MouseRightDown, cEditorMouseEvent);
 
-cPrimaryRenderer::cPrimaryRenderer(wxWindow* parent, wxGLContext* gl) : cPanAndZoomRenderer(parent, gl)
+cPrimaryRenderer::cPrimaryRenderer(wxWindow* parent, wxGLContext* gl, std::shared_ptr<cGridSelection> gridselect) : cPanAndZoomRenderer(parent, gl)
 {
+	m_selectionGrid = gridselect;
 	gfx.vWorldScale = { 32.0f, 32.0f };
 }
 
@@ -47,9 +48,25 @@ void cPrimaryRenderer::OnRender()
 	// Draw Layers
 	if (m_area != nullptr)
 	{
-		for (auto& layer : m_area->m_listLayers)
+		for (auto& layer : m_area->vecLayers)
 		{			
 			layer->RenderSelf(gfx, vWorldTL, vWorldBR);
+
+			if (layer == m_selectedLayer)
+			{
+				if (layer->GetContentType() == ContentType::Tiles)
+				{
+					auto layerTiled = std::dynamic_pointer_cast<cTiledLayer>(layer);
+					
+					m_curTile = layerTiled->TileCoord(m_curWorld);
+
+					if (layer->GetType() == LayerType::Tile)
+					{
+						// Draw Tile Brush Cursor
+						std::dynamic_pointer_cast<cLayer_Tile>(layer)->RenderCursor(gfx, vWorldTL, vWorldBR, m_selectedImageResource, m_selectionGrid, m_curTile);
+					}
+				}
+			}
 		}
 	}
 
@@ -82,31 +99,45 @@ void cPrimaryRenderer::OnRender()
 	}
 
 	// Draw Mouse Cursor
-	gfx.DrawRect(m_cursor, { 1.0f, 1.0f }, olc::PixelF(1, 1, 1, 0.5 ), 6);
-	gfx.DrawRect(m_cursor, { 1.0f, 1.0f }, olc::PixelF( 0,0,0 ), 3);
+	gfx.DrawRect(m_curTile, { 1.0f, 1.0f }, olc::PixelF(1, 1, 1, 0.5 ), 6);
+	gfx.DrawRect(m_curTile, { 1.0f, 1.0f }, olc::PixelF( 0,0,0, 0.5 ), 3);
+
+	// Draw Transient Selection if tiles
+	/*for (const auto& cell : m_transient.setSelected)
+	{
+		olc::vi2d vTilePos = m_curTile;
+		olc::vi2d vOffsetFromRoot = cell - m_transient.vRoot;
+		olc::vi2d vWorldCell = vTilePos + vOffsetFromRoot;
+		gfx.DrawSubImage(m_vImageResources[GetTile(x, y).nResourceID]->GetHardwareID(), { float(x), float(y) }, { 1.0f, 1.0f }, GetTile(x, y).vPosition, GetTile(x, y).vSize);
+
+
+	}*/
 }
 
-cEditorMouseEvent cPrimaryRenderer::ConstructMouseEvent(const wxEventTypeTag<cEditorMouseEvent>& e, const olc::vf2d& vWorldPos, const bool bShift, const bool bControl, const olc::vi2d& vTileSize)
+cEditorMouseEvent cPrimaryRenderer::ConstructMouseEvent(const wxEventTypeTag<cEditorMouseEvent>& e, const olc::vf2d& vWorldPos, const bool bShift, const bool bControl)
 {
 	cEditorMouseEvent evt(e);
 	evt.SetWorld(vWorldPos);
-	evt.SetTile(olc::vi2d(vWorldPos));
-	evt.SetPixel({ int(float(vWorldPos.x - int(vWorldPos.x)) * float(vTileSize.x)),int(float(vWorldPos.y - int(vWorldPos.y)) * float(vTileSize.y)) });
+	//evt.SetTile(olc::vi2d(vWorldPos));
+	//evt.SetPixel({ int(float(vWorldPos.x - int(vWorldPos.x)) * float(vTileSize.x)),int(float(vWorldPos.y - int(vWorldPos.y)) * float(vTileSize.y)) });
 	evt.SetControlHeld(bControl);
 	evt.SetShiftHeld(bShift);
+
+	m_curWorld = vWorldPos;
+	
 	return evt;
 }
 
 
 void cPrimaryRenderer::OnMouseLeftUp(const olc::vf2d& vWorldPos, const bool bShift, const bool bControl)
 {
-	cEditorMouseEvent e = ConstructMouseEvent(olcEVT_Editor_MouseLeftUp, vWorldPos, bShift, bControl, m_vTileSize);	
+	cEditorMouseEvent e = ConstructMouseEvent(olcEVT_Editor_MouseLeftUp, vWorldPos, bShift, bControl);	
 	wxPostEvent(this->GetParent(), e);	
 }
 
 void cPrimaryRenderer::OnMouseLeftDown(const olc::vf2d& vWorldPos, const bool bShift, const bool bControl)
 {
-	cEditorMouseEvent e = ConstructMouseEvent(olcEVT_Editor_MouseLeftDown, vWorldPos, bShift, bControl, m_vTileSize);
+	cEditorMouseEvent e = ConstructMouseEvent(olcEVT_Editor_MouseLeftDown, vWorldPos, bShift, bControl);
 	wxPostEvent(this->GetParent(), e);
 }
 
@@ -128,7 +159,7 @@ void cPrimaryRenderer::OnMouseRightDown(const olc::vf2d& vWorldPos, const bool b
 
 void cPrimaryRenderer::OnMouseMove(const olc::vf2d& vWorldPos, const bool bShift, const bool bControl)
 {
-	cEditorMouseEvent e = ConstructMouseEvent(olcEVT_Editor_MouseMove, vWorldPos, bShift, bControl, m_vTileSize);
+	cEditorMouseEvent e = ConstructMouseEvent(olcEVT_Editor_MouseMove, vWorldPos, bShift, bControl);
 	wxPostEvent(this->GetParent(), e);
 }
 
@@ -143,3 +174,13 @@ void cPrimaryRenderer::SetTileRegion(const olc::vi2d& vRegionTL, const olc::vi2d
 	m_vRegionBR = { float(std::max(vRegionTL.x, vRegionBR.x)), float(std::max(vRegionTL.y, vRegionBR.y)) };
 }
 
+
+void cPrimaryRenderer::SetSelectedLayer(std::shared_ptr<cLayer> layer)
+{
+	m_selectedLayer = layer;
+}
+
+void cPrimaryRenderer::SetSelectedImageResource(std::shared_ptr<cImageResource> image)
+{
+	m_selectedImageResource = image;
+}

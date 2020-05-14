@@ -87,6 +87,12 @@ void cLayer::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc
 
 }
 
+//void cLayer::RenderCursor(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR, const cTransientSelection& selection, const olc::vi2d& cursor)
+//{
+//
+//}
+
+
 const std::string cLayer::GetLayerTypeName() const
 {
 	return "Nameless Layer Type";
