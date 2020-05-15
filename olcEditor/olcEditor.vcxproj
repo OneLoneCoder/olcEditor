@@ -153,6 +153,7 @@
     <ClCompile Include="cImageResourceEditor.cpp" />
     <ClCompile Include="cLayer.cpp" />
     <ClCompile Include="cLayerHandler.cpp" />
+    <ClCompile Include="cLayerPropertiesEditor.cpp" />
     <ClCompile Include="cLayer_Boolean.cpp" />
     <ClCompile Include="cLayer_Tile.cpp" />
     <ClCompile Include="cMainFrame.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="cImageResourceEditor.h" />
     <ClInclude Include="cLayer.h" />
     <ClInclude Include="cLayerHandler.h" />
+    <ClInclude Include="cLayerPropertiesEditor.h" />
     <ClInclude Include="cLayer_Boolean.h" />
     <ClInclude Include="cLayer_Tile.h" />
     <ClInclude Include="cMainFrame.h" />

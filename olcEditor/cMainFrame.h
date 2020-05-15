@@ -11,6 +11,7 @@
 #include "cGridSelection.h"
 #include "cImageResourceEditor.h"
 #include "cTiledResourceViewer.h"
+#include "cLayerPropertiesEditor.h"
 #include "cLayer_Boolean.h"
 #include "cLayer_Tile.h"
 
@@ -75,6 +76,7 @@ protected:
 	void OnButtonLayerMoveUp(wxCommandEvent& evt) override;
 	void OnButtonLayerMoveDown(wxCommandEvent& evt) override;
 	void OnLayerSelectionChanged(wxCommandEvent& evt) override;
+	void OnLayerEdit(wxCommandEvent& evt) override;
 
 };	
 

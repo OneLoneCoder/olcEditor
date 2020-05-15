@@ -401,3 +401,15 @@ void cMainFrame::OnLayerSelectionChanged(wxCommandEvent& evt)
 	m_layerSelected = area->vecLayers[evt.GetSelection()];
 	m_render->SetSelectedLayer(m_layerSelected);
 }
+
+void cMainFrame::OnLayerEdit(wxCommandEvent& evt)
+{
+	cLayerPropertiesEditor dlg(this, m_layerSelected);
+	if (dlg.ShowModal() == wxID_OK)
+		UpdateLayerList();
+	
+}
+
+
+// SPEEEDY!!!
+// WE CAN SEE YOU - CANT HEAR YOU!!

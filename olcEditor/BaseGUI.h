@@ -35,6 +35,8 @@
 #include <wx/stattext.h>
 #include <wx/spinctrl.h>
 #include <wx/dialog.h>
+#include <wx/slider.h>
+#include <wx/clrpicker.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -113,6 +115,7 @@ class MainFrameBase : public wxFrame
 		virtual void OnButtonDuplicateLayer( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonLayerMoveUp( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonLayerMoveDown( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLayerEdit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnImageSelectChange( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAddImage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEraseImage( wxCommandEvent& event ) { event.Skip(); }
@@ -198,6 +201,49 @@ class MyPanel1 : public wxPanel
 
 		MyPanel1( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 		~MyPanel1();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class LayerPropertiesBase
+///////////////////////////////////////////////////////////////////////////////
+class LayerPropertiesBase : public wxDialog
+{
+	private:
+
+	protected:
+		wxTextCtrl* m_txtFriendlyName;
+		wxStaticText* m_staticText7;
+		wxStaticText* m_staticText1;
+		wxSpinCtrl* m_tileWidth;
+		wxStaticText* m_staticText2;
+		wxSpinCtrl* m_tileHeight;
+		wxStaticText* m_staticText8;
+		wxStaticText* m_staticText11;
+		wxSpinCtrl* m_offsetLeft;
+		wxStaticText* m_staticText21;
+		wxSpinCtrl* m_offsetTop;
+		wxCheckBox* m_cbLocked;
+		wxCheckBox* m_cbVisible;
+		wxStaticText* m_staticText29;
+		wxSlider* m_sliderFillOpacity;
+		wxStaticText* m_staticText30;
+		wxSlider* m_sliderLineOpacity;
+		wxStaticText* m_staticText31;
+		wxColourPickerCtrl* m_colourPicker1;
+		wxButton* m_button7;
+		wxButton* m_button8;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnGridUpdate( wxSpinEvent& event ) { event.Skip(); }
+		virtual void OnButtonCancel( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonOK( wxCommandEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		LayerPropertiesBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 859,314 ), long style = wxDEFAULT_DIALOG_STYLE );
+		~LayerPropertiesBase();
 
 };
 
