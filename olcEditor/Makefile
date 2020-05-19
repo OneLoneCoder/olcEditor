@@ -11,9 +11,7 @@ LFLAGS=
 
 CFLAGS=$(shell wx-config --cppflags) -std=c++17
 
-_OBJ = BaseGUI.o cImageResource.o cLayer.o cMainFrame.o cPanAndZoomRenderer.o cTiledLayer.o RenderToolkit.o cApp.o cImageResourceEditor.o cLayerHandler.o cMasterContext.o cPrimaryRenderer.o cTiledResourceViewer.o cArea.o cLayer_Boolean.o cLayer_Tile.o common.o cProject.o cTileSelection.o
-OBJ = $(patsubst %, $(ODIR)/%,$(_OBJ))
-
+OBJ = $(patsubst %, $(ODIR)/%,$(patsubst %.cpp, %.o,$(shell find -name "*.cpp" -printf " %f")))
 
 $(ODIR)/%.o: $(SDIR)/%.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
@@ -25,4 +23,3 @@ $(ODIR)/%.o: $(SDIR)/%.cpp
 
 clean:
 	rm -f $(ODIR)/*.o
-
