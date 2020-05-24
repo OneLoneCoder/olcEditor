@@ -12,6 +12,7 @@
 #include "cImageResourceEditor.h"
 #include "cTiledResourceViewer.h"
 #include "cLayerPropertiesEditor.h"
+#include "cLayerSelectPanel.h"
 #include "cLayer_Boolean.h"
 #include "cLayer_Tile.h"
 
@@ -75,8 +76,8 @@ protected:
 	void OnButtonDuplicateLayer(wxCommandEvent& evt) override;
 	void OnButtonLayerMoveUp(wxCommandEvent& evt) override;
 	void OnButtonLayerMoveDown(wxCommandEvent& evt) override;
-	void OnLayerSelectionChanged(wxCommandEvent& evt) override;
-	void OnLayerEdit(wxCommandEvent& evt) override;
+	void OnLayerSelectionChanged(cLayerChangeEvent& evt);
+
 
 };	
 

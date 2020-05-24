@@ -6,13 +6,23 @@ RenderToolkit::RenderToolkit()
 
 olc::vf2d RenderToolkit::WorldToScreen(const olc::vf2d& point)
 {
-	return (point - vWorldOffset) * vWorldScale;
+	return (point - vWorldOffset) * (vWorldScale);
 }
 
 olc::vf2d RenderToolkit::ScreenToWorld(const olc::vf2d& point)
 {
-	return point / vWorldScale + vWorldOffset;
+	return point / (vWorldScale) + vWorldOffset;
 }
+//
+//olc::vf2d RenderToolkit::LayerToScreen(const olc::vf2d& point)
+//{
+//	return (point - vWorldOffset) * (vWorldScale * vWorldUnit);
+//}
+//
+//olc::vf2d RenderToolkit::ScreenToLayer(const olc::vf2d& point)
+//{
+//	return point / (vWorldScale * vWorldUnit) + vWorldOffset;
+//}
 
 olc::vf2d RenderToolkit::ProjectToView(const olc::vf2d& point)
 {

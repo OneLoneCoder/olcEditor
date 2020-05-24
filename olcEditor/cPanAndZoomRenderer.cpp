@@ -117,7 +117,7 @@ void cPanAndZoomRenderer::IntOnMouseMove(wxMouseEvent& evt)
 	if (m_bWorldDrag)
 	{
 		olc::vf2d mouse = { float(evt.GetX()), float(evt.GetY()) };
-		gfx.vWorldOffset -= (mouse - m_startpan) / gfx.vWorldScale;
+		gfx.vWorldOffset -= (mouse - m_startpan) / (gfx.vWorldScale);
 		m_startpan = mouse;
 	}
 	olc::vf2d p = gfx.ScreenToWorld({ float(evt.GetX()), float(evt.GetY()) });

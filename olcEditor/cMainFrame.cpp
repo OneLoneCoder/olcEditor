@@ -15,15 +15,24 @@ cMainFrame::cMainFrame() : MainFrameBase(nullptr)
 	// Create Project structure
 	area = std::make_shared<cArea>();
 	
-	// Construvt GUI
+
+	// Construct GUI
 	m_render = new cPrimaryRenderer(m_renderpanel, m_glContext, m_selectionGrid);
 	m_rendersizer->Add(m_render, 1, wxEXPAND, 5);
 	m_rendersizer->Layout();
 
 	
 
-	
+	//for (int i = 0; i < 20; i++)
+	//{
+	//	cLayerSelectPanel* pnl = new cLayerSelectPanel(m_panelLayerList);
+	//	m_sizerLayerList->Add(pnl, 0, wxEXPAND, 5); // Good
 
+	//}
+
+	// yeah
+
+	m_sizerLayerList->Layout();
 
 	m_render->SetArea(area);
 	m_render->SetTileSelector(m_selectTile);
@@ -43,7 +52,7 @@ cMainFrame::cMainFrame() : MainFrameBase(nullptr)
 	Connect(olcEVT_Editor_MouseMove, EditorMouseMoveHandler(cMainFrame::OnEditorMouseMove));
 	Connect(olcEVT_Editor_MouseLeftUp, EditorMouseLeftUpHandler(cMainFrame::OnEditorMouseLeftUp));
 	Connect(olcEVT_Editor_MouseLeftDown, EditorMouseLeftDownHandler(cMainFrame::OnEditorMouseLeftDown));
-
+	Connect(olcEVT_Layer_SelectionChange, EditorLayerSelectHandler(cMainFrame::OnLayerSelectionChanged));
 	
 
 	
@@ -55,6 +64,7 @@ cMainFrame::~cMainFrame()
 	Disconnect(olcEVT_Editor_MouseMove, EditorMouseMoveHandler(cMainFrame::OnEditorMouseMove));
 	Disconnect(olcEVT_Editor_MouseLeftUp, EditorMouseLeftUpHandler(cMainFrame::OnEditorMouseLeftUp));
 	Disconnect(olcEVT_Editor_MouseLeftDown, EditorMouseLeftDownHandler(cMainFrame::OnEditorMouseLeftDown));
+	Disconnect(olcEVT_Layer_SelectionChange, EditorLayerSelectHandler(cMainFrame::OnLayerSelectionChanged));
 }
 
 
@@ -360,24 +370,62 @@ void cMainFrame::OnImageSelectChange(wxCommandEvent& evt)
 
 void cMainFrame::UpdateLayerList()
 {
-	m_listLayers->Clear();
+	// 1) Clear panel
+	m_sizerLayerList->Clear(true);
+
+	// 2) Repopulate
+	for (auto& layer : area->vecLayers)
+	{
+		cLayerSelectPanel* pnl = new cLayerSelectPanel(m_panelLayerList, layer);
+		m_sizerLayerList->Add(pnl, 0, wxEXPAND, 5);
+	}
+
+	m_panelLayerList->Layout();
+	
+
+
+	/*m_listLayers->Clear();
 	for (auto& layer : area->vecLayers)
 		m_listLayers->AppendString(layer->GetName());
 
 	int idx = std::distance(area->vecLayers.begin(), std::find(area->vecLayers.begin(), area->vecLayers.end(), m_layerSelected));
 	m_listLayers->Select(idx);
-	m_listLayers->EnsureVisible(idx);
+	m_listLayers->EnsureVisible(idx);*/
 }
 
 void cMainFrame::OnButtonAddLayer(wxCommandEvent& evt)
 {
-	auto layer = std::make_shared<cLayer_Tile>("Tiled Layer", m_vecImageResources);
-	layer->SetLayerSize({ 64, 64 });
-	area->vecLayers.push_back(layer);
-	m_layerSelected = area->vecLayers.back();
-	m_render->SetSelectedLayer(m_layerSelected);
-	m_selectTile->All(layer);
-	UpdateLayerList();
+	// Mystery Code!
+
+	// You can ask!
+
+	// Always speack to your profs/line managers
+	// be open with them
+	// it shows you are actually invested in the issue
+
+	//"Basic Tile" "Geometry" "Boolean" "Integer" "Float" "Character"
+	int n = m_choiceLayerType->GetSelection();
+	switch (n)
+	{
+	case 0:
+	{
+		for (auto& l : area->vecLayers)	if (l) l->SetSelected(false);
+
+		auto layer = std::make_shared<cLayer_Tile>("Tiled Layer", m_vecImageResources);
+		layer->SetLayerSize({ 64, 64 });
+		area->vecLayers.push_back(layer);
+		m_layerSelected = layer;
+		m_render->SetSelectedLayer(m_layerSelected);
+		m_selectTile->All(layer);		
+		m_layerSelected->SetSelected(true);		
+		UpdateLayerList();
+	}
+	break;
+
+	}
+
+
+	
 }
 
 void cMainFrame::OnButtonEraseLayer(wxCommandEvent& evt)
@@ -390,26 +438,42 @@ void cMainFrame::OnButtonDuplicateLayer(wxCommandEvent& evt)
 
 void cMainFrame::OnButtonLayerMoveUp(wxCommandEvent& evt)
 {
+	int d = std::distance(area->vecLayers.begin(), std::find(area->vecLayers.begin(), area->vecLayers.end(), m_layerSelected));
+
+	if (d > 0)
+	{
+		std::swap(area->vecLayers[d], area->vecLayers[d - 1]);
+		UpdateLayerList();
+		m_render->Refresh();
+	}	
 }
 
 void cMainFrame::OnButtonLayerMoveDown(wxCommandEvent& evt)
 {
-}
+	int d = std::distance(area->vecLayers.begin(), std::find(area->vecLayers.begin(), area->vecLayers.end(), m_layerSelected));
 
-void cMainFrame::OnLayerSelectionChanged(wxCommandEvent& evt)
-{
-	m_layerSelected = area->vecLayers[evt.GetSelection()];
-	m_render->SetSelectedLayer(m_layerSelected);
-}
-
-void cMainFrame::OnLayerEdit(wxCommandEvent& evt)
-{
-	cLayerPropertiesEditor dlg(this, m_layerSelected);
-	if (dlg.ShowModal() == wxID_OK)
+	if (d < area->vecLayers.size() - 1)
+	{
+		std::swap(area->vecLayers[d], area->vecLayers[d + 1]);
 		UpdateLayerList();
-	
+		m_render->Refresh();
+	}
+}
+
+void cMainFrame::OnLayerSelectionChanged(cLayerChangeEvent& evt)
+{
+	// Unset all layers
+	for(auto& l : area->vecLayers)
+		if (l) l->SetSelected(false);
+
+	// Set new layer
+	m_layerSelected = evt.GetLayer();
+	m_layerSelected->SetSelected(true);
+	m_render->SetSelectedLayer(m_layerSelected);
+	m_render->Refresh();
+
+	// Brute force
+	UpdateLayerList();
 }
 
 
-// SPEEEDY!!!
-// WE CAN SEE YOU - CANT HEAR YOU!!

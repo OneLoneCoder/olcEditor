@@ -12,7 +12,7 @@ cLayer::~cLayer()
 {
 }
 
-bool cLayer::IsVisble() const
+bool cLayer::IsVisible() const
 {
 	return m_bVisible;
 }
@@ -30,6 +30,16 @@ bool cLayer::IsLocked() const
 void cLayer::SetLocked(bool b)
 {
 	m_bLocked = b;
+}
+
+bool cLayer::IsSelected() const
+{
+	return m_bSelected;
+}
+
+void cLayer::SetSelected(bool b)
+{
+	m_bSelected = b;
 }
 
 float cLayer::GetFillOpacity() const
@@ -80,6 +90,16 @@ const olc::vf2d& cLayer::GetWorldOffset() const
 void cLayer::SetWorldOffset(const olc::vf2d& offset)
 {
 	m_vWorldOffset = offset;
+}
+
+const olc::vi2d& cLayer::GetUnitSize() const
+{
+	return m_vUnitSize;
+}
+
+void cLayer::SetUnitSize(const olc::vi2d& size)
+{
+	m_vUnitSize = size;
 }
 
 void cLayer::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR)

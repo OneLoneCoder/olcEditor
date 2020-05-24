@@ -8,13 +8,10 @@ public:
 	virtual ~cTiledLayer();
 
 	olc::vi2d GetLayerSize() const;
-	void SetTileSize(const olc::vi2d& size);
-	olc::vi2d GetTileSize() const;
 	olc::vi2d TileCoord(const olc::vf2d& vWorld) const;
 	
 
 protected:
-	olc::vf2d m_vTileSize = { 16.0f, 16.0f };
 	olc::vi2d m_vLayerSize = { 0, 0 };
 };
 

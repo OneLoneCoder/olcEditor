@@ -16,18 +16,20 @@
 #include <wx/settings.h>
 #include <wx/string.h>
 #include <wx/menu.h>
+#include <wx/sizer.h>
+#include <wx/scrolwin.h>
+#include <wx/choice.h>
 #include <wx/bmpbuttn.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/button.h>
 #include <wx/statline.h>
-#include <wx/checkbox.h>
-#include <wx/sizer.h>
 #include <wx/panel.h>
-#include <wx/notebook.h>
 #include <wx/listbox.h>
+#include <wx/notebook.h>
 #include <wx/splitter.h>
+#include <wx/checkbox.h>
 #include <wx/frame.h>
 #include <wx/textctrl.h>
 #include <wx/statbox.h>
@@ -52,34 +54,19 @@ class MainFrameBase : public wxFrame
 		wxStatusBar* m_status;
 		wxMenuBar* m_menubar1;
 		wxMenu* m_menuFile;
-		wxNotebook* m_toolbar;
-		wxPanel* m_toolsBoolean;
-		wxBitmapButton* m_btnBooleanClearSelection;
-		wxBitmapButton* m_btnBooleanSelection;
-		wxBitmapButton* m_btnBooleanMoveSelection;
-		wxBitmapButton* m_btnBooleanFillSelection;
-		wxStaticLine* m_staticline1;
-		wxBitmapButton* m_btnTileDraw;
-		wxBitmapButton* m_btnTileDrawLine;
-		wxBitmapButton* m_btnTileDrawRect;
-		wxBitmapButton* m_btnTileFillRect;
-		wxBitmapButton* m_btnTileDrawCircle;
-		wxBitmapButton* m_btnTileFillCircle;
-		wxBitmapButton* m_btnTileFloodFill;
-		wxCheckBox* m_checkBox1;
-		wxPanel* m_panel5;
 		wxBoxSizer* m_mainsizer;
 		wxSplitterWindow* m_splitter;
 		wxPanel* m_propspanel;
 		wxSplitterWindow* m_splitter2;
 		wxPanel* m_panel1;
-		wxListBox* m_listLayers;
+		wxScrolledWindow* m_panelLayerList;
+		wxBoxSizer* m_sizerLayerList;
+		wxChoice* m_choiceLayerType;
 		wxBitmapButton* m_btnAddLayer;
 		wxBitmapButton* m_btnEraseLayer;
 		wxBitmapButton* m_btnDuplicateLayer;
 		wxBitmapButton* m_btnLayerMoveUp;
 		wxBitmapButton* m_btnLayerMoveDown;
-		wxButton* m_btnLayerEdit;
 		wxStaticLine* m_staticline2;
 		wxPanel* m_panel8;
 		wxStaticLine* m_staticline4;
@@ -96,8 +83,33 @@ class MainFrameBase : public wxFrame
 		wxButton* m_btnEditImageResource;
 		wxPanel* m_renderpanel;
 		wxBoxSizer* m_rendersizer;
+		wxNotebook* m_toolbar;
+		wxPanel* m_toolsBoolean;
+		wxBitmapButton* m_btnBooleanClearSelection;
+		wxBitmapButton* m_btnBooleanSelection;
+		wxBitmapButton* m_btnBooleanMoveSelection;
+		wxBitmapButton* m_btnBooleanFillSelection;
+		wxStaticLine* m_staticline1;
+		wxBitmapButton* m_btnTileDraw;
+		wxBitmapButton* m_btnTileDrawLine;
+		wxBitmapButton* m_btnTileDrawRect;
+		wxBitmapButton* m_btnTileFillRect;
+		wxBitmapButton* m_btnTileDrawCircle;
+		wxBitmapButton* m_btnTileFillCircle;
+		wxBitmapButton* m_btnTileFloodFill;
+		wxCheckBox* m_checkBox1;
+		wxPanel* m_panel5;
 
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnButtonAddLayer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonEraseLayer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonDuplicateLayer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonLayerMoveUp( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnButtonLayerMoveDown( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnImageSelectChange( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddImage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEraseImage( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEditImage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonSelectClear( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonSelectRegion( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonSelectMove( wxCommandEvent& event ) { event.Skip(); }
@@ -109,17 +121,6 @@ class MainFrameBase : public wxFrame
 		virtual void OnButtonTileDrawCircle( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonTileFillCircle( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonTileFloodFill( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnLayerSelectionChanged( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonAddLayer( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonEraseLayer( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonDuplicateLayer( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonLayerMoveUp( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnButtonLayerMoveDown( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnLayerEdit( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnImageSelectChange( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddImage( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEraseImage( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnEditImage( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
@@ -231,6 +232,7 @@ class LayerPropertiesBase : public wxDialog
 		wxSlider* m_sliderLineOpacity;
 		wxStaticText* m_staticText31;
 		wxColourPickerCtrl* m_colourPicker1;
+		wxCheckBox* m_cbTileScaling;
 		wxButton* m_button7;
 		wxButton* m_button8;
 
@@ -242,8 +244,41 @@ class LayerPropertiesBase : public wxDialog
 
 	public:
 
-		LayerPropertiesBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 859,314 ), long style = wxDEFAULT_DIALOG_STYLE );
+		LayerPropertiesBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 472,462 ), long style = wxDEFAULT_DIALOG_STYLE );
 		~LayerPropertiesBase();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class LayerPanelBase
+///////////////////////////////////////////////////////////////////////////////
+class LayerPanelBase : public wxPanel
+{
+	private:
+
+	protected:
+		wxStaticText* m_lblLayerType;
+		wxSlider* m_slideLayerOpacity;
+		wxBitmapButton* m_bpButton22;
+		wxBitmapButton* m_bpButton23;
+		wxBitmapButton* m_bpButton24;
+		wxBitmapButton* m_bpButton25;
+		wxStaticLine* m_staticline4;
+		wxStaticText* m_lblLayerType1;
+		wxSlider* m_slideLayerOpacity1;
+		wxBitmapButton* m_bpButton221;
+		wxBitmapButton* m_bpButton231;
+		wxBitmapButton* m_bpButton241;
+		wxBitmapButton* m_bpButton251;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnLayerChangeOpacity( wxScrollEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		LayerPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,122 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+		~LayerPanelBase();
 
 };
 

@@ -13,11 +13,14 @@ public:
 public:
 	olc::vf2d vWorldOffset = { 0,0 };
 	olc::vf2d vWorldScale = { 1, 1 };
-	olc::vf2d vWorldView = { 1,1 };
+	olc::vf2d vWorldView = { 1, 1 };
+	//olc::vf2d vWorldUnit = { 1, 1 };
 
 public:
 	olc::vf2d WorldToScreen(const olc::vf2d& point);
 	olc::vf2d ScreenToWorld(const olc::vf2d& point);
+	//olc::vf2d LayerToScreen(const olc::vf2d& point);
+	//olc::vf2d ScreenToLayer(const olc::vf2d& point);
 	olc::vf2d ProjectToView(const olc::vf2d& point);
 
 public:

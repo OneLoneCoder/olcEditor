@@ -23,83 +23,6 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer4;
 	bSizer4 = new wxBoxSizer( wxVERTICAL );
 
-	m_toolbar = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_FIXEDWIDTH|wxNB_TOP );
-	m_toolsBoolean = new wxPanel( m_toolbar, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer7;
-	bSizer7 = new wxBoxSizer( wxHORIZONTAL );
-
-	m_btnBooleanClearSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnBooleanClearSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select_clear.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnBooleanClearSelection, 0, wxALL, 5 );
-
-	m_btnBooleanSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnBooleanSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnBooleanSelection, 0, wxALL, 5 );
-
-	m_btnBooleanMoveSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnBooleanMoveSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select_move.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnBooleanMoveSelection, 0, wxALL, 5 );
-
-	m_btnBooleanFillSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnBooleanFillSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select_fill.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnBooleanFillSelection, 0, wxALL, 5 );
-
-	m_staticline1 = new wxStaticLine( m_toolsBoolean, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
-	bSizer7->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
-
-	m_btnTileDraw = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnTileDraw->SetBitmap( wxBitmap( wxT("gfx/ico_draw_one.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnTileDraw, 0, wxALL, 5 );
-
-	m_btnTileDrawLine = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnTileDrawLine->SetBitmap( wxBitmap( wxT("gfx/ico_draw_line.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnTileDrawLine, 0, wxALL, 5 );
-
-	m_btnTileDrawRect = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnTileDrawRect->SetBitmap( wxBitmap( wxT("gfx/ico_draw_rect.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnTileDrawRect, 0, wxALL, 5 );
-
-	m_btnTileFillRect = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnTileFillRect->SetBitmap( wxBitmap( wxT("gfx/ico_fill_rect.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnTileFillRect, 0, wxALL, 5 );
-
-	m_btnTileDrawCircle = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnTileDrawCircle->SetBitmap( wxBitmap( wxT("gfx/ico_draw_circle.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnTileDrawCircle, 0, wxALL, 5 );
-
-	m_btnTileFillCircle = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnTileFillCircle->SetBitmap( wxBitmap( wxT("gfx/ico_fill_circle.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnTileFillCircle, 0, wxALL, 5 );
-
-	m_btnTileFloodFill = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
-
-	m_btnTileFloodFill->SetBitmap( wxBitmap( wxT("gfx/ico_draw_fill.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnTileFloodFill, 0, wxALL, 5 );
-
-	m_checkBox1 = new wxCheckBox( m_toolsBoolean, wxID_ANY, wxT("Contiguous"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_checkBox1->SetValue(true);
-	bSizer7->Add( m_checkBox1, 0, wxALL, 5 );
-
-
-	m_toolsBoolean->SetSizer( bSizer7 );
-	m_toolsBoolean->Layout();
-	bSizer7->Fit( m_toolsBoolean );
-	m_toolbar->AddPage( m_toolsBoolean, wxT("Boolean Layer"), true );
-	m_panel5 = new wxPanel( m_toolbar, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	m_toolbar->AddPage( m_panel5, wxT("a page"), false );
-
-	bSizer4->Add( m_toolbar, 0, wxEXPAND, 5 );
-
 	m_mainsizer = new wxBoxSizer( wxHORIZONTAL );
 
 	m_splitter = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D|wxSP_LIVE_UPDATE );
@@ -119,11 +42,26 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 
-	m_listLayers = new wxListBox( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_SINGLE );
-	bSizer3->Add( m_listLayers, 1, wxALL|wxEXPAND, 5 );
+	m_panelLayerList = new wxScrolledWindow( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxALWAYS_SHOW_SB|wxFULL_REPAINT_ON_RESIZE|wxVSCROLL );
+	m_panelLayerList->SetScrollRate( 5, 5 );
+	m_panelLayerList->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
+
+	m_sizerLayerList = new wxBoxSizer( wxVERTICAL );
+
+
+	m_panelLayerList->SetSizer( m_sizerLayerList );
+	m_panelLayerList->Layout();
+	m_sizerLayerList->Fit( m_panelLayerList );
+	bSizer3->Add( m_panelLayerList, 1, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxHORIZONTAL );
+
+	wxString m_choiceLayerTypeChoices[] = { wxT("Basic Tile"), wxT("Geometry"), wxT("Boolean"), wxT("Integer"), wxT("Float"), wxT("Character") };
+	int m_choiceLayerTypeNChoices = sizeof( m_choiceLayerTypeChoices ) / sizeof( wxString );
+	m_choiceLayerType = new wxChoice( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceLayerTypeNChoices, m_choiceLayerTypeChoices, 0 );
+	m_choiceLayerType->SetSelection( 0 );
+	bSizer10->Add( m_choiceLayerType, 0, wxALL, 5 );
 
 	m_btnAddLayer = new wxBitmapButton( m_panel1, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
 
@@ -149,9 +87,6 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 
 	m_btnLayerMoveDown->SetBitmap( wxBitmap( wxT("gfx/ico_layer_movedown.png"), wxBITMAP_TYPE_ANY ) );
 	bSizer10->Add( m_btnLayerMoveDown, 0, wxALL, 5 );
-
-	m_btnLayerEdit = new wxButton( m_panel1, wxID_ANY, wxT("Edit"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
-	bSizer10->Add( m_btnLayerEdit, 0, wxALL, 5 );
 
 
 	bSizer3->Add( bSizer10, 0, wxEXPAND, 5 );
@@ -248,6 +183,83 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_renderpanel = new wxPanel( m_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_SUNKEN|wxTAB_TRAVERSAL );
 	m_rendersizer = new wxBoxSizer( wxVERTICAL );
 
+	m_toolbar = new wxNotebook( m_renderpanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_FIXEDWIDTH|wxNB_TOP );
+	m_toolsBoolean = new wxPanel( m_toolbar, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer7;
+	bSizer7 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_btnBooleanClearSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnBooleanClearSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select_clear.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnBooleanClearSelection, 0, wxALL, 5 );
+
+	m_btnBooleanSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnBooleanSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnBooleanSelection, 0, wxALL, 5 );
+
+	m_btnBooleanMoveSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnBooleanMoveSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select_move.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnBooleanMoveSelection, 0, wxALL, 5 );
+
+	m_btnBooleanFillSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnBooleanFillSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select_fill.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnBooleanFillSelection, 0, wxALL, 5 );
+
+	m_staticline1 = new wxStaticLine( m_toolsBoolean, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
+	bSizer7->Add( m_staticline1, 0, wxEXPAND | wxALL, 5 );
+
+	m_btnTileDraw = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnTileDraw->SetBitmap( wxBitmap( wxT("gfx/ico_draw_one.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnTileDraw, 0, wxALL, 5 );
+
+	m_btnTileDrawLine = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnTileDrawLine->SetBitmap( wxBitmap( wxT("gfx/ico_draw_line.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnTileDrawLine, 0, wxALL, 5 );
+
+	m_btnTileDrawRect = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnTileDrawRect->SetBitmap( wxBitmap( wxT("gfx/ico_draw_rect.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnTileDrawRect, 0, wxALL, 5 );
+
+	m_btnTileFillRect = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnTileFillRect->SetBitmap( wxBitmap( wxT("gfx/ico_fill_rect.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnTileFillRect, 0, wxALL, 5 );
+
+	m_btnTileDrawCircle = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnTileDrawCircle->SetBitmap( wxBitmap( wxT("gfx/ico_draw_circle.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnTileDrawCircle, 0, wxALL, 5 );
+
+	m_btnTileFillCircle = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnTileFillCircle->SetBitmap( wxBitmap( wxT("gfx/ico_fill_circle.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnTileFillCircle, 0, wxALL, 5 );
+
+	m_btnTileFloodFill = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_btnTileFloodFill->SetBitmap( wxBitmap( wxT("gfx/ico_draw_fill.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer7->Add( m_btnTileFloodFill, 0, wxALL, 5 );
+
+	m_checkBox1 = new wxCheckBox( m_toolsBoolean, wxID_ANY, wxT("Contiguous"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_checkBox1->SetValue(true);
+	bSizer7->Add( m_checkBox1, 0, wxALL, 5 );
+
+
+	m_toolsBoolean->SetSizer( bSizer7 );
+	m_toolsBoolean->Layout();
+	bSizer7->Fit( m_toolsBoolean );
+	m_toolbar->AddPage( m_toolsBoolean, wxT("Boolean Layer"), true );
+	m_panel5 = new wxPanel( m_toolbar, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_toolbar->AddPage( m_panel5, wxT("a page"), false );
+
+	m_rendersizer->Add( m_toolbar, 0, wxEXPAND, 5 );
+
 
 	m_renderpanel->SetSizer( m_rendersizer );
 	m_renderpanel->Layout();
@@ -265,6 +277,15 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	m_btnAddLayer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonAddLayer ), NULL, this );
+	m_btnEraseLayer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonEraseLayer ), NULL, this );
+	m_btnDuplicateLayer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonDuplicateLayer ), NULL, this );
+	m_btnLayerMoveUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveUp ), NULL, this );
+	m_btnLayerMoveDown->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveDown ), NULL, this );
+	m_lbImages->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnImageSelectChange ), NULL, this );
+	m_btnAddImage->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnAddImage ), NULL, this );
+	m_btnEraseImage->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEraseImage ), NULL, this );
+	m_btnEditImageResource->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEditImage ), NULL, this );
 	m_btnBooleanClearSelection->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonSelectClear ), NULL, this );
 	m_btnBooleanSelection->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonSelectRegion ), NULL, this );
 	m_btnBooleanMoveSelection->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonSelectMove ), NULL, this );
@@ -276,22 +297,20 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_btnTileDrawCircle->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileDrawCircle ), NULL, this );
 	m_btnTileFillCircle->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFillCircle ), NULL, this );
 	m_btnTileFloodFill->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFloodFill ), NULL, this );
-	m_listLayers->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnLayerSelectionChanged ), NULL, this );
-	m_btnAddLayer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonAddLayer ), NULL, this );
-	m_btnEraseLayer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonEraseLayer ), NULL, this );
-	m_btnDuplicateLayer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonDuplicateLayer ), NULL, this );
-	m_btnLayerMoveUp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveUp ), NULL, this );
-	m_btnLayerMoveDown->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveDown ), NULL, this );
-	m_btnLayerEdit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnLayerEdit ), NULL, this );
-	m_lbImages->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnImageSelectChange ), NULL, this );
-	m_btnAddImage->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnAddImage ), NULL, this );
-	m_btnEraseImage->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEraseImage ), NULL, this );
-	m_btnEditImageResource->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEditImage ), NULL, this );
 }
 
 MainFrameBase::~MainFrameBase()
 {
 	// Disconnect Events
+	m_btnAddLayer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonAddLayer ), NULL, this );
+	m_btnEraseLayer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonEraseLayer ), NULL, this );
+	m_btnDuplicateLayer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonDuplicateLayer ), NULL, this );
+	m_btnLayerMoveUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveUp ), NULL, this );
+	m_btnLayerMoveDown->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveDown ), NULL, this );
+	m_lbImages->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnImageSelectChange ), NULL, this );
+	m_btnAddImage->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnAddImage ), NULL, this );
+	m_btnEraseImage->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEraseImage ), NULL, this );
+	m_btnEditImageResource->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEditImage ), NULL, this );
 	m_btnBooleanClearSelection->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonSelectClear ), NULL, this );
 	m_btnBooleanSelection->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonSelectRegion ), NULL, this );
 	m_btnBooleanMoveSelection->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonSelectMove ), NULL, this );
@@ -303,17 +322,6 @@ MainFrameBase::~MainFrameBase()
 	m_btnTileDrawCircle->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileDrawCircle ), NULL, this );
 	m_btnTileFillCircle->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFillCircle ), NULL, this );
 	m_btnTileFloodFill->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonTileFloodFill ), NULL, this );
-	m_listLayers->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnLayerSelectionChanged ), NULL, this );
-	m_btnAddLayer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonAddLayer ), NULL, this );
-	m_btnEraseLayer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonEraseLayer ), NULL, this );
-	m_btnDuplicateLayer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonDuplicateLayer ), NULL, this );
-	m_btnLayerMoveUp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveUp ), NULL, this );
-	m_btnLayerMoveDown->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnButtonLayerMoveDown ), NULL, this );
-	m_btnLayerEdit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnLayerEdit ), NULL, this );
-	m_lbImages->Disconnect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( MainFrameBase::OnImageSelectChange ), NULL, this );
-	m_btnAddImage->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnAddImage ), NULL, this );
-	m_btnEraseImage->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEraseImage ), NULL, this );
-	m_btnEditImageResource->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrameBase::OnEditImage ), NULL, this );
 
 }
 
@@ -564,35 +572,62 @@ LayerPropertiesBase::LayerPropertiesBase( wxWindow* parent, wxWindowID id, const
 	bSizer18->Add( sbSizer3, 1, wxEXPAND|wxALL, 5 );
 
 	wxStaticBoxSizer* sbSizer10;
-	sbSizer10 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Layer Properties:") ), wxHORIZONTAL );
+	sbSizer10 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Layer Properties:") ), wxVERTICAL );
+
+	wxBoxSizer* bSizer19;
+	bSizer19 = new wxBoxSizer( wxHORIZONTAL );
 
 	m_cbLocked = new wxCheckBox( sbSizer10->GetStaticBox(), wxID_ANY, wxT("Locked"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
-	sbSizer10->Add( m_cbLocked, 0, wxALL, 5 );
+	bSizer19->Add( m_cbLocked, 0, wxALL, 5 );
 
 	m_cbVisible = new wxCheckBox( sbSizer10->GetStaticBox(), wxID_ANY, wxT("Visible"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
 	m_cbVisible->SetValue(true);
-	sbSizer10->Add( m_cbVisible, 0, wxALL, 5 );
+	bSizer19->Add( m_cbVisible, 0, wxALL, 5 );
+
+
+	sbSizer10->Add( bSizer19, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bSizer20;
+	bSizer20 = new wxBoxSizer( wxHORIZONTAL );
 
 	m_staticText29 = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, wxT("Fill Opacity:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText29->Wrap( -1 );
-	sbSizer10->Add( m_staticText29, 0, wxALL, 5 );
+	bSizer20->Add( m_staticText29, 0, wxALL, 5 );
 
 	m_sliderFillOpacity = new wxSlider( sbSizer10->GetStaticBox(), wxID_ANY, 255, 0, 255, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_VALUE_LABEL );
-	sbSizer10->Add( m_sliderFillOpacity, 1, wxALL, 5 );
+	bSizer20->Add( m_sliderFillOpacity, 1, wxALL, 5 );
 
 	m_staticText30 = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, wxT("Line Opacity:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText30->Wrap( -1 );
-	sbSizer10->Add( m_staticText30, 0, wxALL, 5 );
+	bSizer20->Add( m_staticText30, 0, wxALL, 5 );
 
 	m_sliderLineOpacity = new wxSlider( sbSizer10->GetStaticBox(), wxID_ANY, 255, 0, 255, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_VALUE_LABEL );
-	sbSizer10->Add( m_sliderLineOpacity, 1, wxALL, 5 );
+	bSizer20->Add( m_sliderLineOpacity, 1, wxALL, 5 );
+
+
+	sbSizer10->Add( bSizer20, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bSizer21;
+	bSizer21 = new wxBoxSizer( wxHORIZONTAL );
 
 	m_staticText31 = new wxStaticText( sbSizer10->GetStaticBox(), wxID_ANY, wxT("Tint:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText31->Wrap( -1 );
-	sbSizer10->Add( m_staticText31, 0, wxALL, 5 );
+	bSizer21->Add( m_staticText31, 0, wxALL, 5 );
 
 	m_colourPicker1 = new wxColourPickerCtrl( sbSizer10->GetStaticBox(), wxID_ANY, *wxBLACK, wxDefaultPosition, wxDefaultSize, wxCLRP_DEFAULT_STYLE|wxCLRP_USE_TEXTCTRL );
-	sbSizer10->Add( m_colourPicker1, 0, wxALL, 5 );
+	bSizer21->Add( m_colourPicker1, 0, wxALL, 5 );
+
+
+	sbSizer10->Add( bSizer21, 1, wxEXPAND, 5 );
+
+	wxBoxSizer* bSizer22;
+	bSizer22 = new wxBoxSizer( wxVERTICAL );
+
+	m_cbTileScaling = new wxCheckBox( sbSizer10->GetStaticBox(), wxID_ANY, wxT("Pixel Coherance"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+	bSizer22->Add( m_cbTileScaling, 0, wxALL, 5 );
+
+
+	sbSizer10->Add( bSizer22, 1, wxEXPAND, 5 );
 
 
 	bSizer18->Add( sbSizer10, 1, wxEXPAND|wxALL, 5 );
@@ -600,20 +635,20 @@ LayerPropertiesBase::LayerPropertiesBase( wxWindow* parent, wxWindowID id, const
 
 	bSizer18->Add( 0, 0, 1, wxEXPAND, 5 );
 
-	wxBoxSizer* bSizer19;
-	bSizer19 = new wxBoxSizer( wxHORIZONTAL );
+	wxBoxSizer* bSizer19a;
+	bSizer19a = new wxBoxSizer( wxHORIZONTAL );
 
 
-	bSizer19->Add( 0, 0, 1, wxEXPAND, 5 );
+	bSizer19a->Add( 0, 0, 1, wxEXPAND, 5 );
 
 	m_button7 = new wxButton( this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer19->Add( m_button7, 0, wxALL, 5 );
+	bSizer19a->Add( m_button7, 0, wxALL, 5 );
 
 	m_button8 = new wxButton( this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer19->Add( m_button8, 0, wxALL, 5 );
+	bSizer19a->Add( m_button8, 0, wxALL, 5 );
 
 
-	bSizer18->Add( bSizer19, 0, wxEXPAND, 5 );
+	bSizer18->Add( bSizer19a, 0, wxEXPAND, 5 );
 
 
 	this->SetSizer( bSizer18 );
@@ -639,5 +674,133 @@ LayerPropertiesBase::~LayerPropertiesBase()
 	m_offsetTop->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
 	m_button7->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LayerPropertiesBase::OnButtonCancel ), NULL, this );
 	m_button8->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LayerPropertiesBase::OnButtonOK ), NULL, this );
+
+}
+
+LayerPanelBase::LayerPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer25;
+	bSizer25 = new wxBoxSizer( wxVERTICAL );
+
+	wxBoxSizer* bSizer23;
+	bSizer23 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_lblLayerType = new wxStaticText( this, wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL|wxST_NO_AUTORESIZE );
+	m_lblLayerType->Wrap( -1 );
+	m_lblLayerType->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
+	m_lblLayerType->SetMinSize( wxSize( 80,-1 ) );
+
+	bSizer23->Add( m_lblLayerType, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_slideLayerOpacity = new wxSlider( this, wxID_ANY, 255, 0, 255, wxDefaultPosition, wxDefaultSize, wxSL_BOTH|wxSL_HORIZONTAL );
+	bSizer23->Add( m_slideLayerOpacity, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_bpButton22 = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton22->SetBitmap( wxBitmap( wxT("gfx/ico_layer_view_on.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer23->Add( m_bpButton22, 0, wxALL, 5 );
+
+	m_bpButton23 = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton23->SetBitmap( wxBitmap( wxT("gfx/ico_layer_unlocked.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer23->Add( m_bpButton23, 0, wxALL, 5 );
+
+	m_bpButton24 = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton24->SetBitmap( wxBitmap( wxT("gfx/ico_layer_edit.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer23->Add( m_bpButton24, 0, wxALL, 5 );
+
+	m_bpButton25 = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton25->SetBitmap( wxBitmap( wxT("gfx/ico_layer_selected.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer23->Add( m_bpButton25, 0, wxALL, 5 );
+
+
+	bSizer25->Add( bSizer23, 0, wxEXPAND, 5 );
+
+	m_staticline4 = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	bSizer25->Add( m_staticline4, 0, wxEXPAND, 5 );
+
+	wxBoxSizer* bSizer231;
+	bSizer231 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_lblLayerType1 = new wxStaticText( this, wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL|wxST_NO_AUTORESIZE );
+	m_lblLayerType1->Wrap( -1 );
+	m_lblLayerType1->SetMinSize( wxSize( 80,-1 ) );
+
+	bSizer231->Add( m_lblLayerType1, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_slideLayerOpacity1 = new wxSlider( this, wxID_ANY, 255, 0, 255, wxDefaultPosition, wxDefaultSize, wxSL_BOTH|wxSL_HORIZONTAL );
+	bSizer231->Add( m_slideLayerOpacity1, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	m_bpButton221 = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton221->SetBitmap( wxBitmap( wxT("gfx/ico_layer_view_on.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer231->Add( m_bpButton221, 0, wxALL, 5 );
+
+	m_bpButton231 = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton231->SetBitmap( wxBitmap( wxT("gfx/ico_layer_unlocked.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer231->Add( m_bpButton231, 0, wxALL, 5 );
+
+	m_bpButton241 = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton241->SetBitmap( wxBitmap( wxT("gfx/ico_layer_edit.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer231->Add( m_bpButton241, 0, wxALL, 5 );
+
+	m_bpButton251 = new wxBitmapButton( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
+
+	m_bpButton251->SetBitmap( wxBitmap( wxT("gfx/ico_layer_selected.png"), wxBITMAP_TYPE_ANY ) );
+	bSizer231->Add( m_bpButton251, 0, wxALL, 5 );
+
+
+	bSizer25->Add( bSizer231, 0, wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer25 );
+	this->Layout();
+
+	// Connect Events
+	m_slideLayerOpacity->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+}
+
+LayerPanelBase::~LayerPanelBase()
+{
+	// Disconnect Events
+	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
 
 }

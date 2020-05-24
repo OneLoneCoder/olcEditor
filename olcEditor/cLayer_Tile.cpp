@@ -19,7 +19,7 @@ void cLayer_Tile::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, cons
 		{
 			if (GetTile(x, y).exist && !m_vImageResources.empty())
 			{
-				gfx.DrawSubImage(m_vImageResources[GetTile(x, y).nResourceID]->GetHardwareID(), { float(x), float(y) }, { 1.0f, 1.0f }, GetTile(x, y).vPosition, GetTile(x, y).vSize);
+				gfx.DrawSubImage(m_vImageResources[GetTile(x, y).nResourceID]->GetHardwareID(), GetUnitSize() * olc::vf2d(float(x), float(y)), GetUnitSize(), GetTile(x, y).vPosition, GetTile(x, y).vSize);
 			}
 		}
 	}
@@ -32,7 +32,7 @@ void cLayer_Tile::RenderCursor(RenderToolkit& gfx, const olc::vf2d& vWorldTL, co
 		olc::vi2d vTilePos = cursor;
 		olc::vi2d vOffsetFromRoot = cell - selection->vRoot;
 		olc::vi2d vWorldCell = vTilePos + vOffsetFromRoot;
-		gfx.DrawSubImage(image->GetHardwareID(), vWorldCell, { 1.0f, 1.0f }, image->GetTileDesc(cell).vPosition, image->GetTileDesc(cell).vSize, { 255, 255, 255, 128 });
+		gfx.DrawSubImage(image->GetHardwareID(), vWorldCell * GetUnitSize(), GetUnitSize(), image->GetTileDesc(cell).vPosition, image->GetTileDesc(cell).vSize, { 255, 255, 255, 128 });
 	}
 }
 

@@ -10,8 +10,10 @@ cLayerPropertiesEditor::cLayerPropertiesEditor(wxWindow* parent, std::shared_ptr
 		m_sliderLineOpacity->SetValue(uint8_t(m_layer->GetLineOpacity() * 255));
 		m_sliderFillOpacity->SetValue(uint8_t(m_layer->GetFillOpacity() * 255));
 		m_txtFriendlyName->SetValue(m_layer->GetName());
-		m_cbVisible->SetValue(m_layer->IsVisble());
+		m_cbVisible->SetValue(m_layer->IsVisible());
 		m_cbLocked->SetValue(m_layer->IsLocked());
+		m_tileWidth->SetValue(m_layer->GetUnitSize().x);
+		m_tileHeight->SetValue(m_layer->GetUnitSize().y);
 	}
 }
 
@@ -38,6 +40,7 @@ void cLayerPropertiesEditor::OnButtonOK(wxCommandEvent& evt)
 		m_layer->SetFillOpacity(float(m_sliderFillOpacity->GetValue()) / 255.0f);		
 		m_layer->SetVisible(m_cbVisible->GetValue());
 		m_layer->SetLocked(m_cbLocked->GetValue());
+		m_layer->SetUnitSize({ m_tileWidth->GetValue(), m_tileHeight->GetValue() });		
 	}
 
 	EndModal(wxID_OK);

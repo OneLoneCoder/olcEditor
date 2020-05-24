@@ -39,11 +39,14 @@ public:
 	cLayer(const std::string& name, LayerType t, ContentType c);
 	virtual ~cLayer();
 
-	bool IsVisble() const;
+	bool IsVisible() const; // FAIL PLEASE!!
 	void SetVisible(bool b);
 
 	bool IsLocked() const;
 	void SetLocked(bool b);
+
+	bool IsSelected() const;
+	void SetSelected(bool b);
 
 	float GetFillOpacity() const;
 	void SetFillOpacity(float alpha);
@@ -60,6 +63,9 @@ public:
 	const olc::vf2d& GetWorldOffset() const;
 	void SetWorldOffset(const olc::vf2d& offset);
 
+	const olc::vi2d& GetUnitSize() const;
+	void SetUnitSize(const olc::vi2d& size);
+
 
 	virtual void RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR);
 
@@ -72,7 +78,9 @@ protected:
 	float m_fLineOpacity = 1.0f;
 	bool m_bVisible = true;
 	bool m_bLocked = false;
-	olc::vf2d m_vWorldOffset;
+	bool m_bSelected = false;
+	olc::vf2d m_vWorldOffset = { 0,0 };
+	olc::vi2d m_vUnitSize = { 16,16 };
 	LayerType m_type = LayerType::Undefined;
 	ContentType m_content = ContentType::Tiles;
 };

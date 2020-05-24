@@ -14,18 +14,8 @@ olc::vi2d cTiledLayer::GetLayerSize() const
 	return m_vLayerSize;
 }
 
-void cTiledLayer::SetTileSize(const olc::vi2d& size)
-{
-	m_vTileSize = size;
-}
-
-olc::vi2d cTiledLayer::GetTileSize() const
-{
-	return m_vTileSize;
-}
-
 
 olc::vi2d cTiledLayer::TileCoord(const olc::vf2d& vWorld) const
 {
-	return { int(vWorld.x), int(vWorld.y) };
+	return { int(vWorld.x / float(GetUnitSize().x)), int(vWorld.y / float(GetUnitSize().y)) };
 }

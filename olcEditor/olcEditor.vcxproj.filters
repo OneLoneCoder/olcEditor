@@ -30,6 +30,7 @@
     <ClCompile Include="cMasterContext.cpp" />
     <ClCompile Include="cGridSelection.cpp" />
     <ClCompile Include="cLayerPropertiesEditor.cpp" />
+    <ClCompile Include="cLayerSelectPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseGUI.h" />
@@ -61,6 +62,7 @@
     <ClInclude Include="cMasterContext.h" />
     <ClInclude Include="cGridSelection.h" />
     <ClInclude Include="cLayerPropertiesEditor.h" />
+    <ClInclude Include="cLayerSelectPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="LayerTypes">
