@@ -12,6 +12,7 @@ protected:
 	void OnGridUpdate(wxSpinEvent& evt) override;
 	void OnButtonCancel(wxCommandEvent& evt) override;
 	void OnButtonOK(wxCommandEvent& evt) override;
+	void OnTintChanged(wxColourPickerEvent& evt) override;
 
 private:
 	std::shared_ptr<cLayer> m_layer = nullptr;

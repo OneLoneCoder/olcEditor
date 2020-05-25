@@ -565,6 +565,24 @@ LayerPropertiesBase::LayerPropertiesBase( wxWindow* parent, wxWindowID id, const
 	m_offsetTop = new wxSpinCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 4096, 0 );
 	fgSizer1->Add( m_offsetTop, 1, wxALL, 5 );
 
+	m_staticText22 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Layer Size:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText22->Wrap( -1 );
+	fgSizer1->Add( m_staticText22, 0, wxALL, 5 );
+
+	m_staticText23 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Width:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText23->Wrap( -1 );
+	fgSizer1->Add( m_staticText23, 0, wxALL, 5 );
+
+	m_layerWidth = new wxSpinCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 8192, 64 );
+	fgSizer1->Add( m_layerWidth, 0, wxALL, 5 );
+
+	m_staticText24 = new wxStaticText( sbSizer3->GetStaticBox(), wxID_ANY, wxT("Height:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText24->Wrap( -1 );
+	fgSizer1->Add( m_staticText24, 0, wxALL, 5 );
+
+	m_layerHeight = new wxSpinCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 8192, 64 );
+	fgSizer1->Add( m_layerHeight, 0, wxALL, 5 );
+
 
 	sbSizer3->Add( fgSizer1, 0, wxEXPAND, 5 );
 
@@ -661,6 +679,9 @@ LayerPropertiesBase::LayerPropertiesBase( wxWindow* parent, wxWindowID id, const
 	m_tileHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
 	m_offsetLeft->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
 	m_offsetTop->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
+	m_layerWidth->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
+	m_layerHeight->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
+	m_colourPicker1->Connect( wxEVT_COMMAND_COLOURPICKER_CHANGED, wxColourPickerEventHandler( LayerPropertiesBase::OnTintChanged ), NULL, this );
 	m_button7->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LayerPropertiesBase::OnButtonCancel ), NULL, this );
 	m_button8->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LayerPropertiesBase::OnButtonOK ), NULL, this );
 }
@@ -672,6 +693,9 @@ LayerPropertiesBase::~LayerPropertiesBase()
 	m_tileHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
 	m_offsetLeft->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
 	m_offsetTop->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
+	m_layerWidth->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
+	m_layerHeight->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( LayerPropertiesBase::OnGridUpdate ), NULL, this );
+	m_colourPicker1->Disconnect( wxEVT_COMMAND_COLOURPICKER_CHANGED, wxColourPickerEventHandler( LayerPropertiesBase::OnTintChanged ), NULL, this );
 	m_button7->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LayerPropertiesBase::OnButtonCancel ), NULL, this );
 	m_button8->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( LayerPropertiesBase::OnButtonOK ), NULL, this );
 
@@ -714,6 +738,9 @@ LayerPanelBase::LayerPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 
 	m_bpButton25->SetBitmap( wxBitmap( wxT("gfx/ico_layer_selected.png"), wxBITMAP_TYPE_ANY ) );
 	bSizer23->Add( m_bpButton25, 0, wxALL, 5 );
+
+	m_toggleBtn1 = new wxToggleButton( this, wxID_ANY, wxT("Toggle me!"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer23->Add( m_toggleBtn1, 0, wxALL, 5 );
 
 
 	bSizer25->Add( bSizer23, 0, wxEXPAND, 5 );
@@ -770,6 +797,7 @@ LayerPanelBase::LayerPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 	m_slideLayerOpacity->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
 	m_slideLayerOpacity->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
 	m_slideLayerOpacity->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_toggleBtn1->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( LayerPanelBase::dfgdfgdfg ), NULL, this );
 	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
 	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
 	m_slideLayerOpacity1->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
@@ -793,6 +821,7 @@ LayerPanelBase::~LayerPanelBase()
 	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
 	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
 	m_slideLayerOpacity->Disconnect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
+	m_toggleBtn1->Disconnect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( LayerPanelBase::dfgdfgdfg ), NULL, this );
 	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
 	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );
 	m_slideLayerOpacity1->Disconnect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( LayerPanelBase::OnLayerChangeOpacity ), NULL, this );

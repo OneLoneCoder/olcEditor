@@ -107,6 +107,22 @@ void cLayer::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc
 
 }
 
+olc::vi2d cLayer::GetLayerSize() const
+{
+	return m_vLayerSize;
+}
+
+
+olc::vi2d cLayer::TileCoord(const olc::vf2d& vWorld) const
+{
+	return { int(vWorld.x / float(GetUnitSize().x)), int(vWorld.y / float(GetUnitSize().y)) };
+}
+
+void cLayer::SetLayerSize(const olc::vi2d& size)
+{
+	m_vLayerSize = size;
+}
+
 //void cLayer::RenderCursor(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR, const cTransientSelection& selection, const olc::vi2d& cursor)
 //{
 //

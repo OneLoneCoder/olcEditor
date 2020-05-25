@@ -19,7 +19,8 @@ void cLayer_Tile::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, cons
 		{
 			if (GetTile(x, y).exist && !m_vImageResources.empty())
 			{
-				gfx.DrawSubImage(m_vImageResources[GetTile(x, y).nResourceID]->GetHardwareID(), GetUnitSize() * olc::vf2d(float(x), float(y)), GetUnitSize(), GetTile(x, y).vPosition, GetTile(x, y).vSize);
+				olc::Pixel tint = olc::Pixel(255, 255, 255, uint8_t(GetFillOpacity() * 255.0f));
+				gfx.DrawSubImage(m_vImageResources[GetTile(x, y).nResourceID]->GetHardwareID(), GetUnitSize() * olc::vf2d(float(x), float(y)), GetUnitSize(), GetTile(x, y).vPosition, GetTile(x, y).vSize, tint);
 			}
 		}
 	}

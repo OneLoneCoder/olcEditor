@@ -1,6 +1,7 @@
 #include "cLayerSelectPanel.h"
 
 wxDEFINE_EVENT(olcEVT_Layer_SelectionChange, cLayerChangeEvent);
+wxDEFINE_EVENT(olcEVT_Layer_RefreshPlease, cLayerChangeEvent);
 
 cLayerSelectPanel::cLayerSelectPanel(wxWindow* parent, std::shared_ptr<cLayer> layer, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name) : wxPanel(parent, id, pos, size, style, name)
 {
@@ -44,8 +45,8 @@ cLayerSelectPanel::cLayerSelectPanel(wxWindow* parent, std::shared_ptr<cLayer> l
 	Select(m_pLayer->IsSelected());
 
 	m_slidOpacity->Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), nullptr, this);
-	m_togView->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleView), nullptr, this);
-	m_togLock->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleLock), nullptr, this);
+	m_togView->Connect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleView), nullptr, this);
+	m_togLock->Connect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleLock), nullptr, this);
 	m_btnEdit->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnButtonEdit), nullptr, this);
 	m_btnSelect->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnButtonSelect), nullptr, this);
 }
@@ -53,8 +54,8 @@ cLayerSelectPanel::cLayerSelectPanel(wxWindow* parent, std::shared_ptr<cLayer> l
 cLayerSelectPanel::~cLayerSelectPanel()
 {
 	m_slidOpacity->Disconnect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), nullptr, this);
-	m_togView->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleView), nullptr, this);
-	m_togLock->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleLock), nullptr, this);
+	m_togView->Disconnect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleView), nullptr, this);
+	m_togLock->Disconnect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleLock), nullptr, this);
 	m_btnEdit->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnButtonEdit), nullptr, this);
 	m_btnSelect->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnButtonSelect), nullptr, this);
 }
@@ -62,16 +63,25 @@ cLayerSelectPanel::~cLayerSelectPanel()
 void cLayerSelectPanel::OnChangeOpacity(wxScrollEvent& evt)
 {
 	m_pLayer->SetFillOpacity(float(m_slidOpacity->GetValue()) / 255.0f);
+	cLayerChangeEvent e(olcEVT_Layer_RefreshPlease);
+	e.SetLayer(m_pLayer);
+	wxPostEvent(this->GetParent(), e);
 }
 
 void cLayerSelectPanel::OnToggleView(wxCommandEvent& evt)
 {
-	m_pLayer->SetVisible(m_togView->GetValue());
+	m_pLayer->SetVisible(evt.IsChecked());
+	cLayerChangeEvent e(olcEVT_Layer_RefreshPlease);
+	e.SetLayer(m_pLayer);
+	wxPostEvent(this->GetParent(), e);
 }
 
 void cLayerSelectPanel::OnToggleLock(wxCommandEvent& evt)
 {
-	m_pLayer->SetLocked(m_togLock->GetValue());
+	m_pLayer->SetLocked(evt.IsChecked());
+	cLayerChangeEvent e(olcEVT_Layer_RefreshPlease);
+	e.SetLayer(m_pLayer);
+	wxPostEvent(this->GetParent(), e);
 }
 
 void cLayerSelectPanel::OnButtonEdit(wxCommandEvent& evt)
@@ -83,6 +93,10 @@ void cLayerSelectPanel::OnButtonEdit(wxCommandEvent& evt)
 		m_slidOpacity->SetValue(int(m_pLayer->GetFillOpacity() * 255.0f));
 		m_togView->SetValue(m_pLayer->IsVisible());
 		m_togLock->SetValue(m_pLayer->IsLocked());
+
+		cLayerChangeEvent e(olcEVT_Layer_RefreshPlease);
+		e.SetLayer(m_pLayer);
+		wxPostEvent(this->GetParent(), e);
 	}
 }
 

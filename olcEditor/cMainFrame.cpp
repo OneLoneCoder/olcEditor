@@ -53,7 +53,7 @@ cMainFrame::cMainFrame() : MainFrameBase(nullptr)
 	Connect(olcEVT_Editor_MouseLeftUp, EditorMouseLeftUpHandler(cMainFrame::OnEditorMouseLeftUp));
 	Connect(olcEVT_Editor_MouseLeftDown, EditorMouseLeftDownHandler(cMainFrame::OnEditorMouseLeftDown));
 	Connect(olcEVT_Layer_SelectionChange, EditorLayerSelectHandler(cMainFrame::OnLayerSelectionChanged));
-	
+	Connect(olcEVT_Layer_RefreshPlease, EditorLayerRefreshHandler(cMainFrame::OnLayerRefreshPlease));
 
 	
 
@@ -65,6 +65,7 @@ cMainFrame::~cMainFrame()
 	Disconnect(olcEVT_Editor_MouseLeftUp, EditorMouseLeftUpHandler(cMainFrame::OnEditorMouseLeftUp));
 	Disconnect(olcEVT_Editor_MouseLeftDown, EditorMouseLeftDownHandler(cMainFrame::OnEditorMouseLeftDown));
 	Disconnect(olcEVT_Layer_SelectionChange, EditorLayerSelectHandler(cMainFrame::OnLayerSelectionChanged));
+	Disconnect(olcEVT_Layer_RefreshPlease, EditorLayerRefreshHandler(cMainFrame::OnLayerRefreshPlease));
 }
 
 
@@ -450,7 +451,7 @@ void cMainFrame::OnButtonLayerMoveUp(wxCommandEvent& evt)
 
 void cMainFrame::OnButtonLayerMoveDown(wxCommandEvent& evt)
 {
-	int d = std::distance(area->vecLayers.begin(), std::find(area->vecLayers.begin(), area->vecLayers.end(), m_layerSelected));
+	size_t d = std::distance(area->vecLayers.begin(), std::find(area->vecLayers.begin(), area->vecLayers.end(), m_layerSelected));
 
 	if (d < area->vecLayers.size() - 1)
 	{
@@ -474,6 +475,11 @@ void cMainFrame::OnLayerSelectionChanged(cLayerChangeEvent& evt)
 
 	// Brute force
 	UpdateLayerList();
+}
+
+void cMainFrame::OnLayerRefreshPlease(cLayerChangeEvent& evt)
+{
+	m_render->Refresh();
 }
 
 

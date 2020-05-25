@@ -72,6 +72,14 @@ public:
 	virtual const std::string GetLayerTypeName() const;
 	virtual const std::vector<sToolBarButton> GetToolBarButtons() const;
 
+	olc::vi2d GetLayerSize() const;
+	olc::vi2d TileCoord(const olc::vf2d& vWorld) const;
+
+	virtual void SetLayerSize(const olc::vi2d& size);
+
+protected:
+	
+
 protected:
 	std::string m_sName;
 	float m_fFillOpacity = 1.0f;
@@ -79,6 +87,7 @@ protected:
 	bool m_bVisible = true;
 	bool m_bLocked = false;
 	bool m_bSelected = false;
+	olc::vi2d m_vLayerSize = { 0, 0 };
 	olc::vf2d m_vWorldOffset = { 0,0 };
 	olc::vi2d m_vUnitSize = { 16,16 };
 	LayerType m_type = LayerType::Undefined;

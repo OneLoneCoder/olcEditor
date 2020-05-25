@@ -7,12 +7,7 @@ public:
 	cTiledLayer(const std::string& name, LayerType t);
 	virtual ~cTiledLayer();
 
-	olc::vi2d GetLayerSize() const;
-	olc::vi2d TileCoord(const olc::vf2d& vWorld) const;
-	
 
-protected:
-	olc::vi2d m_vLayerSize = { 0, 0 };
 };
 
 template <typename T>
@@ -28,7 +23,7 @@ public:
 	{
 	}
 
-	void SetLayerSize(const olc::vi2d& size)
+	void SetLayerSize(const olc::vi2d& size) override
 	{
 		// Create temporary of new vector
 		std::vector<T> newmap;

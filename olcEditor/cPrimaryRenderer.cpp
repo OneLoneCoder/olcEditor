@@ -106,19 +106,19 @@ void cPrimaryRenderer::OnRender()
 
 		olc::vi2d vVisibleTiles = (vWorldBR - vWorldTL) / m_selectedLayer->GetUnitSize();
 
-		for (float x = 0; x <= 64.0f; x++)
+		for (float x = 0; x <= float(m_selectedLayer->GetLayerSize().x); x++)
 		{
 			gfx.DrawLine(
 				m_selectedLayer->GetUnitSize() * olc::vf2d(x, 0), 
-				m_selectedLayer->GetUnitSize() * olc::vf2d(x, 64.0f), 
+				m_selectedLayer->GetUnitSize() * olc::vf2d(x, float(m_selectedLayer->GetLayerSize().y)),
 				olc::PixelF(1, 1, 1, 0.2f));
 		}
 
-		for (float y = 0; y <= 64.0f; y++)
+		for (float y = 0; y <= float(m_selectedLayer->GetLayerSize().y); y++)
 		{
 			gfx.DrawLine(
 				m_selectedLayer->GetUnitSize() * olc::vf2d(0, y),
-				m_selectedLayer->GetUnitSize() * olc::vf2d(64.0f, y),
+				m_selectedLayer->GetUnitSize() * olc::vf2d(float(m_selectedLayer->GetLayerSize().x), y),
 				olc::PixelF(1, 1, 1, 0.2f));
 		}
 

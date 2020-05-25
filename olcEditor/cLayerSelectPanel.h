@@ -7,6 +7,7 @@
 
 class cLayerChangeEvent;
 wxDECLARE_EVENT(olcEVT_Layer_SelectionChange, cLayerChangeEvent);
+wxDECLARE_EVENT(olcEVT_Layer_RefreshPlease, cLayerChangeEvent);
 
 class cLayerChangeEvent : public wxCommandEvent
 {
@@ -29,6 +30,9 @@ private:
 
 typedef void (wxEvtHandler::* EditorLayerSelection)(cLayerChangeEvent&);
 #define EditorLayerSelectHandler(func) wxEVENT_HANDLER_CAST(EditorLayerSelection, func) 
+
+typedef void (wxEvtHandler::* EditorLayerRefresh)(cLayerChangeEvent&);
+#define EditorLayerRefreshHandler(func) wxEVENT_HANDLER_CAST(EditorLayerRefresh, func) 
 
 class cLayerSelectPanel : public wxPanel
 {

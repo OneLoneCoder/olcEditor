@@ -77,7 +77,7 @@ protected:
 	void OnButtonLayerMoveUp(wxCommandEvent& evt) override;
 	void OnButtonLayerMoveDown(wxCommandEvent& evt) override;
 	void OnLayerSelectionChanged(cLayerChangeEvent& evt);
-
+	void OnLayerRefreshPlease(cLayerChangeEvent& evt);
 
 };	
 

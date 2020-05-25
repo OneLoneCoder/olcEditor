@@ -14,6 +14,8 @@ cLayerPropertiesEditor::cLayerPropertiesEditor(wxWindow* parent, std::shared_ptr
 		m_cbLocked->SetValue(m_layer->IsLocked());
 		m_tileWidth->SetValue(m_layer->GetUnitSize().x);
 		m_tileHeight->SetValue(m_layer->GetUnitSize().y);
+		m_layerWidth->SetValue(m_layer->GetLayerSize().x);
+		m_layerHeight->SetValue(m_layer->GetLayerSize().y);
 	}
 }
 
@@ -40,8 +42,13 @@ void cLayerPropertiesEditor::OnButtonOK(wxCommandEvent& evt)
 		m_layer->SetFillOpacity(float(m_sliderFillOpacity->GetValue()) / 255.0f);		
 		m_layer->SetVisible(m_cbVisible->GetValue());
 		m_layer->SetLocked(m_cbLocked->GetValue());
-		m_layer->SetUnitSize({ m_tileWidth->GetValue(), m_tileHeight->GetValue() });		
+		m_layer->SetUnitSize({ m_tileWidth->GetValue(), m_tileHeight->GetValue() });
+		m_layer->SetLayerSize({ m_layerWidth->GetValue(), m_layerHeight->GetValue() });
 	}
 
 	EndModal(wxID_OK);
+}
+
+void cLayerPropertiesEditor::OnTintChanged(wxColourPickerEvent& evt)
+{
 }

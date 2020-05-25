@@ -39,6 +39,7 @@
 #include <wx/dialog.h>
 #include <wx/slider.h>
 #include <wx/clrpicker.h>
+#include <wx/tglbtn.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -224,6 +225,11 @@ class LayerPropertiesBase : public wxDialog
 		wxSpinCtrl* m_offsetLeft;
 		wxStaticText* m_staticText21;
 		wxSpinCtrl* m_offsetTop;
+		wxStaticText* m_staticText22;
+		wxStaticText* m_staticText23;
+		wxSpinCtrl* m_layerWidth;
+		wxStaticText* m_staticText24;
+		wxSpinCtrl* m_layerHeight;
 		wxCheckBox* m_cbLocked;
 		wxCheckBox* m_cbVisible;
 		wxStaticText* m_staticText29;
@@ -238,6 +244,7 @@ class LayerPropertiesBase : public wxDialog
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnGridUpdate( wxSpinEvent& event ) { event.Skip(); }
+		virtual void OnTintChanged( wxColourPickerEvent& event ) { event.Skip(); }
 		virtual void OnButtonCancel( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonOK( wxCommandEvent& event ) { event.Skip(); }
 
@@ -263,6 +270,7 @@ class LayerPanelBase : public wxPanel
 		wxBitmapButton* m_bpButton23;
 		wxBitmapButton* m_bpButton24;
 		wxBitmapButton* m_bpButton25;
+		wxToggleButton* m_toggleBtn1;
 		wxStaticLine* m_staticline4;
 		wxStaticText* m_lblLayerType1;
 		wxSlider* m_slideLayerOpacity1;
@@ -273,6 +281,7 @@ class LayerPanelBase : public wxPanel
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnLayerChangeOpacity( wxScrollEvent& event ) { event.Skip(); }
+		virtual void dfgdfgdfg( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
