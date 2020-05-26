@@ -93,7 +93,7 @@ void cMainFrame::OnEditorMouseMove(cEditorMouseEvent& evt)
 				{
 					if (m_selectTile->InSelection(layer, layer->TileCoord(evt.GetWorld())))
 					{
-						layer->GetTile(layer->TileCoord(evt.GetWorld())) = 1;
+						layer->GetTile(layer->TileCoord(evt.GetWorld())) = evt.GetControlHeld() ? 0 : 1;
 					}
 				}
 			}
@@ -194,7 +194,7 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 			{
 				if (m_selectTile->InSelection(layer, layer->TileCoord(evt.GetWorld())))
 				{
-					layer->GetTile(layer->TileCoord(evt.GetWorld())) = 1;
+					layer->GetTile(layer->TileCoord(evt.GetWorld())) = evt.GetControlHeld() ? 0 : 1;
 				}
 			}
 		}
@@ -408,10 +408,9 @@ void cMainFrame::OnButtonAddLayer(wxCommandEvent& evt)
 	int n = m_choiceLayerType->GetSelection();
 	switch (n)
 	{
-	case 0:
+	case 0: // Graphic Tiles
 	{
 		for (auto& l : area->vecLayers)	if (l) l->SetSelected(false);
-
 		auto layer = std::make_shared<cLayer_Tile>("Tiled Layer", m_vecImageResources);
 		layer->SetLayerSize({ 64, 64 });
 		area->vecLayers.push_back(layer);
@@ -419,6 +418,20 @@ void cMainFrame::OnButtonAddLayer(wxCommandEvent& evt)
 		m_render->SetSelectedLayer(m_layerSelected);
 		m_selectTile->All(layer);		
 		m_layerSelected->SetSelected(true);		
+		UpdateLayerList();
+	}
+	break;
+
+	case 1: // Boolean
+	{
+		for (auto& l : area->vecLayers)	if (l) l->SetSelected(false);
+		auto layer = std::make_shared<cLayer_Boolean>("Boolean Layer");
+		layer->SetLayerSize({ 64, 64 });
+		area->vecLayers.push_back(layer);
+		m_layerSelected = layer;
+		m_render->SetSelectedLayer(m_layerSelected);
+		m_selectTile->All(layer);
+		m_layerSelected->SetSelected(true);
 		UpdateLayerList();
 	}
 	break;

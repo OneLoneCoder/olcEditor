@@ -64,11 +64,15 @@ void cLayer_Boolean::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, c
 		{
 			if (GetTile(x, y) == 0)
 			{
-				gfx.FillRect({ float(x), float(y) }, { 1.0f, 1.0f }, GetColourFalse());
+				olc::Pixel p = GetColourFalse();
+				p.a = uint8_t(GetFillOpacity() * float(p.a));
+				gfx.FillRect(GetUnitSize() * olc::vf2d(float(x), float(y)), GetUnitSize(), p);
 			}
 			else
 			{
-				gfx.FillRect({ float(x), float(y) }, { 1.0f, 1.0f }, GetColourTrue());
+				olc::Pixel p = GetColourTrue();
+				p.a = uint8_t(GetFillOpacity() * float(p.a));
+				gfx.FillRect(GetUnitSize() * olc::vf2d(float(x), float(y)), GetUnitSize(), p);
 			}
 		}
 	}

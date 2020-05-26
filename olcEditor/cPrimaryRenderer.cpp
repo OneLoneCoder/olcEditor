@@ -35,6 +35,8 @@ void cPrimaryRenderer::OnRender()
 	// Erase everything
 	gfx.Clear(olc::PixelF(0.2f, 0.2f, 0.2f, 1.0f ));
 
+	// Draw Canvas in screen space
+
 
 	// Draw Tile Grid
 	olc::vf2d vWorldTL = gfx.ScreenToWorld({ 0,0 });

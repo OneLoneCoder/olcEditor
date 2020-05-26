@@ -3,7 +3,7 @@
 #include "cTiledLayer.h"
 
 
-class cLayer_Boolean : public cTiledLayerAdaptor<uint8_t>
+class cLayer_Boolean : public cTiledLayerAdaptor<uint8_t, sBrushElement<uint8_t>>
 {
 public:
 	cLayer_Boolean(const std::string& name = "Nameless Boolean Layer");
@@ -23,6 +23,6 @@ public:
 
 protected:
 	olc::Pixel m_colTrue = { 0, 255, 0 };
-	olc::Pixel m_colFalse = { 255, 0, 0 };
+	olc::Pixel m_colFalse = { 255, 0, 0, 0 };
 };
 

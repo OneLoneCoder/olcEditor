@@ -44,7 +44,15 @@ cLayerSelectPanel::cLayerSelectPanel(wxWindow* parent, std::shared_ptr<cLayer> l
 	m_togLock->SetValue(m_pLayer->IsLocked());
 	Select(m_pLayer->IsSelected());
 
-	m_slidOpacity->Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), nullptr, this);
+	m_slidOpacity->Connect(wxEVT_SCROLL_TOP, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this );
+	m_slidOpacity->Connect(wxEVT_SCROLL_BOTTOM, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Connect(wxEVT_SCROLL_LINEUP, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Connect(wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Connect(wxEVT_SCROLL_PAGEUP, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Connect(wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Connect(wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Connect(wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Connect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
 	m_togView->Connect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleView), nullptr, this);
 	m_togLock->Connect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleLock), nullptr, this);
 	m_btnEdit->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnButtonEdit), nullptr, this);
@@ -53,7 +61,15 @@ cLayerSelectPanel::cLayerSelectPanel(wxWindow* parent, std::shared_ptr<cLayer> l
 
 cLayerSelectPanel::~cLayerSelectPanel()
 {
-	m_slidOpacity->Disconnect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), nullptr, this);
+	m_slidOpacity->Disconnect(wxEVT_SCROLL_TOP, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Disconnect(wxEVT_SCROLL_BOTTOM, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Disconnect(wxEVT_SCROLL_LINEUP, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Disconnect(wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Disconnect(wxEVT_SCROLL_PAGEUP, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Disconnect(wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Disconnect(wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Disconnect(wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
+	m_slidOpacity->Disconnect(wxEVT_SCROLL_CHANGED, wxScrollEventHandler(cLayerSelectPanel::OnChangeOpacity), NULL, this);
 	m_togView->Disconnect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleView), nullptr, this);
 	m_togLock->Disconnect(wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnToggleLock), nullptr, this);
 	m_btnEdit->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(cLayerSelectPanel::OnButtonEdit), nullptr, this);
