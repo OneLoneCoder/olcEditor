@@ -4,7 +4,7 @@ cTileSelection::cTileSelection()
 {
 }
 
-void cTileSelection::All(std::shared_ptr<cTiledLayer> layer)
+void cTileSelection::All(std::shared_ptr<cLayer> layer)
 {
 	setSelected.clear();
 	setNotSelected.clear();
@@ -18,7 +18,7 @@ void cTileSelection::All(std::shared_ptr<cTiledLayer> layer)
 	}
 }
 
-void cTileSelection::Nothing(std::shared_ptr<cTiledLayer> layer)
+void cTileSelection::Nothing(std::shared_ptr<cLayer> layer)
 {
 	setSelected.clear();
 	setNotSelected.clear();
@@ -32,24 +32,24 @@ void cTileSelection::Nothing(std::shared_ptr<cTiledLayer> layer)
 	}
 }
 
-void cTileSelection::Invert(std::shared_ptr<cTiledLayer> layer)
+void cTileSelection::Invert(std::shared_ptr<cLayer> layer)
 {
 	std::swap(setSelected, setNotSelected);
 }
 
-void cTileSelection::Select(std::shared_ptr<cTiledLayer> layer, const olc::vi2d& pos)
+void cTileSelection::Select(std::shared_ptr<cLayer> layer, const olc::vi2d& pos)
 {
 	setNotSelected.erase(pos);
 	setSelected.insert(pos);
 }
 
-void cTileSelection::Deselect(std::shared_ptr<cTiledLayer> layer, const olc::vi2d& pos)
+void cTileSelection::Deselect(std::shared_ptr<cLayer> layer, const olc::vi2d& pos)
 {
 	setSelected.erase(pos);
 	setNotSelected.insert(pos);
 }
 
-void cTileSelection::Region(std::shared_ptr<cTiledLayer> layer, const olc::vi2d& tl, const olc::vi2d& br)
+void cTileSelection::Region(std::shared_ptr<cLayer> layer, const olc::vi2d& tl, const olc::vi2d& br)
 {
 	olc::vi2d s = { std::min(tl.x, br.x), std::min(tl.y, br.y) };
 	olc::vi2d e = { std::max(tl.x, br.x), std::max(tl.y, br.y) };
@@ -75,7 +75,7 @@ void cTileSelection::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, c
 	}
 }
 
-bool cTileSelection::InSelection(std::shared_ptr<cTiledLayer> layer, const olc::vi2d& pos)
+bool cTileSelection::InSelection(std::shared_ptr<cLayer> layer, const olc::vi2d& pos)
 {
 	return setSelected.count(pos) > 0;
 }

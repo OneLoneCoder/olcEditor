@@ -4,14 +4,7 @@
 #include "common.h"
 #include "cMasterContext.h"
 
-struct sTileDescription
-{
-    uint32_t nResourceID = 0;
-    olc::vf2d vPosition = { 0,0 };
-    olc::vf2d vSize = { 0,0 };
-    uint32_t nTileIndex = 0;
-    bool exist = false;
-};
+
 
 class cImageResource
 {
@@ -37,7 +30,7 @@ public:
     uint32_t GetProjectID() const;
     olc::Sprite* GetSprite() const;
 
-    sTileDescription GetTileDesc(const olc::vi2d& tile);
+    //sTileDescription GetTileDesc(const olc::vi2d& tile);
    
 private:
     cMasterContext* m_gl = nullptr;

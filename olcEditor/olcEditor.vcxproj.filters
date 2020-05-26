@@ -15,13 +15,9 @@
     <ClCompile Include="cArea.cpp" />
     <ClCompile Include="cProject.cpp" />
     <ClCompile Include="cTileSelection.cpp" />
-    <ClCompile Include="cTiledLayer.cpp">
-      <Filter>LayerTypes</Filter>
-    </ClCompile>
     <ClCompile Include="cLayer_Tile.cpp">
       <Filter>LayerTypes</Filter>
     </ClCompile>
-    <ClCompile Include="cLayerHandler.cpp" />
     <ClCompile Include="cImageResource.cpp" />
     <ClCompile Include="cPanAndZoomRenderer.cpp" />
     <ClCompile Include="cTiledResourceViewer.cpp" />
@@ -54,7 +50,6 @@
     <ClInclude Include="cLayer_Tile.h">
       <Filter>LayerTypes</Filter>
     </ClInclude>
-    <ClInclude Include="cLayerHandler.h" />
     <ClInclude Include="cImageResource.h" />
     <ClInclude Include="cPanAndZoomRenderer.h" />
     <ClInclude Include="cTiledResourceViewer.h" />

@@ -152,7 +152,6 @@
     <ClCompile Include="cImageResource.cpp" />
     <ClCompile Include="cImageResourceEditor.cpp" />
     <ClCompile Include="cLayer.cpp" />
-    <ClCompile Include="cLayerHandler.cpp" />
     <ClCompile Include="cLayerPropertiesEditor.cpp" />
     <ClCompile Include="cLayerSelectPanel.cpp" />
     <ClCompile Include="cLayer_Boolean.cpp" />
@@ -163,7 +162,6 @@
     <ClCompile Include="cPanAndZoomRenderer.cpp" />
     <ClCompile Include="cPrimaryRenderer.cpp" />
     <ClCompile Include="cProject.cpp" />
-    <ClCompile Include="cTiledLayer.cpp" />
     <ClCompile Include="cTiledResourceViewer.cpp" />
     <ClCompile Include="cTileSelection.cpp" />
     <ClCompile Include="cGridSelection.cpp" />
@@ -176,7 +174,6 @@
     <ClInclude Include="cImageResource.h" />
     <ClInclude Include="cImageResourceEditor.h" />
     <ClInclude Include="cLayer.h" />
-    <ClInclude Include="cLayerHandler.h" />
     <ClInclude Include="cLayerPropertiesEditor.h" />
     <ClInclude Include="cLayerSelectPanel.h" />
     <ClInclude Include="cLayer_Boolean.h" />

@@ -57,7 +57,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer10;
 	bSizer10 = new wxBoxSizer( wxHORIZONTAL );
 
-	wxString m_choiceLayerTypeChoices[] = { wxT("Basic Tile"), wxT("Geometry"), wxT("Boolean"), wxT("Integer"), wxT("Float"), wxT("Character") };
+	wxString m_choiceLayerTypeChoices[] = { wxT("Basic Tile"), wxT("Boolean"), wxT("Geometry"), wxT("Integer"), wxT("Float"), wxT("Character") };
 	int m_choiceLayerTypeNChoices = sizeof( m_choiceLayerTypeChoices ) / sizeof( wxString );
 	m_choiceLayerType = new wxChoice( m_panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceLayerTypeNChoices, m_choiceLayerTypeChoices, 0 );
 	m_choiceLayerType->SetSelection( 0 );
@@ -191,21 +191,29 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_btnBooleanClearSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
 
 	m_btnBooleanClearSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select_clear.png"), wxBITMAP_TYPE_ANY ) );
+	m_btnBooleanClearSelection->Enable( false );
+
 	bSizer7->Add( m_btnBooleanClearSelection, 0, wxALL, 5 );
 
 	m_btnBooleanSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
 
 	m_btnBooleanSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select.png"), wxBITMAP_TYPE_ANY ) );
+	m_btnBooleanSelection->Enable( false );
+
 	bSizer7->Add( m_btnBooleanSelection, 0, wxALL, 5 );
 
 	m_btnBooleanMoveSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
 
 	m_btnBooleanMoveSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select_move.png"), wxBITMAP_TYPE_ANY ) );
+	m_btnBooleanMoveSelection->Enable( false );
+
 	bSizer7->Add( m_btnBooleanMoveSelection, 0, wxALL, 5 );
 
 	m_btnBooleanFillSelection = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
 
 	m_btnBooleanFillSelection->SetBitmap( wxBitmap( wxT("gfx/ico_select_fill.png"), wxBITMAP_TYPE_ANY ) );
+	m_btnBooleanFillSelection->Enable( false );
+
 	bSizer7->Add( m_btnBooleanFillSelection, 0, wxALL, 5 );
 
 	m_staticline1 = new wxStaticLine( m_toolsBoolean, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL );
@@ -234,21 +242,23 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_btnTileDrawCircle = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
 
 	m_btnTileDrawCircle->SetBitmap( wxBitmap( wxT("gfx/ico_draw_circle.png"), wxBITMAP_TYPE_ANY ) );
+	m_btnTileDrawCircle->Enable( false );
+
 	bSizer7->Add( m_btnTileDrawCircle, 0, wxALL, 5 );
 
 	m_btnTileFillCircle = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
 
 	m_btnTileFillCircle->SetBitmap( wxBitmap( wxT("gfx/ico_fill_circle.png"), wxBITMAP_TYPE_ANY ) );
+	m_btnTileFillCircle->Enable( false );
+
 	bSizer7->Add( m_btnTileFillCircle, 0, wxALL, 5 );
 
 	m_btnTileFloodFill = new wxBitmapButton( m_toolsBoolean, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW|0 );
 
 	m_btnTileFloodFill->SetBitmap( wxBitmap( wxT("gfx/ico_draw_fill.png"), wxBITMAP_TYPE_ANY ) );
-	bSizer7->Add( m_btnTileFloodFill, 0, wxALL, 5 );
+	m_btnTileFloodFill->Enable( false );
 
-	m_checkBox1 = new wxCheckBox( m_toolsBoolean, wxID_ANY, wxT("Contiguous"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_checkBox1->SetValue(true);
-	bSizer7->Add( m_checkBox1, 0, wxALL, 5 );
+	bSizer7->Add( m_btnTileFloodFill, 0, wxALL, 5 );
 
 
 	m_toolsBoolean->SetSizer( bSizer7 );
@@ -264,7 +274,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	m_renderpanel->SetSizer( m_rendersizer );
 	m_renderpanel->Layout();
 	m_rendersizer->Fit( m_renderpanel );
-	m_splitter->SplitVertically( m_propspanel, m_renderpanel, 200 );
+	m_splitter->SplitVertically( m_propspanel, m_renderpanel, 350 );
 	m_mainsizer->Add( m_splitter, 1, wxEXPAND, 5 );
 
 
@@ -709,7 +719,7 @@ LayerPanelBase::LayerPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& 
 	wxBoxSizer* bSizer23;
 	bSizer23 = new wxBoxSizer( wxHORIZONTAL );
 
-	m_lblLayerType = new wxStaticText( this, wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL|wxST_NO_AUTORESIZE );
+	m_lblLayerType = new wxStaticText( this, wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT|wxST_NO_AUTORESIZE );
 	m_lblLayerType->Wrap( -1 );
 	m_lblLayerType->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
 	m_lblLayerType->SetMinSize( wxSize( 80,-1 ) );

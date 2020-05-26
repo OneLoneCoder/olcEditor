@@ -2,8 +2,25 @@
 
 #include "cTiledLayer.h"
 
+class cContentContainerBoolean : public cContentContainer<uint8_t>
+{
+public:
+	cContentContainerBoolean(bool b)
+	{
+		m_nContent = b ? 1 : 0;
+	}
 
-class cLayer_Boolean : public cTiledLayerAdaptor<uint8_t, sBrushElement<uint8_t>>
+	const uint8_t Get(const olc::vi2d& vPos) const override
+	{
+		return m_nContent;
+	}
+
+private:
+	uint8_t m_nContent = 0;
+};
+
+
+class cLayer_Boolean : public cTiledLayer<uint8_t, sBrushElement<uint8_t>>
 {
 public:
 	cLayer_Boolean(const std::string& name = "Nameless Boolean Layer");
@@ -17,9 +34,7 @@ public:
 	olc::Pixel GetColourFalse() const;
 
 	void RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR) override;
-
-	const std::string GetLayerTypeName() const override;
-	const std::vector<sToolBarButton> GetToolBarButtons() const override;
+	void RenderBrush(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR) override;
 
 protected:
 	olc::Pixel m_colTrue = { 0, 255, 0 };

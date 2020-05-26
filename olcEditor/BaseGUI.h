@@ -29,7 +29,6 @@
 #include <wx/listbox.h>
 #include <wx/notebook.h>
 #include <wx/splitter.h>
-#include <wx/checkbox.h>
 #include <wx/frame.h>
 #include <wx/textctrl.h>
 #include <wx/statbox.h>
@@ -37,6 +36,7 @@
 #include <wx/stattext.h>
 #include <wx/spinctrl.h>
 #include <wx/dialog.h>
+#include <wx/checkbox.h>
 #include <wx/slider.h>
 #include <wx/clrpicker.h>
 #include <wx/tglbtn.h>
@@ -98,7 +98,6 @@ class MainFrameBase : public wxFrame
 		wxBitmapButton* m_btnTileDrawCircle;
 		wxBitmapButton* m_btnTileFillCircle;
 		wxBitmapButton* m_btnTileFloodFill;
-		wxCheckBox* m_checkBox1;
 		wxPanel* m_panel5;
 
 		// Virtual event handlers, overide them in your derived class
@@ -132,7 +131,7 @@ class MainFrameBase : public wxFrame
 
 		void m_splitterOnIdle( wxIdleEvent& )
 		{
-			m_splitter->SetSashPosition( 200 );
+			m_splitter->SetSashPosition( 350 );
 			m_splitter->Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrameBase::m_splitterOnIdle ), NULL, this );
 		}
 

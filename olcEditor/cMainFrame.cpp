@@ -71,30 +71,62 @@ cMainFrame::~cMainFrame()
 
 void cMainFrame::OnEditorMouseMove(cEditorMouseEvent& evt)
 {
-	//m_status->SetStatusText(wxString::Format("Tile: %d, %d", evt.GetTile().x, evt.GetTile().y), 0);
-	//m_status->SetStatusText(wxString::Format("Pixel: %d, %d", evt.GetPixel().x, evt.GetPixel().y), 1);
-	//m_status->SetStatusText(wxString::Format("World: %f, %f", evt.GetWorld().x, evt.GetWorld().y), 2);	
 
-	if (m_bLeftMouseDrag)
+	if (m_layerSelected)
 	{
+		olc::vf2d vWorld = evt.GetWorld() / olc::vf2d(m_layerSelected->GetUnitSize());
+		m_status->SetStatusText(wxString::Format("World: %f, %f", vWorld.x, vWorld.y), 2);
+
 		if (m_layerSelected->GetContentType() == ContentType::Tiles)
 		{
+			olc::vi2d vTile = m_layerSelected->TileCoord(evt.GetWorld());
+			olc::vi2d vUnit =
+			{
+				int((vWorld.x - int(vWorld.x)) * float(m_layerSelected->GetUnitSize().x)),
+				int((vWorld.y - int(vWorld.y)) * float(m_layerSelected->GetUnitSize().y))
+			};
+
+			m_status->SetStatusText(wxString::Format("Tile: %d, %d", vTile.x, vTile.y), 0);
+			m_status->SetStatusText(wxString::Format("Unit: %d, %d", vUnit.x, vUnit.y), 1);
+		}		
+	}
+
+	if (m_layerSelected)
+	{
+		if (m_layerSelected->GetContentType() == ContentType::Tiles)
+		{			
 			if (m_layerSelected->GetType() == LayerType::Boolean)
 			{
 				auto layer = std::dynamic_pointer_cast<cLayer_Boolean>(m_layerSelected);
 
-				if (m_drawTool == DrawingTool::TileSelectRegion)
-				{
-					m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
-					m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
+				if (m_drawTool == DrawingTool::TileDrawSingle)
+				{					
+					layer->CreateBrush_Point(layer->TileCoord(evt.GetWorld()), nullptr, cContentContainerBoolean(!evt.GetControlHeld()));
+					if (m_bLeftMouseDrag) layer->ApplyBrush();
 				}
 
-				if (m_drawTool == DrawingTool::TileDrawSingle)
+				if (m_drawTool == DrawingTool::TileDrawLine)
 				{
-					if (m_selectTile->InSelection(layer, layer->TileCoord(evt.GetWorld())))
-					{
-						layer->GetTile(layer->TileCoord(evt.GetWorld())) = evt.GetControlHeld() ? 0 : 1;
-					}
+					if(m_bLeftMouseDrag)
+						layer->CreateBrush_Line(m_vDrawLineStart, layer->TileCoord(evt.GetWorld()), nullptr, cContentContainerBoolean(!evt.GetControlHeld()));
+					else
+						layer->CreateBrush_Line(layer->TileCoord(evt.GetWorld()), layer->TileCoord(evt.GetWorld()), nullptr, cContentContainerBoolean(!evt.GetControlHeld()));
+				}
+
+				if (m_drawTool == DrawingTool::TileDrawRect)
+				{
+					if (m_bLeftMouseDrag)
+						layer->CreateBrush_Rectangle(m_vDrawLineStart, layer->TileCoord(evt.GetWorld()), nullptr, cContentContainerBoolean(!evt.GetControlHeld()));
+					else
+						layer->CreateBrush_Rectangle(layer->TileCoord(evt.GetWorld()), layer->TileCoord(evt.GetWorld()), nullptr, cContentContainerBoolean(!evt.GetControlHeld()));
+				}
+
+				if (m_drawTool == DrawingTool::TileFillRect)
+				{
+					if (m_bLeftMouseDrag)
+						layer->CreateBrush_FillRectangle(m_vDrawLineStart, layer->TileCoord(evt.GetWorld()), nullptr, cContentContainerBoolean(!evt.GetControlHeld()));
+					else
+						layer->CreateBrush_FillRectangle(layer->TileCoord(evt.GetWorld()), layer->TileCoord(evt.GetWorld()), nullptr, cContentContainerBoolean(!evt.GetControlHeld()));
 				}
 			}
 
@@ -102,31 +134,101 @@ void cMainFrame::OnEditorMouseMove(cEditorMouseEvent& evt)
 			{
 				auto layer = std::dynamic_pointer_cast<cLayer_Tile>(m_layerSelected);
 
-				if (m_drawTool == DrawingTool::TileSelectRegion)
-				{
-					m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
-					m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
+				if (m_drawTool == DrawingTool::TileDrawSingle)
+				{					
+					if (!m_vecImageResources.empty() && m_lbImages->GetSelection() < m_vecImageResources.size())
+					{
+						layer->CreateBrush_Point(layer->TileCoord(evt.GetWorld()), m_selectionGrid, cContentContainerTiles(m_vecImageResources[m_lbImages->GetSelection()]));
+					}
+					if (m_bLeftMouseDrag) layer->ApplyBrush();
 				}
 
-				if (m_drawTool == DrawingTool::TileDrawSingle)
+				if (m_drawTool == DrawingTool::TileDrawLine)
 				{
-					for (const auto& cell : m_selectionGrid->setSelected)
+					if (!m_vecImageResources.empty() && m_lbImages->GetSelection() < m_vecImageResources.size())
 					{
-						olc::vi2d vTilePos = layer->TileCoord(evt.GetWorld());
-						olc::vi2d vOffsetFromRoot = cell - m_selectionGrid->vRoot;
-						olc::vi2d vWorldCell = vTilePos + vOffsetFromRoot;
-						if (m_selectTile->InSelection(layer, vWorldCell)) // mask
-						{
-							layer->GetTile(vWorldCell) = m_vecImageResources[m_lbImages->GetSelection()]->GetTileDesc(cell);
-							layer->GetTile(vWorldCell).exist = true;
-						}
+						if (m_bLeftMouseDrag)
+							layer->CreateBrush_Line(m_vDrawLineStart, layer->TileCoord(evt.GetWorld()), m_selectionGrid, cContentContainerTiles(m_vecImageResources[m_lbImages->GetSelection()]));
+						else
+							layer->CreateBrush_Line(layer->TileCoord(evt.GetWorld()), layer->TileCoord(evt.GetWorld()), m_selectionGrid, cContentContainerTiles(m_vecImageResources[m_lbImages->GetSelection()]));
+					}
+				}
+
+				if (m_drawTool == DrawingTool::TileDrawRect)
+				{
+					if (!m_vecImageResources.empty() && m_lbImages->GetSelection() < m_vecImageResources.size())
+					{
+						if (m_bLeftMouseDrag)
+							layer->CreateBrush_Rectangle(m_vDrawLineStart, layer->TileCoord(evt.GetWorld()), m_selectionGrid, cContentContainerTiles(m_vecImageResources[m_lbImages->GetSelection()]));
+						else
+							layer->CreateBrush_Rectangle(layer->TileCoord(evt.GetWorld()), layer->TileCoord(evt.GetWorld()), m_selectionGrid, cContentContainerTiles(m_vecImageResources[m_lbImages->GetSelection()]));
+					}
+				}
+
+				if (m_drawTool == DrawingTool::TileFillRect)
+				{
+					if (!m_vecImageResources.empty() && m_lbImages->GetSelection() < m_vecImageResources.size())
+					{
+						if (m_bLeftMouseDrag)
+							layer->CreateBrush_FillRectangle(m_vDrawLineStart, layer->TileCoord(evt.GetWorld()), m_selectionGrid, cContentContainerTiles(m_vecImageResources[m_lbImages->GetSelection()]));
+						else
+							layer->CreateBrush_FillRectangle(layer->TileCoord(evt.GetWorld()), layer->TileCoord(evt.GetWorld()), m_selectionGrid, cContentContainerTiles(m_vecImageResources[m_lbImages->GetSelection()]));
 					}
 				}
 			}
+			
 		}
+	}
+		//if (m_layerSelected->GetContentType() == ContentType::Tiles)
+		//{
+		//	if (m_layerSelected->GetType() == LayerType::Boolean)
+		//	{
+		//		auto layer = std::dynamic_pointer_cast<cLayer_Boolean>(m_layerSelected);
+
+		//		if (m_drawTool == DrawingTool::TileSelectRegion)
+		//		{
+		//			m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
+		//			m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
+		//		}
+
+		//		if (m_drawTool == DrawingTool::TileDrawSingle)
+		//		{
+		//			if (m_selectTile->InSelection(layer, layer->TileCoord(evt.GetWorld())))
+		//			{
+		//				layer->GetTile(layer->TileCoord(evt.GetWorld())) = evt.GetControlHeld() ? 0 : 1;
+		//			}
+		//		}
+		//	}
+
+		//	if (m_layerSelected->GetType() == LayerType::Tile)
+		//	{
+		//		auto layer = std::dynamic_pointer_cast<cLayer_Tile>(m_layerSelected);
+
+		//		if (m_drawTool == DrawingTool::TileSelectRegion)
+		//		{
+		//			m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
+		//			m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
+		//		}
+
+		//		if (m_drawTool == DrawingTool::TileDrawSingle)
+		//		{
+		//			for (const auto& cell : m_selectionGrid->setSelected)
+		//			{
+		//				olc::vi2d vTilePos = layer->TileCoord(evt.GetWorld());
+		//				olc::vi2d vOffsetFromRoot = cell - m_selectionGrid->vRoot;
+		//				olc::vi2d vWorldCell = vTilePos + vOffsetFromRoot;
+		//				if (m_selectTile->InSelection(layer, vWorldCell)) // mask
+		//				{
+		//					layer->GetTile(vWorldCell) = m_vecImageResources[m_lbImages->GetSelection()]->GetTileDesc(cell);
+		//					layer->GetTile(vWorldCell).exist = true;
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
 
 		m_render->Refresh();
-	}
+	//}
 }
 
 void cMainFrame::OnEditorMouseLeftUp(cEditorMouseEvent& evt)
@@ -135,7 +237,63 @@ void cMainFrame::OnEditorMouseLeftUp(cEditorMouseEvent& evt)
 		return;
 	m_bLeftMouseDrag = false;
 
-	if (m_layerSelected->GetContentType() == ContentType::Tiles)
+	if (m_layerSelected)
+	{
+		if (m_layerSelected->GetContentType() == ContentType::Tiles)
+		{
+			if (m_layerSelected->GetType() == LayerType::Boolean)
+			{
+				auto layer = std::dynamic_pointer_cast<cLayer_Boolean>(m_layerSelected);
+
+				if (m_drawTool == DrawingTool::TileDrawSingle)
+				{
+					layer->ApplyBrush();
+				}
+
+				if (m_drawTool == DrawingTool::TileDrawLine)
+				{
+					layer->ApplyBrush();
+				}
+
+				if (m_drawTool == DrawingTool::TileDrawRect)
+				{
+					layer->ApplyBrush();
+				}
+
+				if (m_drawTool == DrawingTool::TileFillRect)
+				{
+					layer->ApplyBrush();
+				}
+			}
+
+			if (m_layerSelected->GetType() == LayerType::Tile)
+			{
+				auto layer = std::dynamic_pointer_cast<cLayer_Tile>(m_layerSelected);
+
+				if (m_drawTool == DrawingTool::TileDrawSingle)
+				{
+					layer->ApplyBrush();
+				}
+
+				if (m_drawTool == DrawingTool::TileDrawLine)
+				{
+					layer->ApplyBrush();
+				}
+
+				if (m_drawTool == DrawingTool::TileDrawRect)
+				{
+					layer->ApplyBrush();
+				}
+
+				if (m_drawTool == DrawingTool::TileFillRect)
+				{
+					layer->ApplyBrush();
+				}
+			}
+		}
+	}
+
+	/*if (m_layerSelected->GetContentType() == ContentType::Tiles)
 	{
 		if (m_layerSelected->GetType() == LayerType::Boolean)
 		{
@@ -160,7 +318,7 @@ void cMainFrame::OnEditorMouseLeftUp(cEditorMouseEvent& evt)
 				m_selectTile->Region(layer, m_vTileRegionTL, m_vTileRegionBR);
 			}
 		}
-	}
+	}*/
 
 	m_render->EnableRegionMode(false);
 
@@ -178,24 +336,26 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 	{
 		if (m_layerSelected->GetType() == LayerType::Boolean)
 		{
-			auto layer = std::dynamic_pointer_cast<cLayer_Boolean>(m_layerSelected);
-
-			if (m_drawTool == DrawingTool::TileSelectRegion)
-			{
-				m_vTileRegionTL = layer->TileCoord(evt.GetWorld());
-				m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
-				m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
-				m_render->EnableRegionMode(true);
-				if (!evt.GetControlHeld())
-					m_selectTile->Nothing(layer);
-			}
+			auto layer = std::dynamic_pointer_cast<cLayer_Boolean>(m_layerSelected);		
 
 			if (m_drawTool == DrawingTool::TileDrawSingle)
+			{				
+				layer->CreateBrush_Point(layer->TileCoord(evt.GetWorld()), nullptr, cContentContainerBoolean(!evt.GetControlHeld()));
+			}
+
+			if (m_drawTool == DrawingTool::TileDrawLine)
 			{
-				if (m_selectTile->InSelection(layer, layer->TileCoord(evt.GetWorld())))
-				{
-					layer->GetTile(layer->TileCoord(evt.GetWorld())) = evt.GetControlHeld() ? 0 : 1;
-				}
+				m_vDrawLineStart = layer->TileCoord(evt.GetWorld());
+			}
+
+			if (m_drawTool == DrawingTool::TileDrawRect)
+			{
+				m_vDrawLineStart = layer->TileCoord(evt.GetWorld());
+			}
+
+			if (m_drawTool == DrawingTool::TileFillRect)
+			{
+				m_vDrawLineStart = layer->TileCoord(evt.GetWorld());
 			}
 		}
 
@@ -203,31 +363,55 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 		{
 			auto layer = std::dynamic_pointer_cast<cLayer_Tile>(m_layerSelected);
 
-			if (m_drawTool == DrawingTool::TileSelectRegion)
-			{
-				m_vTileRegionTL = layer->TileCoord(evt.GetWorld());
-				m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
-				m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
-				m_render->EnableRegionMode(true);
-				if (!evt.GetControlHeld())
-					m_selectTile->Nothing(layer);
-			}
-
 			if (m_drawTool == DrawingTool::TileDrawSingle)
-			{				
-				for (const auto& cell : m_selectionGrid->setSelected)
+			{
+				if (!m_vecImageResources.empty() && m_lbImages->GetSelection() < m_vecImageResources.size())
 				{
-					olc::vi2d vTilePos = layer->TileCoord(evt.GetWorld());
-					olc::vi2d vOffsetFromRoot = cell - m_selectionGrid->vRoot;
-					olc::vi2d vWorldCell = vTilePos + vOffsetFromRoot;
-					if (m_selectTile->InSelection(layer, vWorldCell)) // mask
-					{
-						layer->GetTile(vWorldCell) = m_vecImageResources[m_lbImages->GetSelection()]->GetTileDesc(cell);	
-						layer->GetTile(vWorldCell).exist = true;
-					}
+					layer->CreateBrush_Point(layer->TileCoord(evt.GetWorld()), m_selectionGrid, cContentContainerTiles(m_vecImageResources[m_lbImages->GetSelection()]));
 				}
 			}
+
+			if (m_drawTool == DrawingTool::TileDrawLine)
+			{
+				m_vDrawLineStart = layer->TileCoord(evt.GetWorld());
+			}
+
+			if (m_drawTool == DrawingTool::TileDrawRect)
+			{
+				m_vDrawLineStart = layer->TileCoord(evt.GetWorld());
+			}
+
+			if (m_drawTool == DrawingTool::TileFillRect)
+			{
+				m_vDrawLineStart = layer->TileCoord(evt.GetWorld());
+			}
 		}
+
+		//	if (m_drawTool == DrawingTool::TileSelectRegion)
+		//	{
+		//		m_vTileRegionTL = layer->TileCoord(evt.GetWorld());
+		//		m_vTileRegionBR = layer->TileCoord(evt.GetWorld());
+		//		m_render->SetTileRegion(m_vTileRegionTL, m_vTileRegionBR);
+		//		m_render->EnableRegionMode(true);
+		//		if (!evt.GetControlHeld())
+		//			m_selectTile->Nothing(layer);
+		//	}
+
+			//if (m_drawTool == DrawingTool::TileDrawSingle)
+			//{				
+				//for (const auto& cell : m_selectionGrid->setSelected)
+				//{
+		//			olc::vi2d vTilePos = layer->TileCoord(evt.GetWorld());
+		//			olc::vi2d vOffsetFromRoot = cell - m_selectionGrid->vRoot;
+		//			olc::vi2d vWorldCell = vTilePos + vOffsetFromRoot;
+		//			if (m_selectTile->InSelection(layer, vWorldCell)) // mask
+		//			{
+		//				layer->GetTile(vWorldCell) = m_vecImageResources[m_lbImages->GetSelection()]->GetTileDesc(cell);	
+		//				layer->GetTile(vWorldCell).exist = true;
+		//			}
+		//		}
+		//	}
+		//}
 	}
 
 	m_render->Refresh();
@@ -235,13 +419,13 @@ void cMainFrame::OnEditorMouseLeftDown(cEditorMouseEvent& evt)
 
 void cMainFrame::OnButtonSelectClear(wxCommandEvent& evt)
 {
-	if (m_layerSelected != nullptr)
+	/*if (m_layerSelected != nullptr)
 	{
 		if (m_layerSelected->GetContentType() == ContentType::Tiles)
 		{
 			m_selectTile->All(std::dynamic_pointer_cast<cTiledLayer>(m_layerSelected));
 		}
-	}
+	}*/
 
 	m_render->Refresh();
 }
@@ -250,13 +434,13 @@ void cMainFrame::OnButtonSelectRegion(wxCommandEvent& evt)
 {
 	m_drawTool = DrawingTool::TileSelectRegion;
 
-	if (m_layerSelected != nullptr)
+	/*if (m_layerSelected != nullptr)
 	{
 		if (m_layerSelected->GetContentType() == ContentType::Tiles)
 		{
-			m_selectTile->Nothing(std::dynamic_pointer_cast<cTiledLayer>(m_layerSelected));
+			m_selectTile->Nothing(std::dynamic_pointer_cast<cTiledLayer<>>(m_layerSelected));
 		}
-	}
+	}*/
 
 	m_render->Refresh();
 }
@@ -279,17 +463,17 @@ void cMainFrame::OnButtonTileDraw(wxCommandEvent& evt)
 
 void cMainFrame::OnButtonTileLine(wxCommandEvent& evt)
 {
-
+	m_drawTool = DrawingTool::TileDrawLine;
 }
 
 void cMainFrame::OnButtonTileDrawRect(wxCommandEvent& evt)
 {
-
+	m_drawTool = DrawingTool::TileDrawRect;
 }
 
 void cMainFrame::OnButtonTileFillRect(wxCommandEvent& evt)
 {
-
+	m_drawTool = DrawingTool::TileFillRect;
 }
 
 void cMainFrame::OnButtonTileDrawCircle(wxCommandEvent& evt)

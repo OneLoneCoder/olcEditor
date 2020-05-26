@@ -42,6 +42,8 @@ protected:
 	std::shared_ptr<cGridSelection> m_selectionGrid = nullptr;
 	cTiledResourceViewer* m_tiledImageViewer;
 
+	olc::vi2d m_vDrawLineStart = { 0,0 };	
+
 protected:
 	void UpdateImageList();
 	void UpdateLayerList();

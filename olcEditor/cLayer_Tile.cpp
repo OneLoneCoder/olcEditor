@@ -1,6 +1,6 @@
 #include "cLayer_Tile.h"
 
-cLayer_Tile::cLayer_Tile(const std::string& name, std::vector<std::shared_ptr<cImageResource>>& vImageResources) : cTiledLayerAdaptor(name, LayerType::Tile), m_vImageResources(vImageResources)
+cLayer_Tile::cLayer_Tile(const std::string& name, std::vector<std::shared_ptr<cImageResource>>& vImageResources) : cTiledLayer(name, LayerType::Tile), m_vImageResources(vImageResources)
 {
 }
 
@@ -26,14 +26,19 @@ void cLayer_Tile::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, cons
 	}
 }
 
-void cLayer_Tile::RenderCursor(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR, std::shared_ptr<cImageResource> image, std::shared_ptr<cGridSelection> selection, const olc::vi2d& cursor)
+void cLayer_Tile::RenderBrush(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR)
 {
-	for (const auto& cell : selection->setSelected)
+	olc::vi2d vCellTL = { std::max(int(vWorldTL.x), 0), std::max(int(vWorldTL.y), 0) };
+	olc::vi2d vCellBR = { std::min(int(vWorldBR.x), GetLayerSize().x), std::min(int(vWorldBR.y), GetLayerSize().y) };
+
+
+	for (auto& cell : setBrush)
 	{
-		olc::vi2d vTilePos = cursor;
-		olc::vi2d vOffsetFromRoot = cell - selection->vRoot;
-		olc::vi2d vWorldCell = vTilePos + vOffsetFromRoot;
-		gfx.DrawSubImage(image->GetHardwareID(), vWorldCell * GetUnitSize(), GetUnitSize(), image->GetTileDesc(cell).vPosition, image->GetTileDesc(cell).vSize, { 255, 255, 255, 128 });
+		if (!m_vImageResources.empty() && cell.content.nResourceID < m_vImageResources.size() && cell.content.exist)
+		{
+			olc::Pixel tint = olc::Pixel(255, 255, 255, uint8_t(GetFillOpacity() * 255.0f * 0.5f));
+			gfx.DrawSubImage(m_vImageResources[cell.content.nResourceID]->GetHardwareID(), GetUnitSize() * olc::vf2d(cell.pos), GetUnitSize(), cell.content.vPosition, cell.content.vSize, tint);
+		}
 	}
 }
 

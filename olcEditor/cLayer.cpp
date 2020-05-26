@@ -107,6 +107,11 @@ void cLayer::RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc
 
 }
 
+void cLayer::RenderBrush(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR)
+{
+
+}
+
 olc::vi2d cLayer::GetLayerSize() const
 {
 	return m_vLayerSize;
@@ -121,22 +126,6 @@ olc::vi2d cLayer::TileCoord(const olc::vf2d& vWorld) const
 void cLayer::SetLayerSize(const olc::vi2d& size)
 {
 	m_vLayerSize = size;
-}
-
-//void cLayer::RenderCursor(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR, const cTransientSelection& selection, const olc::vi2d& cursor)
-//{
-//
-//}
-
-
-const std::string cLayer::GetLayerTypeName() const
-{
-	return "Nameless Layer Type";
-}
-
-const std::vector<sToolBarButton> cLayer::GetToolBarButtons() const
-{
-	return std::vector<sToolBarButton>();
 }
 
 

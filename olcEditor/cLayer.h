@@ -1,8 +1,7 @@
 #pragma once
-
-
 #include "RenderToolkit.h"
 #include "common.h"
+
 enum class LayerType
 {
 	Undefined,
@@ -22,15 +21,6 @@ enum class ContentType
 	Tiles,
 	FreeForm
 };
-
-
-struct sToolBarButton
-{	
-	std::string sIconPath;
-	std::string sButtonText;
-	std::string sToolTipText;
-};
-
 
 class cLayer
 {
@@ -68,9 +58,7 @@ public:
 
 
 	virtual void RenderSelf(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR);
-
-	virtual const std::string GetLayerTypeName() const;
-	virtual const std::vector<sToolBarButton> GetToolBarButtons() const;
+	virtual void RenderBrush(RenderToolkit& gfx, const olc::vf2d& vWorldTL, const olc::vf2d& vWorldBR);
 
 	olc::vi2d GetLayerSize() const;
 	olc::vi2d TileCoord(const olc::vf2d& vWorld) const;

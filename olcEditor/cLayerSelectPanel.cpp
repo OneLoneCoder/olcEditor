@@ -10,7 +10,7 @@ cLayerSelectPanel::cLayerSelectPanel(wxWindow* parent, std::shared_ptr<cLayer> l
 	wxBoxSizer* szVert = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* szHoriz = new wxBoxSizer(wxHORIZONTAL);
 
-	m_lblName = new wxStaticText(this, wxID_ANY, wxT("Layer Name"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL | wxST_NO_AUTORESIZE);
+	m_lblName = new wxStaticText(this, wxID_ANY, wxT("Layer Name"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT | wxST_NO_AUTORESIZE);
 	m_lblName->Wrap(-1);
 	m_lblName->SetMinSize(wxSize(80, -1));
 	szHoriz->Add(m_lblName, 1, wxALL | wxALIGN_CENTER_VERTICAL, 5);
